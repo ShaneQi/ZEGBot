@@ -7,32 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BF0B17841CEAD16D004E6C2F /* MessageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0B17831CEAD16D004E6C2F /* MessageEntity.swift */; };
-		BF0B17941CEBF62D004E6C2F /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0B17931CEBF62D004E6C2F /* Audio.swift */; };
-		BF6DF2751CF54B400066A7D8 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6DF2741CF54B400066A7D8 /* Contact.swift */; };
-		BF6DF2771CF550A30066A7D8 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6DF2761CF550A30066A7D8 /* Location.swift */; };
-		BF6DF2791CF554610066A7D8 /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6DF2781CF554610066A7D8 /* Venue.swift */; };
+		BF3B41831CFCB52200BBBEEC /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B41821CFCB52200BBBEEC /* Types.swift */; };
+		BF3B41851CFCB79100BBBEEC /* TypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B41841CFCB79100BBBEEC /* TypeExtension.swift */; };
 		BF74B52F1CE98D7F004C2BEE /* ZEGBot.h in Headers */ = {isa = PBXBuildFile; fileRef = BF74B52E1CE98D7F004C2BEE /* ZEGBot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF74B5361CE98D7F004C2BEE /* ZEGBot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF74B52B1CE98D7F004C2BEE /* ZEGBot.framework */; };
 		BF74B53B1CE98D7F004C2BEE /* ZEGBotDecodeMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B53A1CE98D7F004C2BEE /* ZEGBotDecodeMessageTests.swift */; };
 		BF74B55B1CE98DBD004C2BEE /* ZEGDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B54B1CE98DBD004C2BEE /* ZEGDecoder.swift */; };
-		BF74B55C1CE98DBD004C2BEE /* ZEGDecoderError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B54C1CE98DBD004C2BEE /* ZEGDecoderError.swift */; };
 		BF74B55D1CE98DBD004C2BEE /* token.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B54D1CE98DBD004C2BEE /* token.swift */; };
-		BF74B55E1CE98DBD004C2BEE /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B54F1CE98DBD004C2BEE /* Chat.swift */; };
-		BF74B55F1CE98DBD004C2BEE /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B5501CE98DBD004C2BEE /* Message.swift */; };
-		BF74B5601CE98DBD004C2BEE /* PhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B5511CE98DBD004C2BEE /* PhotoSize.swift */; };
-		BF74B5611CE98DBD004C2BEE /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B5521CE98DBD004C2BEE /* Sticker.swift */; };
-		BF74B5631CE98DBD004C2BEE /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B5541CE98DBD004C2BEE /* Update.swift */; };
-		BF74B5641CE98DBD004C2BEE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B5551CE98DBD004C2BEE /* User.swift */; };
-		BF74B5651CE98DBD004C2BEE /* Voice.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B5561CE98DBD004C2BEE /* Voice.swift */; };
-		BF76B8F51CED8F660063D50F /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF76B8F41CED8F660063D50F /* Document.swift */; };
-		BF9D34B51CF15669001BC1EC /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D34B41CF15669001BC1EC /* Video.swift */; };
 		BFB3202E1CFBC84A006682C1 /* ZEGResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB3202D1CFBC84A006682C1 /* ZEGResponse.swift */; };
-		BFB320301CFBD5BF006682C1 /* ParseMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB3202F1CFBD5BF006682C1 /* ParseMode.swift */; };
 		BFB320321CFBD97D006682C1 /* ZEGBotResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB320311CFBD97D006682C1 /* ZEGBotResponseTests.swift */; };
-		BFB320371CFBE469006682C1 /* TypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB320361CFBE469006682C1 /* TypeExtension.swift */; };
-		BFB320391CFBEA5A006682C1 /* Receivable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB320381CFBEA5A006682C1 /* Receivable.swift */; };
-		BFB3203B1CFC1B35006682C1 /* ChatAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB3203A1CFC1B35006682C1 /* ChatAction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,11 +29,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BF0B17831CEAD16D004E6C2F /* MessageEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageEntity.swift; sourceTree = "<group>"; };
-		BF0B17931CEBF62D004E6C2F /* Audio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
-		BF6DF2741CF54B400066A7D8 /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
-		BF6DF2761CF550A30066A7D8 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
-		BF6DF2781CF554610066A7D8 /* Venue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Venue.swift; sourceTree = "<group>"; };
+		BF3B41821CFCB52200BBBEEC /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		BF3B41841CFCB79100BBBEEC /* TypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeExtension.swift; sourceTree = "<group>"; };
 		BF74B52B1CE98D7F004C2BEE /* ZEGBot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZEGBot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF74B52E1CE98D7F004C2BEE /* ZEGBot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZEGBot.h; sourceTree = "<group>"; };
 		BF74B5301CE98D7F004C2BEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -58,23 +38,9 @@
 		BF74B53A1CE98D7F004C2BEE /* ZEGBotDecodeMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZEGBotDecodeMessageTests.swift; sourceTree = "<group>"; };
 		BF74B53C1CE98D7F004C2BEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF74B54B1CE98DBD004C2BEE /* ZEGDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZEGDecoder.swift; sourceTree = "<group>"; };
-		BF74B54C1CE98DBD004C2BEE /* ZEGDecoderError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZEGDecoderError.swift; sourceTree = "<group>"; };
 		BF74B54D1CE98DBD004C2BEE /* token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = token.swift; sourceTree = "<group>"; };
-		BF74B54F1CE98DBD004C2BEE /* Chat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
-		BF74B5501CE98DBD004C2BEE /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
-		BF74B5511CE98DBD004C2BEE /* PhotoSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSize.swift; sourceTree = "<group>"; };
-		BF74B5521CE98DBD004C2BEE /* Sticker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sticker.swift; sourceTree = "<group>"; };
-		BF74B5541CE98DBD004C2BEE /* Update.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Update.swift; sourceTree = "<group>"; };
-		BF74B5551CE98DBD004C2BEE /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		BF74B5561CE98DBD004C2BEE /* Voice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Voice.swift; sourceTree = "<group>"; };
-		BF76B8F41CED8F660063D50F /* Document.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
-		BF9D34B41CF15669001BC1EC /* Video.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
 		BFB3202D1CFBC84A006682C1 /* ZEGResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZEGResponse.swift; sourceTree = "<group>"; };
-		BFB3202F1CFBD5BF006682C1 /* ParseMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParseMode.swift; path = ../ParseMode.swift; sourceTree = "<group>"; };
 		BFB320311CFBD97D006682C1 /* ZEGBotResponseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZEGBotResponseTests.swift; sourceTree = "<group>"; };
-		BFB320361CFBE469006682C1 /* TypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TypeExtension.swift; path = ../TypeExtension.swift; sourceTree = "<group>"; };
-		BFB320381CFBEA5A006682C1 /* Receivable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Receivable.swift; sourceTree = "<group>"; };
-		BFB3203A1CFC1B35006682C1 /* ChatAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatAction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,47 +111,14 @@
 		BF74B5461CE98DBD004C2BEE /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				BFB320331CFBE2F6006682C1 /* Protocol */,
-				BF74B54E1CE98DBD004C2BEE /* Types */,
+				BF3B41821CFCB52200BBBEEC /* Types.swift */,
+				BF3B41841CFCB79100BBBEEC /* TypeExtension.swift */,
 				BF74B54B1CE98DBD004C2BEE /* ZEGDecoder.swift */,
-				BF74B54C1CE98DBD004C2BEE /* ZEGDecoderError.swift */,
 				BFB3202D1CFBC84A006682C1 /* ZEGResponse.swift */,
 				BF74B54D1CE98DBD004C2BEE /* token.swift */,
 			);
 			name = Sources;
 			path = ../../../Sources;
-			sourceTree = "<group>";
-		};
-		BF74B54E1CE98DBD004C2BEE /* Types */ = {
-			isa = PBXGroup;
-			children = (
-				BF74B5541CE98DBD004C2BEE /* Update.swift */,
-				BF74B5501CE98DBD004C2BEE /* Message.swift */,
-				BF74B54F1CE98DBD004C2BEE /* Chat.swift */,
-				BF74B5551CE98DBD004C2BEE /* User.swift */,
-				BF0B17831CEAD16D004E6C2F /* MessageEntity.swift */,
-				BF0B17931CEBF62D004E6C2F /* Audio.swift */,
-				BF76B8F41CED8F660063D50F /* Document.swift */,
-				BF74B5511CE98DBD004C2BEE /* PhotoSize.swift */,
-				BF74B5521CE98DBD004C2BEE /* Sticker.swift */,
-				BF9D34B41CF15669001BC1EC /* Video.swift */,
-				BF74B5561CE98DBD004C2BEE /* Voice.swift */,
-				BF6DF2741CF54B400066A7D8 /* Contact.swift */,
-				BF6DF2761CF550A30066A7D8 /* Location.swift */,
-				BF6DF2781CF554610066A7D8 /* Venue.swift */,
-				BFB320361CFBE469006682C1 /* TypeExtension.swift */,
-				BFB3202F1CFBD5BF006682C1 /* ParseMode.swift */,
-				BFB3203A1CFC1B35006682C1 /* ChatAction.swift */,
-			);
-			path = Types;
-			sourceTree = "<group>";
-		};
-		BFB320331CFBE2F6006682C1 /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-				BFB320381CFBEA5A006682C1 /* Receivable.swift */,
-			);
-			name = Protocol;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -296,28 +229,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF0B17841CEAD16D004E6C2F /* MessageEntity.swift in Sources */,
-				BF74B5641CE98DBD004C2BEE /* User.swift in Sources */,
-				BF74B5651CE98DBD004C2BEE /* Voice.swift in Sources */,
-				BF74B55E1CE98DBD004C2BEE /* Chat.swift in Sources */,
-				BF74B5601CE98DBD004C2BEE /* PhotoSize.swift in Sources */,
-				BF74B55C1CE98DBD004C2BEE /* ZEGDecoderError.swift in Sources */,
-				BF0B17941CEBF62D004E6C2F /* Audio.swift in Sources */,
-				BFB320301CFBD5BF006682C1 /* ParseMode.swift in Sources */,
-				BF74B5631CE98DBD004C2BEE /* Update.swift in Sources */,
-				BFB3203B1CFC1B35006682C1 /* ChatAction.swift in Sources */,
+				BF3B41851CFCB79100BBBEEC /* TypeExtension.swift in Sources */,
 				BF74B55D1CE98DBD004C2BEE /* token.swift in Sources */,
 				BFB3202E1CFBC84A006682C1 /* ZEGResponse.swift in Sources */,
-				BF6DF2751CF54B400066A7D8 /* Contact.swift in Sources */,
-				BFB320391CFBEA5A006682C1 /* Receivable.swift in Sources */,
-				BF6DF2791CF554610066A7D8 /* Venue.swift in Sources */,
-				BF6DF2771CF550A30066A7D8 /* Location.swift in Sources */,
-				BF74B55F1CE98DBD004C2BEE /* Message.swift in Sources */,
-				BFB320371CFBE469006682C1 /* TypeExtension.swift in Sources */,
-				BF76B8F51CED8F660063D50F /* Document.swift in Sources */,
-				BF9D34B51CF15669001BC1EC /* Video.swift in Sources */,
+				BF3B41831CFCB52200BBBEEC /* Types.swift in Sources */,
 				BF74B55B1CE98DBD004C2BEE /* ZEGDecoder.swift in Sources */,
-				BF74B5611CE98DBD004C2BEE /* Sticker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

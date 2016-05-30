@@ -895,3 +895,10 @@ public class ZEGDecoder {
 	
 }
 
+public enum ZEGDecoderError: ErrorType {
+	
+	case BadInput(String)
+	case BadRequiredFieldValue(String)
+	
+}
+
