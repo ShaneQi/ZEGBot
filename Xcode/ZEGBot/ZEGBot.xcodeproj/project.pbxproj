@@ -1,0 +1,439 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BF3B41831CFCB52200BBBEEC /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B41821CFCB52200BBBEEC /* Types.swift */; };
+		BF3B41851CFCB79100BBBEEC /* TypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B41841CFCB79100BBBEEC /* TypeExtension.swift */; };
+		BF74B52F1CE98D7F004C2BEE /* ZEGBot.h in Headers */ = {isa = PBXBuildFile; fileRef = BF74B52E1CE98D7F004C2BEE /* ZEGBot.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF74B5361CE98D7F004C2BEE /* ZEGBot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF74B52B1CE98D7F004C2BEE /* ZEGBot.framework */; };
+		BF74B53B1CE98D7F004C2BEE /* ZEGBotDecodeMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B53A1CE98D7F004C2BEE /* ZEGBotDecodeMessageTests.swift */; };
+		BF74B55B1CE98DBD004C2BEE /* ZEGDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B54B1CE98DBD004C2BEE /* ZEGDecoder.swift */; };
+		BF74B55D1CE98DBD004C2BEE /* token.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B54D1CE98DBD004C2BEE /* token.swift */; };
+		BFB3202E1CFBC84A006682C1 /* ZEGResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB3202D1CFBC84A006682C1 /* ZEGResponse.swift */; };
+		BFB320321CFBD97D006682C1 /* ZEGBotResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB320311CFBD97D006682C1 /* ZEGBotResponseTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BF74B5371CE98D7F004C2BEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BF74B5221CE98D7F004C2BEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BF74B52A1CE98D7F004C2BEE;
+			remoteInfo = ZEGBot;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BF3B41821CFCB52200BBBEEC /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		BF3B41841CFCB79100BBBEEC /* TypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeExtension.swift; sourceTree = "<group>"; };
+		BF74B52B1CE98D7F004C2BEE /* ZEGBot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZEGBot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF74B52E1CE98D7F004C2BEE /* ZEGBot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZEGBot.h; sourceTree = "<group>"; };
+		BF74B5301CE98D7F004C2BEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF74B5351CE98D7F004C2BEE /* ZEGBotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZEGBotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF74B53A1CE98D7F004C2BEE /* ZEGBotDecodeMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZEGBotDecodeMessageTests.swift; sourceTree = "<group>"; };
+		BF74B53C1CE98D7F004C2BEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF74B54B1CE98DBD004C2BEE /* ZEGDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZEGDecoder.swift; sourceTree = "<group>"; };
+		BF74B54D1CE98DBD004C2BEE /* token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = token.swift; sourceTree = "<group>"; };
+		BFB3202D1CFBC84A006682C1 /* ZEGResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZEGResponse.swift; sourceTree = "<group>"; };
+		BFB320311CFBD97D006682C1 /* ZEGBotResponseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZEGBotResponseTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BF74B5271CE98D7F004C2BEE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF74B5321CE98D7F004C2BEE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF74B5361CE98D7F004C2BEE /* ZEGBot.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BF74B5211CE98D7F004C2BEE = {
+			isa = PBXGroup;
+			children = (
+				BF74B52D1CE98D7F004C2BEE /* ZEGBot */,
+				BF74B5391CE98D7F004C2BEE /* ZEGBotTests */,
+				BF74B52C1CE98D7F004C2BEE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BF74B52C1CE98D7F004C2BEE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BF74B52B1CE98D7F004C2BEE /* ZEGBot.framework */,
+				BF74B5351CE98D7F004C2BEE /* ZEGBotTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BF74B52D1CE98D7F004C2BEE /* ZEGBot */ = {
+			isa = PBXGroup;
+			children = (
+				BF74B5451CE98DA3004C2BEE /* Support */,
+				BF74B5461CE98DBD004C2BEE /* Sources */,
+			);
+			path = ZEGBot;
+			sourceTree = "<group>";
+		};
+		BF74B5391CE98D7F004C2BEE /* ZEGBotTests */ = {
+			isa = PBXGroup;
+			children = (
+				BF74B53A1CE98D7F004C2BEE /* ZEGBotDecodeMessageTests.swift */,
+				BFB320311CFBD97D006682C1 /* ZEGBotResponseTests.swift */,
+				BF74B53C1CE98D7F004C2BEE /* Info.plist */,
+			);
+			path = ZEGBotTests;
+			sourceTree = "<group>";
+		};
+		BF74B5451CE98DA3004C2BEE /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				BF74B52E1CE98D7F004C2BEE /* ZEGBot.h */,
+				BF74B5301CE98D7F004C2BEE /* Info.plist */,
+			);
+			name = Support;
+			sourceTree = "<group>";
+		};
+		BF74B5461CE98DBD004C2BEE /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				BF3B41821CFCB52200BBBEEC /* Types.swift */,
+				BF3B41841CFCB79100BBBEEC /* TypeExtension.swift */,
+				BF74B54B1CE98DBD004C2BEE /* ZEGDecoder.swift */,
+				BFB3202D1CFBC84A006682C1 /* ZEGResponse.swift */,
+				BF74B54D1CE98DBD004C2BEE /* token.swift */,
+			);
+			name = Sources;
+			path = ../../../Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		BF74B5281CE98D7F004C2BEE /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF74B52F1CE98D7F004C2BEE /* ZEGBot.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		BF74B52A1CE98D7F004C2BEE /* ZEGBot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF74B53F1CE98D7F004C2BEE /* Build configuration list for PBXNativeTarget "ZEGBot" */;
+			buildPhases = (
+				BF74B5261CE98D7F004C2BEE /* Sources */,
+				BF74B5271CE98D7F004C2BEE /* Frameworks */,
+				BF74B5281CE98D7F004C2BEE /* Headers */,
+				BF74B5291CE98D7F004C2BEE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ZEGBot;
+			productName = ZEGBot;
+			productReference = BF74B52B1CE98D7F004C2BEE /* ZEGBot.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		BF74B5341CE98D7F004C2BEE /* ZEGBotTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF74B5421CE98D7F004C2BEE /* Build configuration list for PBXNativeTarget "ZEGBotTests" */;
+			buildPhases = (
+				BF74B5311CE98D7F004C2BEE /* Sources */,
+				BF74B5321CE98D7F004C2BEE /* Frameworks */,
+				BF74B5331CE98D7F004C2BEE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BF74B5381CE98D7F004C2BEE /* PBXTargetDependency */,
+			);
+			name = ZEGBotTests;
+			productName = ZEGBotTests;
+			productReference = BF74B5351CE98D7F004C2BEE /* ZEGBotTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BF74B5221CE98D7F004C2BEE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = com.github.shaneqi;
+				TargetAttributes = {
+					BF74B52A1CE98D7F004C2BEE = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					BF74B5341CE98D7F004C2BEE = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+				};
+			};
+			buildConfigurationList = BF74B5251CE98D7F004C2BEE /* Build configuration list for PBXProject "ZEGBot" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = BF74B5211CE98D7F004C2BEE;
+			productRefGroup = BF74B52C1CE98D7F004C2BEE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BF74B52A1CE98D7F004C2BEE /* ZEGBot */,
+				BF74B5341CE98D7F004C2BEE /* ZEGBotTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BF74B5291CE98D7F004C2BEE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF74B5331CE98D7F004C2BEE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BF74B5261CE98D7F004C2BEE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF3B41851CFCB79100BBBEEC /* TypeExtension.swift in Sources */,
+				BF74B55D1CE98DBD004C2BEE /* token.swift in Sources */,
+				BFB3202E1CFBC84A006682C1 /* ZEGResponse.swift in Sources */,
+				BF3B41831CFCB52200BBBEEC /* Types.swift in Sources */,
+				BF74B55B1CE98DBD004C2BEE /* ZEGDecoder.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF74B5311CE98D7F004C2BEE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF74B53B1CE98D7F004C2BEE /* ZEGBotDecodeMessageTests.swift in Sources */,
+				BFB320321CFBD97D006682C1 /* ZEGBotResponseTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BF74B5381CE98D7F004C2BEE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BF74B52A1CE98D7F004C2BEE /* ZEGBot */;
+			targetProxy = BF74B5371CE98D7F004C2BEE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		BF74B53D1CE98D7F004C2BEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		BF74B53E1CE98D7F004C2BEE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		BF74B5401CE98D7F004C2BEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = ZEGBot/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.shaneqi.ZEGBot;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		BF74B5411CE98D7F004C2BEE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = ZEGBot/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.shaneqi.ZEGBot;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		BF74B5431CE98D7F004C2BEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ZEGBotTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.shaneqi.ZEGBotTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BF74B5441CE98D7F004C2BEE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ZEGBotTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.shaneqi.ZEGBotTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BF74B5251CE98D7F004C2BEE /* Build configuration list for PBXProject "ZEGBot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF74B53D1CE98D7F004C2BEE /* Debug */,
+				BF74B53E1CE98D7F004C2BEE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF74B53F1CE98D7F004C2BEE /* Build configuration list for PBXNativeTarget "ZEGBot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF74B5401CE98D7F004C2BEE /* Debug */,
+				BF74B5411CE98D7F004C2BEE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF74B5421CE98D7F004C2BEE /* Build configuration list for PBXNativeTarget "ZEGBotTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF74B5431CE98D7F004C2BEE /* Debug */,
+				BF74B5441CE98D7F004C2BEE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BF74B5221CE98D7F004C2BEE /* Project object */;
+}
