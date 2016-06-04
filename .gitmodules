@@ -1,6 +1,3 @@
 [submodule "Perfect"]
 	path = Perfect
 	url = https://ShaneQi@github.com/PerfectlySoft/Perfect.git
-[submodule "PerfectServer"]
-	path = PerfectServer
-	url = https://ShaneQi@github.com/PerfectlySoft/PerfectServer.git
