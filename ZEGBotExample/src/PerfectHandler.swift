@@ -23,7 +23,7 @@ class ZEGBotHandler: RequestHandler {
 	
 	static let sharedInstance = ZEGBotHandler()
 	
-	/* Count recieved updates. */
+	/* Count received updates. */
 	private var count = 0;
 	
 	func handleRequest(request: WebRequest, response: WebResponse) {
@@ -31,9 +31,11 @@ class ZEGBotHandler: RequestHandler {
 		let update = ZEGDecoder.decodeUpdate(request.postBodyString)
 		
 		count += 1
-			
-		/* Bot respond rules go here. */
 		
+		/* =============================== */
+		/* Bot respond rules go from here. */
+		/* =============================== */
+
 		if let message = update?.message, text = message.text {
 		
 			switch text.uppercaseString {
@@ -42,13 +44,16 @@ class ZEGBotHandler: RequestHandler {
 				ZEGResponse.sendMessage(to: message.chat, text: "bar", parse_mode: nil, disable_web_page_preview: nil, disable_notification: nil)
 			case "/COUNT":
 				/* Reply the count of updates with Markdown syntax. */
-				ZEGResponse.sendMessage(to: message, text: "I've recieved *\(count)* updates. - [ZEGBot](https://github.com/ShaneQi/ZEGBot)", parse_mode: .Markdown, disable_web_page_preview: true, disable_notification: nil)
+				ZEGResponse.sendMessage(to: message, text: "I've received *\(count)* updates. - [ZEGBot](https://github.com/ShaneQi/ZEGBot)", parse_mode: .Markdown, disable_web_page_preview: true, disable_notification: nil)
 			default:
 				break
 			}
 		}
 		
-		response.appendBodyString("ZEGBot.")
+		/* =========================== */
+		/* Bot respond rules end here. */
+		/* =========================== */
+		
 		response.requestCompletedCallback()
 		
 	}
