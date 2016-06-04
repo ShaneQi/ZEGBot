@@ -19,25 +19,25 @@ Only one single thing: Editing `src/PerfectHandler.swift`.
 
 1. Singup on Heroku and create an app, the app's name will be used below by `[heroku_app_name]`.
 
-2. In app's settings tab, add buildpack: `https://github.com/PerfectlySoft/Perfect-Heroku-Buildpack.git`
+1. In app's settings tab, add buildpack: `https://github.com/PerfectlySoft/Perfect-Heroku-Buildpack.git`
 
-3. Download and install the Heroku Toolbelt. (details about step 3 - 5 can be found in the `Deploy` tab under your app)
+1. Download and install the Heroku Toolbelt. (details about step 3 - 5 can be found in the `Deploy` tab under your app)
 
-3. Create a new Git repository:
-```bash
-$ cd ZEGBotExample/
-$ git init
-$ heroku git:remote -a [heroku_app_name]
-```
+1. Create a new Git repository:
+    ```bash
+    $ cd ZEGBotExample/
+    $ git init
+    $ heroku git:remote -a [heroku_app_name]
+    ```
 
-4. Deploy your application:
-```bash
-$ git add .
-$ git commit -am "make it better"
-$ git push heroku master
-```
+1. Deploy your application:
+    ```bash
+    $ git add .
+    $ git commit -am "make it better"
+    $ git push heroku master
+    ```
 
-5. If no issues, it would process for a little then your bot server-side is ready.
+1. If no issues, it would process for a little then your bot server-side is ready.
 
 ## Set Webhook
 

@@ -13,7 +13,6 @@
 		BF74B5361CE98D7F004C2BEE /* ZEGBot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF74B52B1CE98D7F004C2BEE /* ZEGBot.framework */; };
 		BF74B53B1CE98D7F004C2BEE /* ZEGBotDecodeMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B53A1CE98D7F004C2BEE /* ZEGBotDecodeMessageTests.swift */; };
 		BF74B55B1CE98DBD004C2BEE /* ZEGDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B54B1CE98DBD004C2BEE /* ZEGDecoder.swift */; };
-		BF74B55D1CE98DBD004C2BEE /* token.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF74B54D1CE98DBD004C2BEE /* token.swift */; };
 		BFB3202E1CFBC84A006682C1 /* ZEGResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB3202D1CFBC84A006682C1 /* ZEGResponse.swift */; };
 		BFB320321CFBD97D006682C1 /* ZEGBotResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB320311CFBD97D006682C1 /* ZEGBotResponseTests.swift */; };
 /* End PBXBuildFile section */
@@ -38,7 +37,6 @@
 		BF74B53A1CE98D7F004C2BEE /* ZEGBotDecodeMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZEGBotDecodeMessageTests.swift; sourceTree = "<group>"; };
 		BF74B53C1CE98D7F004C2BEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF74B54B1CE98DBD004C2BEE /* ZEGDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZEGDecoder.swift; sourceTree = "<group>"; };
-		BF74B54D1CE98DBD004C2BEE /* token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = token.swift; sourceTree = "<group>"; };
 		BFB3202D1CFBC84A006682C1 /* ZEGResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZEGResponse.swift; sourceTree = "<group>"; };
 		BFB320311CFBD97D006682C1 /* ZEGBotResponseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZEGBotResponseTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,7 +113,6 @@
 				BF3B41841CFCB79100BBBEEC /* TypeExtension.swift */,
 				BF74B54B1CE98DBD004C2BEE /* ZEGDecoder.swift */,
 				BFB3202D1CFBC84A006682C1 /* ZEGResponse.swift */,
-				BF74B54D1CE98DBD004C2BEE /* token.swift */,
 			);
 			name = Sources;
 			path = ../../../Sources;
@@ -230,7 +227,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF3B41851CFCB79100BBBEEC /* TypeExtension.swift in Sources */,
-				BF74B55D1CE98DBD004C2BEE /* token.swift in Sources */,
 				BFB3202E1CFBC84A006682C1 /* ZEGResponse.swift in Sources */,
 				BF3B41831CFCB52200BBBEEC /* Types.swift in Sources */,
 				BF74B55B1CE98DBD004C2BEE /* ZEGDecoder.swift in Sources */,
