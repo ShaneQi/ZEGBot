@@ -5,6 +5,8 @@
 //  Created by Shane Qi on 5/30/16.
 //  Copyright © 2016 com.github.shaneqi. All rights reserved.
 //
+//  Licensed under Apache License v2.0
+//
 
 /* Protocol. */
 protocol Receivable {
