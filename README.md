@@ -1,6 +1,15 @@
 # ZEGBot
 
-**Build your own Perfect Telegram Bot!**
+This library wraps the JSON decoding processing, making it easy to decode incoming JSON String to manipulatable objects.
+
+This library wraps the processing of converting objects to Telegram Bot API request parameters and the processing of performing request, making it easy to respond for incoming update.
+
+**This is a server-side swift library based on [Perfect](https://github.com/PerfectlySoft/Perfect).  
+Helping build your own Perfect Telegram Bot!**
+
+## Quick Start
+
+Checkout `ZEGBotExample` project, whose `README.md`  walks through a bot's birthing.
 
 ## Installation
 
@@ -45,17 +54,17 @@
   }
   ...
   ```
-  
+
 - Send a **silent** message with a **none-preview markdown link** to a chat:
   ```swift
   ...
   if let message = update?.message {
-    ZEGResponse.sendMessage(to: message.chat, text: "[Google](https://google.com)", parse_mode: .Markdown, disable_web_page_preview: nil, disable_notification: true)
+    ZEGResponse.sendMessage(to: message.chat, text: "[Google](https://google.com)", parse_mode: .Markdown, disable_web_page_preview: true, disable_notification: true)
   }
   ...
   ```
 
-- In all the sending methods, send to a Message Object means **reply** to this specific message. While Send to a Chat Object means send to this chat **without replying** to anyone.
+- In all the sending methods, send to a **Message Object** means **reply** to this specific message. While Send to a **Chat Object** means send to this chat **without replying** to anyone.
   ```swift
   ...
   if let message = update?.message {
@@ -66,6 +75,14 @@
   }
   ...
   ```
+
+## Dependency
+
+- [Perfect v1.0.0](https://github.com/PerfectlySoft/Perfect/releases/tag/v1.0.0)
+
+## Known Bug
+
+- Some character, such as some emoji char, is expressed as surrogate pair and can't be decoded by PerfectLib v1.0. (Will be fixed in the next PerfectLib release version: [details](https://github.com/PerfectlySoft/Perfect/pull/173))
 
 ## Support Types
 
@@ -102,10 +119,6 @@ Not all the types are supported, checkout more details on [Telegram Bot API](htt
 - sendChatAction
 
 Not all the methods are supported, checkout more details on [Telegram Bot API](https://core.telegram.org/bots/api#available-methods).
-
-## Known Bug
-
-- Some character, such as some emoji char, is expressed as surrogate pair and can't be decoded by PerfectLib v1.0. (Will be fixed in the next PerfectLib release version: [details](https://github.com/PerfectlySoft/Perfect/pull/173))
 
 ## License
 This project is licensed under [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0).
