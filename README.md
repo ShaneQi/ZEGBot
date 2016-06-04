@@ -45,6 +45,7 @@
   }
   ...
   ```
+  
 - Send a **silent** message with a **none-preview markdown link** to a chat:
   ```swift
   ...
@@ -53,6 +54,7 @@
   }
   ...
   ```
+
 - In all the sending methods, send to a Message Object means **reply** to this specific message. While Send to a Chat Object means send to this chat **without replying** to anyone.
   ```swift
   ...
