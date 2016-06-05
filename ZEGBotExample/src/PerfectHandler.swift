@@ -38,6 +38,14 @@ class ZEGBotHandler: RequestHandler {
 		/* Bot respond rules go from here. */
 		/* =============================== */
 
+		if let message = update?.message, locationA = message.location, locationB = message.reply_to_message?.location , userB = message.reply_to_message?.from?.first_name{
+			
+			let distance = Int(ZEGBotPlugin.distance(between: locationA, and: locationB))
+			
+			ZEGResponse.sendMessage(to: message, text: "\(userB) is *\(distance)* miles away from you.", parse_mode: .Markdown, disable_web_page_preview: nil, disable_notification: nil)
+			
+		}
+		
 		if let message = update?.message, text = message.text {
 		
 			switch text.uppercaseString {
