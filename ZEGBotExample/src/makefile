@@ -21,7 +21,7 @@ modulecache:
 	@mkdir -p $(MODULE_CACHE_PATH)
 
 $(TARGET): modulecache
-	$(SWIFTC) $(SWIFTC_FLAGS) PerfectHandler.swift TypeExtension.swift Types.swift ZEGDecoder.swift ZEGResponse.swift -o $@.o -module-name $@ -emit-module-path $@.swiftmodule
+	$(SWIFTC) $(SWIFTC_FLAGS) PerfectHandler.swift TypeExtension.swift Types.swift ZEGDecoder.swift ZEGResponse.swift ZEGJSONPatch.swift -o $@.o -module-name $@ -emit-module-path $@.swiftmodule
 	clang++ $(LFLAGS) $@.o -o $@.so
 
 clean:

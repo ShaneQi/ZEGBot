@@ -37,7 +37,7 @@ Only one single thing: Editing `src/PerfectHandler.swift`.
     $ git push heroku master
     ```
 
-1. If no issues, it would process for a little then your bot server-side is ready.
+1. If no issues, it would process for a while then your bot server-side is ready.
 
 ## Set Webhook
 

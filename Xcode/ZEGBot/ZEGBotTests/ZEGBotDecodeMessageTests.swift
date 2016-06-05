@@ -23,14 +23,14 @@ class ZEGBotDecodeMessageTests: XCTestCase {
 	
 	func testDecodeBasicType() {
 	
-		let updateString = "{\"update_id\":719535978, \"message\":{\"message_id\":36891,\"from\":{\"id\":80548625,\"first_name\":\"Shane\",\"last_name\":\"Qi\",\"username\":\"ShaneQi\"},\"chat\":{\"id\":80548625,\"first_name\":\"Shane\",\"last_name\":\"Qi\",\"username\":\"ShaneQi\",\"type\":\"private\"},\"date\":1464538624,\"forward_from\":{\"id\":80548625,\"first_name\":\"Shane\",\"last_name\":\"Qi\",\"username\":\"ShaneQi\"},\"forward_date\":1464538615,\"text\":\"test\"}}"
+		let updateString = "{\"update_id\":719535978, \"message\":{\"message_id\":36891,\"from\":{\"id\":80548625,\"first_name\":\"Shane\",\"last_name\":\"Qi\",\"username\":\"ShaneQi\"},\"chat\":{\"id\":80548625,\"first_name\":\"Shane\",\"last_name\":\"Qi\",\"username\":\"ShaneQi\",\"type\":\"private\"},\"date\":1464538624,\"forward_from\":{\"id\":80548625,\"first_name\":\"Shane\",\"last_name\":\"Qi\",\"username\":\"ShaneQi\"},\"forward_date\":1464538615,\"text\":\"test\\ud83d\\ude33\"}}"
 		
 		let update = ZEGDecoder.decodeUpdate(updateString)
 		
 		XCTAssert(update?.message?.message_id == 36891)
 		XCTAssert(update?.message?.date == 1464538624)
 		XCTAssert(update?.message?.forward_date == 1464538615)
-		XCTAssert(update?.message?.text == "test")
+		XCTAssert(update?.message?.text == "test😳")
 		
 		let updateStringEdit = "{\"update_id\":719535989, \"edited_message\":{\"message_id\":36896,\"from\":{\"id\":80548625,\"first_name\":\"Shane\",\"last_name\":\"Qi\",\"username\":\"ShaneQi\"},\"chat\":{\"id\":80548625,\"first_name\":\"Shane\",\"last_name\":\"Qi\",\"username\":\"ShaneQi\",\"type\":\"private\"},\"date\":1464539230,\"edit_date\":1464540319,\"text\":\"edit test\"}}"
 		

@@ -80,10 +80,6 @@ Checkout `ZEGBotExample` project, whose `README.md`  walks through a bot's birth
 
 - [Perfect v1.0.0](https://github.com/PerfectlySoft/Perfect/releases/tag/v1.0.0)
 
-## Known Bug
-
-- Some character, such as some emoji char, is expressed as surrogate pair and can't be decoded by PerfectLib v1.0. (Will be fixed in the next PerfectLib release version: [details](https://github.com/PerfectlySoft/Perfect/pull/173))
-
 ## Support Types
 
 - Update
