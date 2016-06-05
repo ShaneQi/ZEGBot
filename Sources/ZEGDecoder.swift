@@ -16,7 +16,7 @@ public class ZEGDecoder {
 		
 		do {
 		
-			let jsonConvertibleObject = try jsonString.jsonDecode()
+			let jsonConvertibleObject = try jsonString.zegJsonDecode()
 			return try decodeUpdate(jsonConvertibleObject)
 		
 		} catch {
