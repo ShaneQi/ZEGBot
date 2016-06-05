@@ -6,6 +6,12 @@
 //  Copyright © 2016 com.github.shaneqi. All rights reserved.
 //
 
+#if os(Linux)
+	import SwiftGlibc
+#else
+	import Darwin
+#endif
+
 import PerfectLib
 
 private let jsonBackSlash = UnicodeScalar(UInt32(92))
