@@ -8,7 +8,7 @@ This example project aims to be deployed on **Heroku**. And the example bot has 
 
 3. When you send a location replying to your friend's location message in a group, the bot tells you the distance between you two.
 
-![ZEGBotExample](https://raw.githubusercontent.com/ShaneQi/ZEGBot/master/Res/ZEGBotExampleRules.png)
+![ZEGBotExample](https://raw.githubusercontent.com/ShaneQi/ZEGBot/master/READMEAssets/ZEGBotExampleRules.png)
 
 ## Have a Bot
 
