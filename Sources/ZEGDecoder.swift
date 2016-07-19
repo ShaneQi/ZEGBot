@@ -7,15 +7,15 @@
 //
 //  Licensed under Apache License v2.0
 //
-//
-//import PerfectLib
-//
+
+import PerfectLib
+
 //public class ZEGDecoder {
-	
+//	
 //	static func decode(updatesString: String) throws -> [Update] {
 //		return []
 //	}
-	
+//	
 //}
 //
 //	static func decodeUpdate(jsonString: String) -> Update? {

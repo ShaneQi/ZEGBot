@@ -26,11 +26,14 @@ public struct ZEGBot {
 		while true {
 			let curl = CURL()
 			curl.url = urlPrefix + "getupdates?timeout=60&offset=\(offset)"
+			
 			curl.perform(closure: {
 				_, _, bodyBytes in
-				let updatesString = bodyBytes
-					.reduce("", combine: { a, b in a + String(Character(UnicodeScalar(b))) })
+				let bodyString = bodyBytes
+					.reduce("", combine: { a, b in a + String(UnicodeScalar(b)) })
 			})
+			
+			
 		}
 		
 	}
