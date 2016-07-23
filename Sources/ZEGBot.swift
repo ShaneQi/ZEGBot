@@ -37,6 +37,8 @@ public struct ZEGBot {
 				
 			}
 			
+			offset = updates.last.update_id + 1
+			
 		}
 		
 	}
