@@ -41,8 +41,8 @@ struct ZEGDecoder {
 			let jsonConvertibleObject = try jsonString.jsonDecode()
 			
 			guard let jsonDictionary = jsonConvertibleObject as? [String: Any],
-				updatesDictionaryArrayObject = jsonDictionary["result"] as? [Any],
-				updatesDictionaryArray = updatesDictionaryArrayObject as? [[String: Any]]
+				updatesDictionaryArrayObject = jsonDictionary["result"] as? [Any]
+//				,updatesDictionaryArray = updatesDictionaryArrayObject as? [[String: Any]]
 				else {
 				
 				/* Fail to get updatesDictionaryArray - return empty array. */
@@ -51,7 +51,14 @@ struct ZEGDecoder {
 					
 			}
 			
-			for updateDictionary in updatesDictionaryArray {
+			for updateDictionaryObject in updatesDictionaryArrayObject {
+				
+				guard let updateDictionary = updateDictionaryObject as? [String: Any] else {
+					
+					logError(with: ZEGDecodingError(type: .ParsingFailure, path: "getUpdates -> result"))
+					continue
+					
+				}
 			
 				do {
 					
