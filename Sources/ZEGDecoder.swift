@@ -10,21 +10,21 @@
 
 import PerfectLib
 
-struct ZEGDecodingError {
-	
-	var type: ZEGDecodingContentType
-	var content: String
-	
-	enum ZEGDecodingContentType {
-		case BadJSONString, UnexpectedType, MissingRequiredField
-	}
-	
-	init(type: ZEGDecodingContentType, content: Any) {
-		self.type = type
-		self.content = "\(content)"
-	}
-
-}
+//struct ZEGDecodingError {
+//	
+//	var type: ZEGDecodingContentType
+//	var content: String
+//	
+//	enum ZEGDecodingContentType {
+//		case BadJSONString, UnexpectedType, MissingRequiredField
+//	}
+//	
+//	init(type: ZEGDecodingContentType, content: Any) {
+//		self.type = type
+//		self.content = "\(content)"
+//	}
+//
+//}
 
 struct ZEGDecoder {
 	
@@ -35,33 +35,21 @@ struct ZEGDecoder {
 			
 			let jsonConvertibleObject = try jsonString.jsonDecode()
 			
-			guard let jsonDictionary = jsonConvertibleObject as? [String: Any] else {
+			guard let
+				jsonDictionary = jsonConvertibleObject as? [String: Any],
+				updatesDictionaryArrayObject = jsonDictionary["result"],
+				updatesDictionaryArray = updatesDictionaryArrayObject as? [Any]
+				else {
 			
-				logError(with: ZEGDecodingError(type: .UnexpectedType, content: jsonConvertibleObject))
+				logWarning(on: jsonConvertibleObject)
 				return nil
 				
-			}
-			
-			guard let updatesDictionaryArrayObject = jsonDictionary["result"] else {
-				
-				logError(with: ZEGDecodingError(type: .MissingRequiredField, content: jsonDictionary))
-				return nil
-				
-			}
-			
-			guard let updatesDictionaryArray = updatesDictionaryArrayObject as? [Any] else {
-				
-				/* Fail to get updatesDictionaryArray - return empty array. */
-				logError(with: ZEGDecodingError(type: .UnexpectedType, content: updatesDictionaryArrayObject))
-				return nil
-					
 			}
 			
 			var updates = [Update]()
 			
 			for updateDictionaryObject in updatesDictionaryArray {
 				
-				/* Fail to get update instance - ignore this and continue. */
 				if let update = decode(updateDictionaryObject: updateDictionaryObject) {
 					
 					updates.append(update)
@@ -74,8 +62,7 @@ struct ZEGDecoder {
 			
 		} catch {
 			
-			/* Fail to parse json string - return empty array. */
-			logError(with: ZEGDecodingError(type: .BadJSONString, content: jsonString))
+			logWarning(on: jsonString)
 			return nil
 			
 		}
@@ -89,18 +76,11 @@ struct ZEGDecoder {
 			
 			let jsonConvertibleObject = try jsonString.jsonDecode()
 			
-			if let update = decode(updateDictionaryObject: jsonConvertibleObject) {
-					
-				return update
-				
-			}
-			
-			return nil
+			return decode(updateDictionaryObject: jsonConvertibleObject)
 			
 		} catch {
 			
-			/* Fail to parse json string - return nil. */
-			logError(with: ZEGDecodingError(type: .BadJSONString, content: jsonString))
+			logWarning(on: jsonString)
 			return nil
 			
 		}
@@ -109,66 +89,38 @@ struct ZEGDecoder {
 	
 	private static func decode(updateDictionaryObject: Any) -> Update? {
 	
-		guard let updateDictionary = updateDictionaryObject as? [String: Any] else {
-		
-			logError(with: ZEGDecodingError(type: .UnexpectedType, content: updateDictionaryObject))
-			return nil
-			
-		}
-		
-		guard let updateIdObject = updateDictionary["update_id"] else {
-			
-			logError(with: ZEGDecodingError(type: .MissingRequiredField, content: updateDictionary))
-			return nil
-			
-		}
-		
-		guard let updateId = updateIdObject as? Int else {
-		
-			logError(with: ZEGDecodingError(type: .UnexpectedType, content: updateIdObject))
-			return nil
-			
+		guard let
+			updateDictionary = updateDictionaryObject as? [String: Any],
+			updateId = updateDictionary["update_id"] as? Int
+			else {
+				logWarning(on: updateDictionaryObject)
+				return nil
 		}
 
 		/* OPTIONAL */
-		var message: Message? {
-			guard let messageDictionary = updateDictionary["message"] else { return nil }
-			return decode(messageDictionaryObject: messageDictionary)
-		}
+		let message: Message? = decode(messageDictionaryObject: updateDictionary["message"])
+		let editedMessage: Message? = decode(messageDictionaryObject: updateDictionary["edited_message"])
 		
-		var editedMessage: Message? {
-			guard let messageDictionary = updateDictionary["edited_message"] else { return nil }
-			return decode(messageDictionaryObject: messageDictionary)
-		}
-
 		return Update(update_id: updateId, message: message, edited_message: editedMessage)
 		
 	}
 	
-	static private func decode(messageDictionaryObject: Any) -> Message? {
+	static private func decode(messageDictionaryObject: Any?) -> Message? {
 	
-		guard let messageDictionary = messageDictionaryObject as? [String: Any] else {
+		if messageDictionaryObject == nil { return nil }
 		
-			logError(with: ZEGDecodingError(type: .UnexpectedType, content: messageDictionaryObject))
+		guard let
+			messageDictionary = messageDictionaryObject as? [String: Any],
+			messageId = messageDictionary["message_id"] as? Int,
+			date = messageDictionary["date"] as? Int,
+			chat = decode(chatDictionaryObject: messageDictionary["chat"])
+			else {
+			
+			logWarning(on: messageDictionaryObject)
 			return nil
 			
 		}
 		
-		guard let messageIdObject = messageDictionary["message_id"],
-			dateObject = messageDictionary["date"],
-			chatObject = messageDictionary["chat"]
-			else {
-
-			logError(with: ZEGDecodingError(type: .MissingRequiredField, content: messageDictionary))
-				return nil
-
-		}
-
-		guard let messageId = messageIdObject as? Int else {}
-		guard let date = dateObject as? Int else {}
-//		guard let chat = decode(chatDictionaryObject: chatObject) else {}
-
-
 		/* OPTIONAL. */
 //		let from: User? = decodeUser(jsonDictionary["from"])
 //		let forward_from: User? = decodeUser(jsonDictionary["forward_from"])
@@ -207,16 +159,13 @@ struct ZEGDecoder {
 		
 	}
 	
-	static private func logError(with error: ZEGDecodingError) {
+	static private func decode(chatDictionaryObject: Any?) -> Chat? {
+		return nil
+	}
+	
+	static private func logWarning(on content: Any) {
 		
-		switch error.type {
-		case .BadJSONString:
-			Log.warning(message: "Failed to decode JSON String: \(error.content)")
-		case .MissingRequiredField:
-			Log.warning(message: "Miss required field(s) in: \(error.content)")
-		case .UnexpectedType:
-			Log.warning(message: "Value type is unexpected: \(error.content)")
-		}
+		Log.warning(message: "Failed to handle: \(content)")
 		
 	}
 
