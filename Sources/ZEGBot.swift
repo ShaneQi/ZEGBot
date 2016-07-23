@@ -27,12 +27,15 @@ public struct ZEGBot {
 			let curl = CURL()
 			curl.url = urlPrefix + "getupdates?timeout=60&offset=\(offset)"
 			
-			curl.perform(closure: {
-				_, _, bodyBytes in
-				let bodyString = bodyBytes
-					.reduce("", combine: { a, b in a + String(UnicodeScalar(b)) })
-			})
+			let responseBodyString = curl.performFully().2.reduce("", combine: { a, b in a + String(UnicodeScalar(b)) })
 			
+			let updates = ZEGDecoder.decodeUpdates(from: responseBodyString)
+			
+			for update in updates {
+				
+				handler?.handle(upadte)
+				
+			}
 			
 		}
 		
@@ -42,7 +45,7 @@ public struct ZEGBot {
 
 public protocol ZEGHandler {
 
-	func handle(update: Update)
+	func handle(_ update: Update)
 
 }
 

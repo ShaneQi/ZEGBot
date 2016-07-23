@@ -10,29 +10,162 @@
 
 import PerfectLib
 
-//public class ZEGDecoder {
-//	
-//	static func decode(updatesString: String) throws -> [Update] {
-//		return []
-//	}
-//	
-//}
+struct ZEGDecodingError: ErrorProtocol {
+	
+	var type: ZEGDecodingErrorType
+	var path: String
+	
+	enum ZEGDecodingErrorType: String {
+		case BadRequiredField, ParsingFailure
+	}
+	
+	init(type: ZEGDecodingErrorType, path: String) {
+		self.type = type
+		self.path = path
+	}
+	
+	init(from error: ZEGDecodingError, path: String) {
+		self.type = error.type
+		self.path = path + " -> " + error.path
+	}
+}
+
+struct ZEGDecoder {
+	
+	static func decodeUpdates(from jsonString: String) -> [Update] {
+		
+		var updates = [Update]()
+		
+		do {
+			
+			let jsonConvertibleObject = try jsonString.jsonDecode()
+			
+			guard let jsonDictionary = jsonConvertibleObject as? [String: Any],
+				updatesDictionaryArrayObject = jsonDictionary["result"] as? [Any],
+				updatesDictionaryArray = updatesDictionaryArrayObject as? [[String: Any]]
+				else {
+				
+				/* Fail to get updatesDictionaryArray - return empty array. */
+				logError(with: ZEGDecodingError(type: .ParsingFailure, path: "getUpdates -> result"))
+				return updates
+					
+			}
+			
+			for updateDictionary in updatesDictionaryArray {
+			
+				do {
+					
+					let update = try decode(updateDictionary: updateDictionary)
+					updates.append(update)
+					
+				} catch let error {
+					
+					/* Fail to get update instance - ignore this and continue. */
+					if let error = error as? ZEGDecodingError {
+						
+						
+						logError(with: ZEGDecodingError(from: error, path: "getUpdates -> result -> update"))
+						
+					}
+					
+				}
+				
+			}
+			
+			return updates
+			
+		} catch {
+			
+			/* Fail to parse json string - return empty array. */
+			logError(with: ZEGDecodingError(type: .ParsingFailure, path: "getUpdates -> result"))
+			return updates
+			
+		}
+		
+	}
+	
+	static func decodeUpdate(from jsonString: String) -> Update? {
+		
+		do {
+			
+			let jsonConvertibleObject = try jsonString.jsonDecode()
+			
+			guard let updateDictionary = jsonConvertibleObject as? [String: Any] else {
+					
+					/* Fail to get updatesDictionary - return nil. */
+					logError(with: ZEGDecodingError(type: .ParsingFailure, path: "WebHookRequest"))
+					return nil
+					
+			}
+			
+			do {
+				
+				let update = try decode(updateDictionary: updateDictionary)
+				
+				return update
+				
+			} catch let error {
+				
+				/* Fail to get update instance - return nil. */
+				if let error = error as? ZEGDecodingError {
+					
+					logError(with: ZEGDecodingError(from: error, path: "getUpdates -> result -> update"))
+					
+				}
+				
+				return nil
+				
+			}
+			
+		} catch {
+			
+			/* Fail to parse json string - return nil. */
+			logError(with: ZEGDecodingError(type: .ParsingFailure, path: "WebHookRequest"))
+			return nil
+			
+		}
+		
+	}
+	
+	private static func decode(updateDictionary: [String: Any]) throws -> Update {
+	
+		guard let updateId = updateDictionary["update_id"] as? Int else {
+
+			throw ZEGDecodingError(type: .BadRequiredField, path: "update_id")
+
+		}
+
+		/* OPTIONAL */
+		var message: Message? {
+			return nil
+		}
+		
+		var editedMessage: Message? {
+			return nil
+		}
+
+		return Update(update_id: updateId, message: message, edited_message: editedMessage)
+		
+	}
+	
+	static private func logError(with error: ZEGDecodingError) {
+		
+		Log.warning(message: "A update was ignored because of \(error.type.rawValue): \(error.path)")
+		
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
 //
-//	static func decodeUpdate(jsonString: String) -> Update? {
-//		
-//		do {
-//		
-//			let jsonConvertibleObject = try jsonString.zegJsonDecode()
-//			return try decodeUpdate(jsonConvertibleObject)
-//		
-//		} catch {
-//			
-//			return nil
-//		
-//		}
-//		
-//	}
-//	
 //	static func decodeUpdate(jsonConvertibleObject: Any?) throws -> Update {
 //		
 //		guard jsonConvertibleObject != nil else {
@@ -900,13 +1033,5 @@ import PerfectLib
 //		return Venue(location: location, title: title, address: address, foursquare_id: foursquare_id)
 //	
 //	}
-//	
-//}
 //
-//public enum ZEGDecoderError: ErrorType {
-//	
-//	case BadInput(String)
-//	case BadRequiredFieldValue(String)
-//	
-//}
-//
+
