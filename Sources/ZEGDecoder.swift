@@ -10,70 +10,61 @@
 
 import PerfectLib
 
-struct ZEGDecodingError: ErrorProtocol {
+struct ZEGDecodingError {
 	
-	var type: ZEGDecodingErrorType
-	var path: String
+	var type: ZEGDecodingContentType
+	var content: String
 	
-	enum ZEGDecodingErrorType: String {
-		case BadRequiredField, ParsingFailure
+	enum ZEGDecodingContentType {
+		case BadJSONString, UnexpectedType, MissingRequiredField
 	}
 	
-	init(type: ZEGDecodingErrorType, path: String) {
+	init(type: ZEGDecodingContentType, content: Any) {
 		self.type = type
-		self.path = path
+		self.content = "\(content)"
 	}
-	
-	init(from error: ZEGDecodingError, path: String) {
-		self.type = error.type
-		self.path = path + " -> " + error.path
-	}
+
 }
 
 struct ZEGDecoder {
 	
-	static func decodeUpdates(from jsonString: String) -> [Update] {
-		
-		var updates = [Update]()
+	/* For getUpdates. */
+	static func decodeUpdates(from jsonString: String) -> [Update]? {
 		
 		do {
 			
 			let jsonConvertibleObject = try jsonString.jsonDecode()
 			
-			guard let jsonDictionary = jsonConvertibleObject as? [String: Any],
-				updatesDictionaryArrayObject = jsonDictionary["result"] as? [Any]
-//				,updatesDictionaryArray = updatesDictionaryArrayObject as? [[String: Any]]
-				else {
+			guard let jsonDictionary = jsonConvertibleObject as? [String: Any] else {
+			
+				logError(with: ZEGDecodingError(type: .UnexpectedType, content: jsonConvertibleObject))
+				return nil
+				
+			}
+			
+			guard let updatesDictionaryArrayObject = jsonDictionary["result"] else {
+				
+				logError(with: ZEGDecodingError(type: .MissingRequiredField, content: jsonDictionary))
+				return nil
+				
+			}
+			
+			guard let updatesDictionaryArray = updatesDictionaryArrayObject as? [Any] else {
 				
 				/* Fail to get updatesDictionaryArray - return empty array. */
-				logError(with: ZEGDecodingError(type: .ParsingFailure, path: "getUpdates -> result"))
-				return updates
+				logError(with: ZEGDecodingError(type: .UnexpectedType, content: updatesDictionaryArrayObject))
+				return nil
 					
 			}
 			
-			for updateDictionaryObject in updatesDictionaryArrayObject {
-				
-				guard let updateDictionary = updateDictionaryObject as? [String: Any] else {
-					
-					logError(with: ZEGDecodingError(type: .ParsingFailure, path: "getUpdates -> result"))
-					continue
-					
-				}
+			var updates = [Update]()
 			
-				do {
+			for updateDictionaryObject in updatesDictionaryArray {
+				
+				/* Fail to get update instance - ignore this and continue. */
+				if let update = decode(updateDictionaryObject: updateDictionaryObject) {
 					
-					let update = try decode(updateDictionary: updateDictionary)
 					updates.append(update)
-					
-				} catch let error {
-					
-					/* Fail to get update instance - ignore this and continue. */
-					if let error = error as? ZEGDecodingError {
-						
-						
-						logError(with: ZEGDecodingError(from: error, path: "getUpdates -> result -> update"))
-						
-					}
 					
 				}
 				
@@ -84,80 +75,148 @@ struct ZEGDecoder {
 		} catch {
 			
 			/* Fail to parse json string - return empty array. */
-			logError(with: ZEGDecodingError(type: .ParsingFailure, path: "getUpdates -> result"))
-			return updates
+			logError(with: ZEGDecodingError(type: .BadJSONString, content: jsonString))
+			return nil
 			
 		}
 		
 	}
 	
+	/* For webhook. */
 	static func decodeUpdate(from jsonString: String) -> Update? {
 		
 		do {
 			
 			let jsonConvertibleObject = try jsonString.jsonDecode()
 			
-			guard let updateDictionary = jsonConvertibleObject as? [String: Any] else {
+			if let update = decode(updateDictionaryObject: jsonConvertibleObject) {
 					
-					/* Fail to get updatesDictionary - return nil. */
-					logError(with: ZEGDecodingError(type: .ParsingFailure, path: "WebHookRequest"))
-					return nil
-					
-			}
-			
-			do {
-				
-				let update = try decode(updateDictionary: updateDictionary)
-				
 				return update
 				
-			} catch let error {
-				
-				/* Fail to get update instance - return nil. */
-				if let error = error as? ZEGDecodingError {
-					
-					logError(with: ZEGDecodingError(from: error, path: "getUpdates -> result -> update"))
-					
-				}
-				
-				return nil
-				
 			}
+			
+			return nil
 			
 		} catch {
 			
 			/* Fail to parse json string - return nil. */
-			logError(with: ZEGDecodingError(type: .ParsingFailure, path: "WebHookRequest"))
+			logError(with: ZEGDecodingError(type: .BadJSONString, content: jsonString))
 			return nil
 			
 		}
 		
 	}
 	
-	private static func decode(updateDictionary: [String: Any]) throws -> Update {
+	private static func decode(updateDictionaryObject: Any) -> Update? {
 	
-		guard let updateId = updateDictionary["update_id"] as? Int else {
-
-			throw ZEGDecodingError(type: .BadRequiredField, path: "update_id")
-
+		guard let updateDictionary = updateDictionaryObject as? [String: Any] else {
+		
+			logError(with: ZEGDecodingError(type: .UnexpectedType, content: updateDictionaryObject))
+			return nil
+			
+		}
+		
+		guard let updateIdObject = updateDictionary["update_id"] else {
+			
+			logError(with: ZEGDecodingError(type: .MissingRequiredField, content: updateDictionary))
+			return nil
+			
+		}
+		
+		guard let updateId = updateIdObject as? Int else {
+		
+			logError(with: ZEGDecodingError(type: .UnexpectedType, content: updateIdObject))
+			return nil
+			
 		}
 
 		/* OPTIONAL */
 		var message: Message? {
-			return nil
+			guard let messageDictionary = updateDictionary["message"] else { return nil }
+			return decode(messageDictionaryObject: messageDictionary)
 		}
 		
 		var editedMessage: Message? {
-			return nil
+			guard let messageDictionary = updateDictionary["edited_message"] else { return nil }
+			return decode(messageDictionaryObject: messageDictionary)
 		}
 
 		return Update(update_id: updateId, message: message, edited_message: editedMessage)
 		
 	}
 	
+	static private func decode(messageDictionaryObject: Any) -> Message? {
+	
+		guard let messageDictionary = messageDictionaryObject as? [String: Any] else {
+		
+			logError(with: ZEGDecodingError(type: .UnexpectedType, content: messageDictionaryObject))
+			return nil
+			
+		}
+		
+		guard let messageIdObject = messageDictionary["message_id"],
+			dateObject = messageDictionary["date"],
+			chatObject = messageDictionary["chat"]
+			else {
+
+			logError(with: ZEGDecodingError(type: .MissingRequiredField, content: messageDictionary))
+				return nil
+
+		}
+
+		guard let messageId = messageIdObject as? Int else {}
+		guard let date = dateObject as? Int else {}
+//		guard let chat = decode(chatDictionaryObject: chatObject) else {}
+
+
+		/* OPTIONAL. */
+//		let from: User? = decodeUser(jsonDictionary["from"])
+//		let forward_from: User? = decodeUser(jsonDictionary["forward_from"])
+//		let forward_from_chat: Chat? = decodeChat(jsonDictionary["forward_from_chat"])
+//		let forward_date = jsonDictionary["forward_date"] as? Int
+//		let reply_to_message: Message? = decodeMessage(jsonDictionary["reply_to_message"])
+//		let edit_date = jsonDictionary["edit_date"] as? Int
+//		let text = jsonDictionary["text"] as? String
+//		let entities: [MessageEntity]? = decodeMessageEntitiesArray(jsonDictionary["entities"])
+//		let audio: Audio? = decodeAudio(jsonDictionary["audio"])
+//		let document: Document? = decodeDocument(jsonDictionary["document"])
+//		let photo: [PhotoSize]? = decodePhotoSizeArray(jsonDictionary["photo"])
+//		let sticker: Sticker? = decodeSticker(jsonDictionary["sticker"])
+//		let video: Video? = decodeVideo(jsonDictionary["video"])
+//		let voice: Voice? = decodeVoice(jsonDictionary["voice"])
+//		let caption = jsonDictionary["caption"] as? String
+//		let contact: Contact? = decodeContact(jsonDictionary["contact"])
+//		let location: Location? = decodeLocation(jsonDictionary["location"])
+//		let venue: Venue? = decodeVenue(jsonDictionary["venue"])
+//		let new_chat_member: User? = decodeUser(jsonDictionary["new_chat_member"])
+//		let left_chat_member: User? = decodeUser(jsonDictionary["left_chat_member"])
+//		let new_chat_title = jsonDictionary["new_chat_title"] as? String
+//		let new_chat_photo: [PhotoSize]? = decodePhotoSizeArray(jsonDictionary["new_chat_photo"])
+//		let delete_chat_photo = jsonDictionary["delete_chat_photo"] as? Bool
+//		let group_chat_created = jsonDictionary["group_chat_created"] as? Bool
+//		let supergroup_chat_created = jsonDictionary["supergroup_chat_created"] as? Bool
+//		let channel_chat_created = jsonDictionary["channel_chat_created"] as? Bool
+//		let migrate_to_chat_id = jsonDictionary["migrate_to_chat_id"] as? Int
+//		let migrate_from_chat_id = jsonDictionary["migrate_from_chat_id"] as? Int
+//		let pinned_message: Message? = decodeMessage(jsonDictionary["pinned_message"])
+
+		return Message(message_id: messageId, date: date, chat: chat, from: from, forward_from: forward_from, forward_from_chat: forward_from_chat, forward_date: forward_date, reply_to_message: reply_to_message, edit_date: edit_date, text: text, entities: entities, audio: audio, document: document, photo: photo, sticker: sticker, video: video, voice: voice, caption: caption, contact: contact, location: location, venue: venue, new_chat_member: new_chat_member, left_chat_member: left_chat_member, new_chat_title: new_chat_title, new_chat_photo: new_chat_photo, delete_chat_photo: delete_chat_photo, group_chat_created: group_chat_created, supergroup_chat_created: supergroup_chat_created, channel_chat_created: channel_chat_created, migrate_to_chat_id: migrate_to_chat_id, migrate_from_chat_id: migrate_from_chat_id, pinned_message: pinned_message)
+
+		
+		return nil
+		
+	}
+	
 	static private func logError(with error: ZEGDecodingError) {
 		
-		Log.warning(message: "A update was ignored because of \(error.type.rawValue): \(error.path)")
+		switch error.type {
+		case .BadJSONString:
+			Log.warning(message: "Failed to decode JSON String: \(error.content)")
+		case .MissingRequiredField:
+			Log.warning(message: "Miss required field(s) in: \(error.content)")
+		case .UnexpectedType:
+			Log.warning(message: "Value type is unexpected: \(error.content)")
+		}
 		
 	}
 
