@@ -13,29 +13,26 @@ import PerfectCURL
 public struct ZEGBot {
 	
 	private var token: String
-	private var urlPrefix: String {
-		return "https://api.telegram.org/bot"+token+"/"
-	}
+	private var urlPrefix: String { return "https://api.telegram.org/bot"+token+"/" }
 	
-	init(token: String) {
-		
-		self.token = token
-		
-	}
+	init(token: String) { self.token = token }
 	
-	func runWith(handler: ZEGHandler?) {
+	func runWith(handler: ZEGHandler) {
+
+		let curl = CURL()
 		var offset = 0
+
 		while true {
-			let curl = CURL()
+
 			curl.url = urlPrefix + "getupdates?timeout=60&offset=\(offset)"
 			
 			let responseBodyString = curl.performFully().2.reduce("", combine: { a, b in a + String(UnicodeScalar(b)) })
 			
 			guard let updates = ZEGDecoder.decodeUpdates(from: responseBodyString) else { continue }
-			
-			for update in updates { handler?.handle(update) }
-			
+
 			if let lastUpdate = updates.last { offset = lastUpdate.update_id + 1 }
+			
+			for update in updates { handler.handle(update) }
 			
 		}
 		
