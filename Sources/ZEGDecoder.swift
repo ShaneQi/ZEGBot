@@ -3,7 +3,7 @@
 //  ZEGBot
 //
 //  Created by Shane Qi on 5/10/16.
-//  Copyright © 2016 Shane. All rights reserved.
+//  Copyright © 2016 com.github.shaneqi. All rights reserved.
 //
 //  Licensed under Apache License v2.0
 //
