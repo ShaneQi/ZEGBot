@@ -31,15 +31,17 @@ public struct ZEGBot {
 			
 			let responseBodyString = curl.performFully().2.reduce("", combine: { a, b in a + String(UnicodeScalar(b)) })
 			
-			let updates = ZEGDecoder.decodeUpdates(from: responseBodyString)
+			guard let updates = ZEGDecoder.decodeUpdates(from: responseBodyString) else { continue }
 			
 			for update in updates {
 				
-				handler?.handle(upadte)
+				handler?.handle(update)
 				
 			}
 			
-			offset = updates.last.update_id + 1
+			if let lastUpdate = updates.last {
+				offset = lastUpdate.update_id + 1
+			}
 			
 		}
 		
