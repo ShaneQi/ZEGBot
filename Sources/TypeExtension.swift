@@ -47,7 +47,7 @@ extension Update: JSONConvertible {
 		}
 		
 		let message = Message(from: jsonDictionary["message"])
-		let editedMessage = Message(from: jsonDictionary["edit_message"])
+		let editedMessage = Message(from: jsonDictionary["edited_message"])
 		
 		self.update_id = updateId
 		self.message = message
