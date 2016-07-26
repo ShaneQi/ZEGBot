@@ -20,8 +20,8 @@ public struct Update {
 	//	var callback_query: CallbackQuery?
 	
 	init(update_id: Int,
-	     message: Message?,
-	     edited_message: Message?
+	     message: Message? = nil,
+	     edited_message: Message? = nil
 		//		 inline_query: InlineQuery?,
 		//		 chosen_inline_result: ChosenInlineResult?,
 		//		 callback_query: CallbackQuery?
@@ -80,35 +80,35 @@ public class Message {
 	init(message_id: Int,
 	     date: Int,
 	     chat: Chat,
-	     from: User?,
-	     forward_from: User?,
-	     forward_from_chat: Chat?,
-	     forward_date: Int?,
-	     reply_to_message: Message?,
-	     edit_date: Int?,
-	     text: String?,
-	     entities: [MessageEntity]?,
-	     audio: Audio?,
-	     document: Document?,
-	     photo: [PhotoSize]?,
-	     sticker: Sticker?,
-	     video: Video?,
-	     voice: Voice?,
-	     caption: String?,
-	     contact: Contact?,
-	     location: Location?,
-	     venue: Venue?,
-	     new_chat_member: User?,
-	     left_chat_member: User?,
-	     new_chat_title: String?,
-	     new_chat_photo: [PhotoSize]?,
-	     delete_chat_photo: Bool?,
-	     group_chat_created: Bool?,
-	     supergroup_chat_created: Bool?,
-	     channel_chat_created: Bool?,
-	     migrate_to_chat_id: Int?,
-	     migrate_from_chat_id: Int?,
-	     pinned_message: Message?
+	     from: User? = nil,
+	     forward_from: User? = nil,
+	     forward_from_chat: Chat? = nil,
+	     forward_date: Int? = nil,
+	     reply_to_message: Message? = nil,
+	     edit_date: Int? = nil,
+	     text: String? = nil,
+	     entities: [MessageEntity]? = nil,
+	     audio: Audio? = nil,
+	     document: Document? = nil,
+	     photo: [PhotoSize]? = nil,
+	     sticker: Sticker? = nil,
+	     video: Video? = nil,
+	     voice: Voice? = nil,
+	     caption: String? = nil,
+	     contact: Contact? = nil,
+	     location: Location? = nil,
+	     venue: Venue? = nil,
+	     new_chat_member: User? = nil,
+	     left_chat_member: User? = nil,
+	     new_chat_title: String? = nil,
+	     new_chat_photo: [PhotoSize]? = nil,
+	     delete_chat_photo: Bool? = nil,
+	     group_chat_created: Bool? = nil,
+	     supergroup_chat_created: Bool? = nil,
+	     channel_chat_created: Bool? = nil,
+	     migrate_to_chat_id: Int? = nil,
+	     migrate_from_chat_id: Int? = nil,
+	     pinned_message: Message? = nil
 		) {
 		
 		self.message_id = message_id
@@ -146,31 +146,11 @@ public class Message {
 		
 	}
 	
-	/* Conform to Receivable. */
-	lazy public var recipientIdentification: [String : String] = {
-		
-		var recipientIdentification = [String : String]()
-		recipientIdentification["chat_id"] = "\(self.chat.id)"
-		recipientIdentification["reply_to_message_id"] = "\(self.message_id)"
-		return recipientIdentification
-		
-	} ()
-	
-	/* Confrom to Forwardable. */
-	lazy public var forwardIdentification: [String : String] = {
-		
-		var forwardIdentification = [String : String]()
-		forwardIdentification["message_id"] = "\(self.message_id)"
-		forwardIdentification["from_chat_id"] = "\(self.chat.id)"
-		return forwardIdentification
-		
-	} ()
-	
 }
 
 
 public struct Chat {
-	
+
 	var id: Int
 	var type: String
 	
@@ -182,10 +162,11 @@ public struct Chat {
 	
 	init(id: Int,
 	     type: String,
-	     title: String?,
-	     username: String?,
-	     first_name: String?,
-	     last_name: String?) {
+	     title: String? = nil,
+	     username: String? = nil,
+	     first_name: String? = nil,
+	     last_name: String? = nil
+		) {
 		
 		self.id = id
 		self.type = type
@@ -195,15 +176,6 @@ public struct Chat {
 		self.last_name = last_name
 		
 	}
-	
-	/* Conform to Receivable. */
-	lazy public var recipientIdentification: [String : String] = {
-		
-		var recipientIdentification = [String : String]()
-		recipientIdentification["chat_id"] = "\(self.id)"
-		return recipientIdentification
-		
-	} ()
 	
 }
 
@@ -219,8 +191,8 @@ public struct User {
 	
 	init(id: Int,
 	     first_name: String,
-	     last_name: String?,
-	     username: String?
+	     last_name: String? = nil,
+	     username: String? = nil
 		) {
 		
 		self.id = id
@@ -241,17 +213,20 @@ public struct MessageEntity {
 	
 	/* OPTIONAl. */
 	var url: String?
+	var user: User?
 	
 	init(type: String,
 	     offset: Int,
 	     length: Int,
-	     url: String?
+	     url: String? = nil,
+		 user: User? =  nil
 		){
 		
 		self.type = type
 		self.offset = offset
 		self.length = length
 		self.url = url
+		self.user = user
 		
 	}
 	
@@ -271,10 +246,10 @@ public struct Audio {
 	
 	init(file_id: String,
 	     duration: Int,
-	     performer: String?,
-	     title: String?,
-	     mime_type: String?,
-	     file_size: Int?
+	     performer: String? = nil,
+	     title: String? = nil,
+	     mime_type: String? = nil,
+	     file_size: Int? = nil
 		) {
 		
 		self.file_id = file_id
@@ -300,10 +275,10 @@ public struct Document {
 	var file_size: Int?
 	
 	init(file_id: String,
-	     thumb: PhotoSize?,
-	     file_name: String?,
-	     mime_type: String?,
-	     file_size: Int?
+	     thumb: PhotoSize? = nil,
+	     file_name: String? = nil,
+	     mime_type: String? = nil,
+	     file_size: Int? = nil
 		) {
 		
 		self.file_id = file_id
@@ -329,24 +304,14 @@ public struct PhotoSize {
 	init(file_id: String,
 	     width: Int,
 	     height: Int,
-	     file_size: Int?){
+	     file_size: Int? = nil
+		){
 		
 		self.file_id = file_id
 		self.width = width
 		self.height = height
 		self.file_size = file_size
 		
-	}
-	
-	/* Conform to Sendable. */
-	public var method: String {
-		return "sendPhoto"
-	}
-	
-	public var contentIdentification: [String: String] {
-		var content = [String: String]()
-		content["photo"] = self.file_id
-		return content
 	}
 	
 }
@@ -366,9 +331,9 @@ public struct Sticker {
 	init(file_id: String,
 	     width: Int,
 	     height: Int,
-	     thumb: PhotoSize?,
-	     emoji: String?,
-	     file_size: Int?
+	     thumb: PhotoSize? = nil,
+	     emoji: String? = nil,
+	     file_size: Int? = nil
 		) {
 		
 		self.file_id = file_id
@@ -378,17 +343,6 @@ public struct Sticker {
 		self.emoji = emoji
 		self.file_size = file_size
 		
-	}
-	
-	/* Conform to Sendable. */
-	public var method: String {
-		return "sendSticker"
-	}
-	
-	public var contentIdentification: [String: String] {
-		var content = [String: String]()
-		content["sticker"] = self.file_id
-		return content
 	}
 	
 }
@@ -410,9 +364,9 @@ public struct Video {
 	     width: Int,
 	     height: Int,
 	     duration: Int,
-	     thumb: PhotoSize?,
-	     mime_type: String?,
-	     file_size: Int?
+	     thumb: PhotoSize? = nil,
+	     mime_type: String? = nil,
+	     file_size: Int? = nil
 		){
 		
 		self.file_id = file_id
@@ -439,8 +393,8 @@ public struct Voice {
 	
 	init(file_id: String,
 	     duration: Int,
-	     mime_type: String?,
-	     file_size: Int?
+	     mime_type: String? = nil,
+	     file_size: Int? = nil
 		) {
 		
 		self.file_id = file_id
@@ -448,17 +402,6 @@ public struct Voice {
 		self.mime_type = mime_type
 		self.file_size = file_size
 		
-	}
-	
-	/* Conform to Sendable. */
-	public var method: String {
-		return "sendVoice"
-	}
-	
-	public var contentIdentification: [String: String] {
-		var content = [String: String]()
-		content["voice"] = self.file_id
-		return content
 	}
 	
 }
@@ -475,8 +418,8 @@ public struct Contact {
 	
 	init(phone_number: String,
 	     first_name: String,
-	     last_name: String?,
-	     user_id: Int?
+	     last_name: String? = nil,
+	     user_id: Int? = nil
 		) {
 		
 		self.phone_number = phone_number
@@ -517,7 +460,7 @@ public struct Venue {
 	init(location: Location,
 	     title: String,
 	     address: String,
-	     foursquare_id: String?
+	     foursquare_id: String? = nil
 		) {
 		
 		self.location = location
