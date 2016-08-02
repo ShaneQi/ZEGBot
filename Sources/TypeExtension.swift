@@ -38,7 +38,7 @@ extension Update: JSONConvertible {
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			updateId = jsonDictionary["update_id"] as? Int
+			let updateId = jsonDictionary["update_id"] as? Int
 			else {
 				
 				Log.warning(on: jsonConvertibleObject)
@@ -65,9 +65,9 @@ extension Message {
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			messageId = jsonDictionary["message_id"] as? Int,
-			date = jsonDictionary["date"] as? Int,
-			chat = Chat(from: jsonDictionary["chat"])
+			let messageId = jsonDictionary["message_id"] as? Int,
+			let date = jsonDictionary["date"] as? Int,
+			let chat = Chat(from: jsonDictionary["chat"])
 			else {
 				
 				Log.warning(on: jsonConvertibleObject)
@@ -150,8 +150,8 @@ extension Chat: JSONConvertible {
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			id = jsonDictionary["id"] as? Int,
-			type = jsonDictionary["type"] as? String
+			let id = jsonDictionary["id"] as? Int,
+			let type = jsonDictionary["type"] as? String
 			else {
 		
 				Log.warning(on: jsonConvertibleObject)
@@ -183,8 +183,8 @@ extension User: JSONConvertible {
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			id = jsonDictionary["id"] as? Int,
-			firstName = jsonDictionary["first_name"] as? String
+			let id = jsonDictionary["id"] as? Int,
+			let firstName = jsonDictionary["first_name"] as? String
 			else {
 				
 				Log.warning(on: jsonConvertibleObject)
@@ -212,9 +212,9 @@ extension MessageEntity: JSONConvertible, ArrayConvertible {
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			type = jsonDictionary["type"] as? String,
-			offset = jsonDictionary["offset"] as? Int,
-			length = jsonDictionary["length"] as? Int
+			let type = jsonDictionary["type"] as? String,
+			let offset = jsonDictionary["offset"] as? Int,
+			let length = jsonDictionary["length"] as? Int
 			else {
 				
 				Log.warning(on: jsonConvertibleObject)
@@ -271,8 +271,8 @@ extension Audio: JSONConvertible {
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			fileId = jsonDictionary["file_id"] as? String,
-			duration = jsonDictionary["duration"] as? Int
+			let fileId = jsonDictionary["file_id"] as? String,
+			let duration = jsonDictionary["duration"] as? Int
 			else {
 			
 			Log.warning(on: jsonConvertibleObject)
@@ -304,7 +304,7 @@ extension Document: JSONConvertible {
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			fileId = jsonDictionary["file_id"] as? String
+			let fileId = jsonDictionary["file_id"] as? String
 			else {
 				
 				Log.warning(on: jsonConvertibleObject)
@@ -335,9 +335,9 @@ extension PhotoSize: JSONConvertible, ArrayConvertible {
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			fileId = jsonDictionary["file_id"] as? String,
-			width = jsonDictionary["width"] as? Int,
-			height = jsonDictionary["height"] as? Int
+			let fileId = jsonDictionary["file_id"] as? String,
+			let width = jsonDictionary["width"] as? Int,
+			let height = jsonDictionary["height"] as? Int
 			else {
 				
 				Log.warning(on: jsonConvertibleObject)
@@ -393,9 +393,9 @@ extension Sticker: JSONConvertible {
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			fileId = jsonDictionary["file_id"] as? String,
-			width = jsonDictionary["width"] as? Int,
-			height = jsonDictionary["height"] as? Int
+			let fileId = jsonDictionary["file_id"] as? String,
+			let width = jsonDictionary["width"] as? Int,
+			let height = jsonDictionary["height"] as? Int
 			else {
 				
 				Log.warning(on: jsonConvertibleObject)
@@ -426,10 +426,10 @@ extension Video: JSONConvertible {
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			fileId = jsonDictionary["file_id"] as? String,
-			width = jsonDictionary["width"] as? Int,
-			height = jsonDictionary["height"] as? Int,
-			duration = jsonDictionary["duration"] as? Int
+			let fileId = jsonDictionary["file_id"] as? String,
+			let width = jsonDictionary["width"] as? Int,
+			let height = jsonDictionary["height"] as? Int,
+			let duration = jsonDictionary["duration"] as? Int
 			else {
 				
 				Log.warning(on: jsonConvertibleObject)
@@ -461,8 +461,8 @@ extension Voice: JSONConvertible {
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			fileId = jsonDictionary["file_id"] as? String,
-			duration = jsonDictionary["duration"] as? Int
+			let fileId = jsonDictionary["file_id"] as? String,
+			let duration = jsonDictionary["duration"] as? Int
 			else {
 				
 				Log.warning(on: jsonConvertibleObject)
@@ -490,8 +490,8 @@ extension Contact: JSONConvertible {
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			phoneNumber = jsonDictionary["phone_number"] as? String,
-			firstName = jsonDictionary["first_name"] as? String
+			let phoneNumber = jsonDictionary["phone_number"] as? String,
+			let firstName = jsonDictionary["first_name"] as? String
 			else {
 				
 				Log.warning(on: jsonConvertibleObject)
@@ -519,8 +519,8 @@ extension Location: JSONConvertible {
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			longitude = jsonDictionary["longitude"] as? Double,
-			latitude = jsonDictionary["latitude"] as? Double
+			let longitude = jsonDictionary["longitude"] as? Double,
+			let latitude = jsonDictionary["latitude"] as? Double
 			else {
 				
 				Log.warning(on: jsonConvertibleObject)
@@ -543,9 +543,9 @@ extension Venue: JSONConvertible {
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			location = Location(from: jsonDictionary["location"]),
-			title = jsonDictionary["title"] as? String,
-			address = jsonDictionary["address"] as? String
+			let location = Location(from: jsonDictionary["location"]),
+			let title = jsonDictionary["title"] as? String,
+			let address = jsonDictionary["address"] as? String
 			else {
 				
 				Log.warning(on: jsonConvertibleObject)

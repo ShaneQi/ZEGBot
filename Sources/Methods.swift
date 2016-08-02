@@ -1,5 +1,5 @@
 //
-//  ZEGResponse.swift
+//  Methods.swift
 //  ZEGBot
 //
 //  Created by Shane Qi on 5/29/16.
@@ -7,6 +7,30 @@
 //
 //  Licensed under Apache License v2.0
 //
+
+import PerfectCURL
+import cURL
+import Foundation
+
+extension ZEGBot {
+    
+    public func send() {
+        let body: NSString = "{\"text\":\"bar\",\"chat_id\":80548625}"
+        
+        let c = CURL()
+        c.url = "https://api.telegram.org/bot\(secret)/sendMessage"
+        let _ = c.setOption(CURLOPT_POSTFIELDS, v: UnsafeMutablePointer<Int8>(body.utf8String!))
+        let _ = c.setOption(CURLOPT_HTTPHEADER, s: "Content-Type: application/json")
+        
+        let r = c.performFully()
+        print(r.2.reduce("", { a, b in a + String(UnicodeScalar(b)) }))
+        
+    }
+    
+}
+
+
+
 
 //
 //import PerfectLib

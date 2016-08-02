@@ -8,16 +8,18 @@
 //  Licensed under Apache License v2.0
 //
 
+import cURL
 import PerfectCURL
+import PerfectLib
 
-public struct ZEGBot {
+public class ZEGBot {
 	
 	private var token: String
 	private var urlPrefix: String { return "https://api.telegram.org/bot"+token+"/" }
 	
 	init(token: String) { self.token = token }
 	
-	func runWith(handler: ZEGHandler) {
+    func run(with handler: (bot: ZEGBot, update: Update) -> Void ) {
 
 		let curl = CURL()
 		var offset = 0
@@ -26,23 +28,80 @@ public struct ZEGBot {
 
 			curl.url = urlPrefix + "getupdates?timeout=60&offset=\(offset)"
 			
-			let responseBodyString = curl.performFully().2.reduce("", combine: { a, b in a + String(UnicodeScalar(b)) })
+			let responseBodyString = curl.performFully().2.reduce("", { a, b in a + String(UnicodeScalar(b)) })
 			
-			guard let updates = ZEGDecoder.decodeUpdates(from: responseBodyString) else { continue }
+			guard let updates = ZEGBot.decodeUpdates(from: responseBodyString) else { continue }
 
 			if let lastUpdate = updates.last { offset = lastUpdate.update_id + 1 }
 			
-			for update in updates { handler.handle(update) }
+            for update in updates { handler(bot: self, update: update) }
 			
 		}
 		
 	}
+    
 	
 }
 
-public protocol ZEGHandler {
+extension ZEGBot {
 
-	func handle(_ update: Update)
-
+    /* For getUpdates. */
+    static func decodeUpdates(from jsonString: String) -> [Update]? {
+        
+        do {
+            
+            let jsonConvertibleObject = try jsonString.jsonDecode()
+            
+            guard let
+                jsonDictionary = jsonConvertibleObject as? [String: Any],
+                let updatesDictionaryArrayObject = jsonDictionary["result"],
+                let updatesDictionaryArray = updatesDictionaryArrayObject as? [Any]
+                else {
+                    
+                    Log.warning(on: jsonConvertibleObject)
+                    return nil
+                    
+            }
+            
+            var updates = [Update]()
+            
+            for updateDictionaryObject in updatesDictionaryArray {
+                
+                if let update = Update(from: updateDictionaryObject) {
+                    
+                    updates.append(update)
+                    
+                }
+                
+            }
+            
+            return updates
+            
+        } catch {
+            
+            Log.warning(on: jsonString)
+            return nil
+            
+        }
+        
+    }
+    
+    /* For webhook. */
+    static func decodeUpdate(from jsonString: String) -> Update? {
+        
+        do {
+            
+            let jsonConvertibleObject = try jsonString.jsonDecode()
+            
+            return Update(from: jsonConvertibleObject)
+            
+        } catch {
+            
+            Log.warning(on: jsonString)
+            return nil
+            
+        }
+        
+    }
+    
 }
-

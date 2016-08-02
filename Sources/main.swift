@@ -1,12 +1,7 @@
 let zegbot = ZEGBot(token: secret)
 
-struct MyHandler: ZEGHandler {
-	
-	func handle(_ update: Update) {
-		print(update)
-	}
-	
+zegbot.run() {
+    bot, update in
+    bot.send()
+    print(update)
 }
-
-zegbot.run(with: MyHandler())
-
