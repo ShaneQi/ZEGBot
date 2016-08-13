@@ -10,6 +10,11 @@
 
 import PerfectLib
 
+public enum ParseMode: String {
+    case Markdown
+    case HTML
+}
+
 protocol JSONConvertible {
 	
 	init?(from jsonConvertibleObject: Any?)
@@ -19,14 +24,6 @@ protocol JSONConvertible {
 protocol ArrayConvertible {
 	
 	static func array(from jsonConvertibleObject: Any?) -> [Self]?
-	
-}
-
-extension Log {
-	
-	static func warning(on object: Any) {
-		self.warning(message: "Failed to convert: ===>>> \(object) <<<===")
-	}
 	
 }
 
@@ -45,13 +42,10 @@ extension Update: JSONConvertible {
 				return nil
 				
 		}
-		
-		let message = Message(from: jsonDictionary["message"])
-		let editedMessage = Message(from: jsonDictionary["edited_message"])
-		
+    
 		self.update_id = updateId
-		self.message = message
-		self.edited_message = editedMessage
+		self.message = Message(from: jsonDictionary["message"])
+		self.edited_message = Message(from: jsonDictionary["edited_message"])
 		
 	}
 	
@@ -59,7 +53,7 @@ extension Update: JSONConvertible {
 
 extension Message {
 
-	convenience init?(from jsonConvertibleObject: Any?) {
+	internal convenience init?(from jsonConvertibleObject: Any?) {
 		
 		guard jsonConvertibleObject != nil else { return nil }
 		
@@ -144,14 +138,14 @@ extension Message {
 
 extension Chat: JSONConvertible {
 	
-	init?(from jsonConvertibleObject: Any?) {
+	internal init?(from jsonConvertibleObject: Any?) {
 		
 		guard jsonConvertibleObject != nil else { return nil }
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
 			let id = jsonDictionary["id"] as? Int,
-			let type = jsonDictionary["type"] as? String
+			let type = Chat.sType(from: jsonDictionary["type"] as? String)
 			else {
 		
 				Log.warning(on: jsonConvertibleObject)
@@ -159,17 +153,12 @@ extension Chat: JSONConvertible {
 				
 		}
 		
-		let title = jsonDictionary["title"] as? String
-		let username = jsonDictionary["username"] as? String
-		let firstName = jsonDictionary["first_name"] as? String
-		let lastName = jsonDictionary["last_name"] as? String
-		
 		self.id = id
 		self.type = type
-		self.title = title
-		self.username = username
-		self.first_name = firstName
-		self.last_name = lastName
+		self.title = jsonDictionary["title"] as? String
+		self.username = jsonDictionary["username"] as? String
+        self.first_name = jsonDictionary["first_name"] as? String
+        self.last_name = jsonDictionary["last_name"] as? String
 		
 	}
 	

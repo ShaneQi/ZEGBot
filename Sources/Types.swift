@@ -19,23 +19,6 @@ public struct Update {
 	//	var chosen_inline_result: ChosenInlineResult?
 	//	var callback_query: CallbackQuery?
 	
-	init(update_id: Int,
-	     message: Message? = nil,
-	     edited_message: Message? = nil
-		//		 inline_query: InlineQuery?,
-		//		 chosen_inline_result: ChosenInlineResult?,
-		//		 callback_query: CallbackQuery?
-		) {
-		
-		self.update_id = update_id
-		self.edited_message = edited_message
-		self.message = message
-		//		self.inline_query = inline_query
-		//		self.chosen_inline_result = chosen_inline_result
-		//		self.callback_query = callback_query
-		
-	}
-	
 }
 
 
@@ -152,31 +135,33 @@ public class Message {
 public struct Chat {
 
 	var id: Int
-	var type: String
+	var type: sType
 	
 	/* Optional. */
 	var title: String?
 	var username: String?
 	var first_name: String?
 	var last_name: String?
-	
-	init(id: Int,
-	     type: String,
-	     title: String? = nil,
-	     username: String? = nil,
-	     first_name: String? = nil,
-	     last_name: String? = nil
-		) {
-		
-		self.id = id
-		self.type = type
-		self.title = title
-		self.username = username
-		self.first_name = first_name
-		self.last_name = last_name
-		
-	}
-	
+    
+    init(id: Int, type: sType, username: String? = nil) {
+        
+        self.id = id
+        self.type = type
+        self.username = username
+        
+    }
+    
+    enum sType: String {
+        
+        init?(from string: String?) {
+            guard let typeString = string else { return nil }
+            guard let instance = sType(rawValue: typeString.uppercased()) else { return nil }
+            self = instance
+        }
+        
+        case PRIVATE, GROUP, SUPERGROUP, CHANNEL
+    }
+
 }
 
 

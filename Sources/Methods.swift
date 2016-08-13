@@ -10,27 +10,61 @@
 
 import PerfectCURL
 import cURL
-import Foundation
+import PerfectLib
 
 extension ZEGBot {
     
-    public func send() {
-        let body: NSString = "{\"text\":\"bar\",\"chat_id\":80548625}"
+    public func sendMessage(_ text: String, to receiver: Sendable,
+                            parseMode: ParseMode? = nil,
+                            disableWebPagePreview: Bool = false,
+                            disableNotification: Bool = false) -> Message? {
         
-        let c = CURL()
-        c.url = "https://api.telegram.org/bot\(secret)/sendMessage"
-        let _ = c.setOption(CURLOPT_POSTFIELDS, v: UnsafeMutablePointer<Int8>(body.utf8String!))
-        let _ = c.setOption(CURLOPT_HTTPHEADER, s: "Content-Type: application/json")
+        var payload: [String: Any] = [
+            "text": text
+        ]
         
-        let r = c.performFully()
-        print(r.2.reduce("", { a, b in a + String(UnicodeScalar(b)) }))
+        if let parseMode = parseMode { payload["parse_mode"] = parseMode }
+        if disableWebPagePreview { payload["disabl_web_page_preview"] = true }
+        if disableNotification { payload["disable_notification"] = true }
+        
+        payload.append(contentOf: receiver.receiverIdentifier)
+        
+        guard let responseDictionary = perform(method: "sendMessage", payload: payload) as? [String: Any] else {
+            return nil
+        }
+            
+        return Message(from: responseDictionary["result"])
+        
+    }
+    
+    private func perform(method: String, payload: [String: Any]) -> Any? {
+        
+        var bodyBytes = [UInt8]()
+        
+        do {
+            bodyBytes.append(contentsOf: try payload.jsonEncodedString().bytes())
+        } catch {
+            Log.warning(on: payload)
+            return nil
+        }
+        
+        let curl = CURL()
+        curl.url = "https://api.telegram.org/bot\(secret)/\(method)"
+        curl.setOption(CURLOPT_POSTFIELDS, v: &bodyBytes)
+        curl.setOption(CURLOPT_HTTPHEADER, s: "Content-Type: application/json")
+        
+        let responseString = curl.performFully().2.reduce("", { a, b in a + String(UnicodeScalar(b)) })
+            
+        do {
+            return try responseString.jsonDecode()
+        } catch {
+            Log.warning(on: responseString)
+            return nil
+        }
         
     }
     
 }
-
-
-
 
 //
 //import PerfectLib

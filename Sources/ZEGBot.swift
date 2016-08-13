@@ -11,13 +11,18 @@
 import cURL
 import PerfectCURL
 import PerfectLib
+import PerfectThread
 
-public class ZEGBot {
-	
+public struct ZEGBot {
+    
 	private var token: String
-	private var urlPrefix: String { return "https://api.telegram.org/bot"+token+"/" }
-	
-	init(token: String) { self.token = token }
+	private var urlPrefix: String
+    
+    init(token: String) {
+        self.token = token
+        self.urlPrefix = "https://api.telegram.org/bot"+token+"/"
+    }
+
 	
     func run(with handler: (bot: ZEGBot, update: Update) -> Void ) {
 
@@ -34,7 +39,11 @@ public class ZEGBot {
 
 			if let lastUpdate = updates.last { offset = lastUpdate.update_id + 1 }
 			
-            for update in updates { handler(bot: self, update: update) }
+            for update in updates {
+                Threading.dispatch {
+                    handler(bot: self, update: update)
+                }
+            }
 			
 		}
 		
