@@ -27,3 +27,57 @@ extension Message: Sendable {
     }
 
 }
+
+public protocol Identifiable {
+
+    var identifier: [String: Any] { get }
+    
+}
+
+extension PhotoSize: Identifiable {
+
+    public var identifier: [String: Any] {
+        return ["photo": self.file_id]
+    }
+    
+}
+
+extension Audio: Identifiable {
+    
+    public var identifier: [String: Any] {
+        return ["audio": self.file_id]
+    }
+    
+}
+
+extension Document: Identifiable {
+    
+    public var identifier: [String: Any] {
+        return ["document": self.file_id]
+    }
+    
+}
+
+extension Sticker: Identifiable {
+    
+    public var identifier: [String: Any] {
+        return ["sticker": self.file_id]
+    }
+    
+}
+
+extension Video: Identifiable {
+    
+    public var identifier: [String: Any] {
+        return ["video": self.file_id]
+    }
+    
+}
+
+extension Voice: Identifiable {
+    
+    public var identifier: [String: Any] {
+        return ["voice": self.file_id]
+    }
+    
+}
