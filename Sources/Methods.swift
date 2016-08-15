@@ -12,6 +12,22 @@ import PerfectCURL
 import cURL
 import PerfectLib
 
+let SEND_MESSAGE =                  "sendMessage"
+let FORWARD_MESSAGE =               "forwardMessage"
+let SEND_PHOTO =                    "sendPhoto"
+let MESSAGE_ID =                    "message_id"
+let FROM_CHAT_ID =                  "from_chat_id"
+let PHOTO =                         "photo"
+let CAPTION =                       "caption"
+let TEXT =                          "text"
+let PARSE_MODE =                    "parse_mode"
+let DISABLE_WEB_PAGE_PREVIEW =      "disable_web_page_preview"
+let DISABLE_NOTIFICATION =          "disable_notification"
+
+let POST_JSON_HEADER_CONTENT_TYPE = "Content-Type: application/json"
+
+let RESULT =                        "result"
+
 extension ZEGBot {
     
     public func sendMessage(_ text: String, to receiver: Sendable,
@@ -20,21 +36,62 @@ extension ZEGBot {
                             disableNotification: Bool = false) -> Message? {
         
         var payload: [String: Any] = [
-            "text": text
+            TEXT: text
         ]
         
-        if let parseMode = parseMode { payload["parse_mode"] = parseMode }
-        if disableWebPagePreview { payload["disabl_web_page_preview"] = true }
-        if disableNotification { payload["disable_notification"] = true }
+        if let parseMode = parseMode { payload[PARSE_MODE] = parseMode }
+        if disableWebPagePreview { payload[DISABLE_WEB_PAGE_PREVIEW] = true }
         
+        appendSendingOption(disableNotification: disableNotification, to: &payload)
         payload.append(contentOf: receiver.receiverIdentifier)
         
-        guard let responseDictionary = perform(method: "sendMessage", payload: payload) as? [String: Any] else {
+        guard let responseDictionary = perform(method: SEND_MESSAGE, payload: payload) as? [String: Any] else {
             return nil
         }
             
-        return Message(from: responseDictionary["result"])
+        return Message(from: responseDictionary[RESULT])
         
+    }
+    
+    public func forwardMessage(_ message: Message, to receiver: Sendable,
+                               disableNotification: Bool = false) -> Message? {
+        var payload: [String: Any] = [
+            MESSAGE_ID: message.message_id,
+            FROM_CHAT_ID: message.chat.id
+        ]
+        
+        appendSendingOption(disableNotification: disableNotification, to: &payload)
+        payload.append(contentOf: receiver.receiverIdentifier)
+        
+        guard let responseDictionary = perform(method: FORWARD_MESSAGE, payload: payload) as? [String: Any] else {
+            return nil
+        }
+        
+        return Message(from: responseDictionary[RESULT])
+
+    }
+    
+    public func sendPhoto(_ photo: PhotoSize, to receiver: Sendable,
+                          caption: String,
+                          disableNotification: Bool = false) -> Message? {
+        var payload: [String: Any] = [
+            PHOTO: photo.file_id,
+            CAPTION: caption
+        ]
+        
+        appendSendingOption(disableNotification: disableNotification, to: &payload)
+        payload.append(contentOf: receiver.receiverIdentifier)
+        
+        guard let responseDictionary = perform(method: SEND_PHOTO, payload: payload) as? [String: Any] else {
+            return nil
+        }
+        
+        return Message(from: responseDictionary[RESULT])
+
+    }
+    
+    private func appendSendingOption(disableNotification: Bool, to dictionary: inout [String: Any]) {
+        if disableNotification { dictionary[DISABLE_NOTIFICATION] = true }
     }
     
     private func perform(method: String, payload: [String: Any]) -> Any? {
@@ -49,9 +106,9 @@ extension ZEGBot {
         }
         
         let curl = CURL()
-        curl.url = "https://api.telegram.org/bot\(secret)/\(method)"
+        curl.url = urlPrefix + method
         curl.setOption(CURLOPT_POSTFIELDS, v: &bodyBytes)
-        curl.setOption(CURLOPT_HTTPHEADER, s: "Content-Type: application/json")
+        curl.setOption(CURLOPT_HTTPHEADER, s: POST_JSON_HEADER_CONTENT_TYPE)
         
         let responseString = curl.performFully().2.reduce("", { a, b in a + String(UnicodeScalar(b)) })
             

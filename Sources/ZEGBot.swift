@@ -16,7 +16,7 @@ import PerfectThread
 public struct ZEGBot {
     
 	private var token: String
-	private var urlPrefix: String
+	internal var urlPrefix: String
     
     init(token: String) {
         self.token = token

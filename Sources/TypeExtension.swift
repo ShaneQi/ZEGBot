@@ -29,13 +29,17 @@ protocol ArrayConvertible {
 
 extension Update: JSONConvertible {
 	
-	init?(from jsonConvertibleObject: Any?) {
+    internal struct PARAM {
+        static let UPDATE_ID = "update_id"
+    }
+    
+	internal init?(from jsonConvertibleObject: Any?) {
 		
 		guard jsonConvertibleObject != nil else { return nil }
 		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			let updateId = jsonDictionary["update_id"] as? Int
+			let updateId = jsonDictionary[PARAM.UPDATE_ID] as? Int
 			else {
 				
 				Log.warning(on: jsonConvertibleObject)
@@ -53,13 +57,17 @@ extension Update: JSONConvertible {
 
 extension Message {
 
+    internal struct PARAM {
+        static let MESSAGE_ID = "message_id"
+    }
+    
 	internal convenience init?(from jsonConvertibleObject: Any?) {
 		
 		guard jsonConvertibleObject != nil else { return nil }
-		
+
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
-			let messageId = jsonDictionary["message_id"] as? Int,
+			let messageId = jsonDictionary[PARAM.MESSAGE_ID] as? Int,
 			let date = jsonDictionary["date"] as? Int,
 			let chat = Chat(from: jsonDictionary["chat"])
 			else {
