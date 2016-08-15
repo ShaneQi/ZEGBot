@@ -19,7 +19,9 @@ extension String {
 extension Log {
     
     static func warning(on object: Any) {
-        self.warning(message: "Failed to convert: ===>>> \(object) <<<===")
+        self.warning(message: "===>>>===<<<===")
+        self.warning(message: "Failed to convert:")
+        self.warning(message: "\(object)")
     }
     
 }

@@ -73,7 +73,7 @@ extension ZEGBot {
 
     }
     
-    public func sned(contentOnServer content: Identifiable, to receiver: Sendable,
+    public func send(contentOnServer content: Identifiable, to receiver: Sendable,
                      disableNotification: Bool = false) -> Message? {
         
         var payload = content.identifier

@@ -1,5 +1,5 @@
 //
-//  TypeExtension.swift
+//  Converting.swift
 //  ZEGBot
 //
 //  Created by Shane Qi on 5/30/16.

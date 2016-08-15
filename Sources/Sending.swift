@@ -1,5 +1,5 @@
 //
-//  Protocols.swift
+//  Sending.swift
 //  ZEGBot
 //
 //  Created by Shane Qi on 8/12/16.
