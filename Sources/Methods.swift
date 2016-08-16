@@ -12,45 +12,46 @@ import PerfectCURL
 import cURL
 import PerfectLib
 
-let SEND_MESSAGE =                  "sendMessage"
-let FORWARD_MESSAGE =               "forwardMessage"
-let SEND_PHOTO =                    "sendPhoto"
-let MESSAGE_ID =                    "message_id"
-let FROM_CHAT_ID =                  "from_chat_id"
-let PHOTO =                         "photo"
-let AUDIO =                         "audio"
-let CAPTION =                       "caption"
-let TEXT =                          "text"
-let PARSE_MODE =                    "parse_mode"
-let DISABLE_WEB_PAGE_PREVIEW =      "disable_web_page_preview"
-let DISABLE_NOTIFICATION =          "disable_notification"
-
-let POST_JSON_HEADER_CONTENT_TYPE = "Content-Type: application/json"
-
-let RESULT =                        "result"
-
 extension ZEGBot {
-    
+	
+	internal struct PARAM {
+		static let DISABLE_NOTIFICATION =          "disable_notification"
+		static let POST_JSON_HEADER_CONTENT_TYPE = "Content-Type: application/json"
+		static let RESULT =                        "result"
+		
+		static let SEND_MESSAGE =                  "sendMessage"
+		static let TEXT =                          "text"
+		static let PARSE_MODE =                    "parse_mode"
+		static let DISABLE_WEB_PAGE_PREVIEW =      "disable_web_page_preview"
+		
+		static let FORWARD_MESSAGE =               "forwardMessage"
+		static let MESSAGE_ID =                    "message_id"
+		static let FROM_CHAT_ID =                  "from_chat_id"
+		
+		static let CAPTION =                       "caption"
+		
+	}
+	
     public func send(message text: String, to receiver: Sendable,
                             parseMode: ParseMode? = nil,
                             disableWebPagePreview: Bool = false,
                             disableNotification: Bool = false) -> Message? {
         
         var payload: [String: Any] = [
-            TEXT: text
+            PARAM.TEXT: text
         ]
         
-        if let parseMode = parseMode { payload[PARSE_MODE] = parseMode }
-        if disableWebPagePreview { payload[DISABLE_WEB_PAGE_PREVIEW] = true }
+        if let parseMode = parseMode { payload[PARAM.PARSE_MODE] = parseMode }
+        if disableWebPagePreview { payload[PARAM.DISABLE_WEB_PAGE_PREVIEW] = true }
         
-        if disableNotification { payload[DISABLE_NOTIFICATION] = true }
+        if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
         payload.append(contentOf: receiver.receiverIdentifier)
         
-        guard let responseDictionary = perform(method: SEND_MESSAGE, payload: payload) as? [String: Any] else {
+        guard let responseDictionary = perform(method: PARAM.SEND_MESSAGE, payload: payload) as? [String: Any] else {
             return nil
         }
             
-        return Message(from: responseDictionary[RESULT])
+        return Message(from: responseDictionary[PARAM.RESULT])
         
     }
     
@@ -58,18 +59,18 @@ extension ZEGBot {
                                disableNotification: Bool = false) -> Message? {
         
         var payload: [String: Any] = [
-            MESSAGE_ID: message.message_id,
-            FROM_CHAT_ID: message.chat.id
+            PARAM.MESSAGE_ID: message.message_id,
+            PARAM.FROM_CHAT_ID: message.chat.id
         ]
         
-        if disableNotification { payload[DISABLE_NOTIFICATION] = true }
+        if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
         payload.append(contentOf: receiver.receiverIdentifier)
         
-        guard let responseDictionary = perform(method: FORWARD_MESSAGE, payload: payload) as? [String: Any] else {
+        guard let responseDictionary = perform(method: PARAM.FORWARD_MESSAGE, payload: payload) as? [String: Any] else {
             return nil
         }
         
-        return Message(from: responseDictionary[RESULT])
+        return Message(from: responseDictionary[PARAM.RESULT])
 
     }
     
@@ -78,14 +79,14 @@ extension ZEGBot {
         
         var payload = content.identifier
         
-        if disableNotification { payload[DISABLE_NOTIFICATION] = true }
+        if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
         payload.append(contentOf: receiver.receiverIdentifier)
         
-        guard let responseDictionary = perform(method: SEND_PHOTO, payload: payload) as? [String: Any] else {
+        guard let responseDictionary = perform(method: content.sendingMethod, payload: payload) as? [String: Any] else {
             return nil
         }
         
-        return Message(from: responseDictionary[RESULT])
+        return Message(from: responseDictionary[PARAM.RESULT])
         
     }
     
@@ -103,7 +104,7 @@ extension ZEGBot {
         let curl = CURL()
         curl.url = urlPrefix + method
         curl.setOption(CURLOPT_POSTFIELDS, v: &bodyBytes)
-        curl.setOption(CURLOPT_HTTPHEADER, s: POST_JSON_HEADER_CONTENT_TYPE)
+        curl.setOption(CURLOPT_HTTPHEADER, s: PARAM.POST_JSON_HEADER_CONTENT_TYPE)
         
         let responseString = curl.performFully().2.reduce("", { a, b in a + String(UnicodeScalar(b)) })
             

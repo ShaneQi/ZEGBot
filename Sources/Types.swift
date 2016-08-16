@@ -59,76 +59,12 @@ public class Message {
 	var migrate_from_chat_id: Int?
 	var pinned_message: Message?
 	
-	
-	init(message_id: Int,
-	     date: Int,
-	     chat: Chat,
-	     from: User? = nil,
-	     forward_from: User? = nil,
-	     forward_from_chat: Chat? = nil,
-	     forward_date: Int? = nil,
-	     reply_to_message: Message? = nil,
-	     edit_date: Int? = nil,
-	     text: String? = nil,
-	     entities: [MessageEntity]? = nil,
-	     audio: Audio? = nil,
-	     document: Document? = nil,
-	     photo: [PhotoSize]? = nil,
-	     sticker: Sticker? = nil,
-	     video: Video? = nil,
-	     voice: Voice? = nil,
-	     caption: String? = nil,
-	     contact: Contact? = nil,
-	     location: Location? = nil,
-	     venue: Venue? = nil,
-	     new_chat_member: User? = nil,
-	     left_chat_member: User? = nil,
-	     new_chat_title: String? = nil,
-	     new_chat_photo: [PhotoSize]? = nil,
-	     delete_chat_photo: Bool? = nil,
-	     group_chat_created: Bool? = nil,
-	     supergroup_chat_created: Bool? = nil,
-	     channel_chat_created: Bool? = nil,
-	     migrate_to_chat_id: Int? = nil,
-	     migrate_from_chat_id: Int? = nil,
-	     pinned_message: Message? = nil
-		) {
+    init() {
+        self.message_id = 0
+        self.date = 0
+        self.chat = Chat(id: 0, type: .PRIVATE)
+    }
 		
-		self.message_id = message_id
-		self.date = date
-		self.chat = chat
-		self.from = from
-		self.forward_from = forward_from
-		self.forward_from_chat = forward_from_chat
-		self.forward_date = forward_date
-		self.reply_to_message = reply_to_message
-		self.edit_date = edit_date
-		self.text = text
-		self.entities = entities
-		self.audio = audio
-		self.document = document
-		self.photo = photo
-		self.sticker = sticker
-		self.video = video
-		self.voice = voice
-		self.caption = caption
-		self.contact = contact
-		self.location = location
-		self.venue = venue
-		self.new_chat_member = new_chat_member
-		self.left_chat_member = left_chat_member
-		self.new_chat_title = new_chat_title
-		self.new_chat_photo = new_chat_photo
-		self.delete_chat_photo = delete_chat_photo
-		self.group_chat_created = group_chat_created
-		self.supergroup_chat_created = supergroup_chat_created
-		self.channel_chat_created = channel_chat_created
-		self.migrate_to_chat_id = migrate_to_chat_id
-		self.migrate_from_chat_id = migrate_from_chat_id
-		self.pinned_message = pinned_message
-		
-	}
-	
 }
 
 
@@ -143,11 +79,10 @@ public struct Chat {
 	var first_name: String?
 	var last_name: String?
     
-    init(id: Int, type: sType, username: String? = nil) {
+    init(id: Int, type: sType) {
         
         self.id = id
         self.type = type
-        self.username = username
         
     }
     
@@ -192,28 +127,24 @@ public struct User {
 
 public struct MessageEntity {
 	
-	var type: String
+	var type: sType
 	var offset: Int
 	var length: Int
 	
 	/* OPTIONAl. */
 	var url: String?
 	var user: User?
-	
-	init(type: String,
-	     offset: Int,
-	     length: Int,
-	     url: String? = nil,
-		 user: User? =  nil
-		){
-		
-		self.type = type
-		self.offset = offset
-		self.length = length
-		self.url = url
-		self.user = user
-		
-	}
+    
+    enum sType: String {
+        init?(from string: String?) {
+            guard let typeString = string else { return nil }
+            guard let instance = sType(rawValue: typeString.uppercased()) else { return nil }
+            self = instance
+        }
+        
+        case MENTION, HASHTAG, BOT_COMMAND, URL, EMAIL, BOLD, ITALIC, CODE, PRE, TEXT_LINK, TEXT_MENTION
+
+    }
 	
 }
 
@@ -457,3 +388,7 @@ public struct Venue {
 	
 }
 
+public enum ParseMode: String {
+	case Markdown
+	case HTML
+}

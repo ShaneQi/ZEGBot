@@ -31,6 +31,7 @@ extension Message: Sendable {
 public protocol Identifiable {
 
     var identifier: [String: Any] { get }
+	var sendingMethod: String { get }
     
 }
 
@@ -39,6 +40,8 @@ extension PhotoSize: Identifiable {
     public var identifier: [String: Any] {
         return ["photo": self.file_id]
     }
+	
+	public var sendingMethod: String { return ZEGBot.PARAM. }
     
 }
 
