@@ -15,20 +15,21 @@ import PerfectLib
 extension ZEGBot {
 	
 	internal struct PARAM {
-		static let DISABLE_NOTIFICATION =          "disable_notification"
-		static let POST_JSON_HEADER_CONTENT_TYPE = "Content-Type: application/json"
-		static let RESULT =                        "result"
+		static let DISABLE_NOTIFICATION =			"disable_notification"
+		static let POST_JSON_HEADER_CONTENT_TYPE =	"Content-Type: application/json"
+		static let RESULT =							"result"
 		
-		static let SEND_MESSAGE =                  "sendMessage"
-		static let TEXT =                          "text"
-		static let PARSE_MODE =                    "parse_mode"
-		static let DISABLE_WEB_PAGE_PREVIEW =      "disable_web_page_preview"
+		static let SEND_MESSAGE =					"sendMessage"
+		static let TEXT =							"text"
+		static let PARSE_MODE =						"parse_mode"
+		static let DISABLE_WEB_PAGE_PREVIEW =		"disable_web_page_preview"
 		
-		static let FORWARD_MESSAGE =               "forwardMessage"
-		static let MESSAGE_ID =                    "message_id"
-		static let FROM_CHAT_ID =                  "from_chat_id"
+		static let FORWARD_MESSAGE =				"forwardMessage"
+		static let MESSAGE_ID =						"message_id"
+		static let FROM_CHAT_ID =					"from_chat_id"
 		
-		static let CAPTION =                       "caption"
+		static let SEND_PHOTO =						"sendPhoto"
+//		static let CAPTION =                       "caption"
 		
 	}
 	
