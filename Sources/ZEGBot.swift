@@ -24,7 +24,7 @@ public struct ZEGBot {
     }
 
 	
-    func run(with handler: @escaping (ZEGBot, Update) -> Void ) {
+    func run(with handler: @escaping (Update, ZEGBot) -> Void ) {
 
 		let curl = CURL()
 		var offset = 0
@@ -41,12 +41,16 @@ public struct ZEGBot {
 			
             for update in updates {
                 Threading.dispatch {
-                    handler(self, update)
+                    handler(update, self)
                 }
             }
 			
 		}
 		
+	}
+	
+	func run(with handler: ZEGHandler) {
+		run(with: handler.handle)
 	}
     
 	
@@ -113,4 +117,10 @@ extension ZEGBot {
         
     }
     
+}
+
+public protocol ZEGHandler {
+
+	func handle(update: Update, bot: ZEGBot)
+	
 }
