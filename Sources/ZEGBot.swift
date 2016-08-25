@@ -18,13 +18,13 @@ public struct ZEGBot {
 	private var token: String
 	internal var urlPrefix: String
     
-    init(token: String) {
+    public init(token: String) {
         self.token = token
         self.urlPrefix = "https://api.telegram.org/bot"+token+"/"
     }
 
 	
-    func run(with handler: @escaping (Update, ZEGBot) -> Void ) {
+    public func run(with handler: @escaping (Update, ZEGBot) -> Void ) {
 
 		let curl = CURL()
 		var offset = 0
@@ -49,7 +49,7 @@ public struct ZEGBot {
 		
 	}
 	
-	func run(with handler: ZEGHandler) {
+	public func run(with handler: ZEGHandler) {
 		run(with: handler.handle)
 	}
     
