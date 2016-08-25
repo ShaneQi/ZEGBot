@@ -38,49 +38,59 @@ public protocol Identifiable {
 extension PhotoSize: Identifiable {
 
     public var identifier: [String: Any] {
-        return ["photo": self.file_id]
+        return [ZEGBot.PARAM.PHOTO: self.file_id]
     }
 	
-	public var sendingMethod: String { return ZEGBot.PARAM. }
+	public var sendingMethod: String { return ZEGBot.PARAM.SEND_PHOTO }
     
 }
 
 extension Audio: Identifiable {
     
     public var identifier: [String: Any] {
-        return ["audio": self.file_id]
+        return [ZEGBot.PARAM.AUDIO: self.file_id]
     }
+	
+	public var sendingMethod: String { return ZEGBot.PARAM.SEND_AUDIO }
     
 }
 
 extension Document: Identifiable {
     
     public var identifier: [String: Any] {
-        return ["document": self.file_id]
+        return [ZEGBot.PARAM.DOCUMENT: self.file_id]
     }
+	
+	public var sendingMethod: String { return ZEGBot.PARAM.SEND_DOCUMENT }
     
 }
 
 extension Sticker: Identifiable {
     
     public var identifier: [String: Any] {
-        return ["sticker": self.file_id]
+        return [ZEGBot.PARAM.STICKER: self.file_id]
     }
-    
+	
+	public var sendingMethod: String { return ZEGBot.PARAM.SEND_STICKER }
+	
 }
 
 extension Video: Identifiable {
     
     public var identifier: [String: Any] {
-        return ["video": self.file_id]
+        return [ZEGBot.PARAM.VIDEO: self.file_id]
     }
+	
+	public var sendingMethod: String { return ZEGBot.PARAM.SEND_VIDEO }
     
 }
 
 extension Voice: Identifiable {
     
     public var identifier: [String: Any] {
-        return ["voice": self.file_id]
+        return [ZEGBot.PARAM.VOICE: self.file_id]
     }
+	
+	public var sendingMethod: String { return ZEGBot.PARAM.SEND_VOICE }
     
 }

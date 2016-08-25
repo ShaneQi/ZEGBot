@@ -392,3 +392,14 @@ public enum ParseMode: String {
 	case Markdown
 	case HTML
 }
+
+public enum ChatAction: String {
+	case typing
+	case upload_photo
+	case record_video
+	case upload_video
+	case record_audio
+	case upload_audio
+	case upload_document
+	case find_location
+}
