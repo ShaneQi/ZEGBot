@@ -14,51 +14,51 @@ import PerfectLib
 
 extension ZEGBot {
 	
-    public func send(message text: String, to receiver: Sendable,
-                            parseMode: ParseMode? = nil,
-                            disableWebPagePreview: Bool = false,
-                            disableNotification: Bool = false) -> Message? {
-        
-        var payload: [String: Any] = [
-            PARAM.TEXT: text,
-            PARAM.PARSE_MODE: parseMode
-        ]
+	public func send(message text: String, to receiver: Sendable,
+	                 parseMode: ParseMode? = nil,
+	                 disableWebPagePreview: Bool = false,
+	                 disableNotification: Bool = false) -> Message? {
 		
-        if disableWebPagePreview { payload[PARAM.DISABLE_WEB_PAGE_PREVIEW] = true }
-        
-        if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
-        payload.append(contentOf: receiver.receiverIdentifier)
-        
-        guard let responseDictionary = perform(method: PARAM.SEND_MESSAGE, payload: payload) as? [String: Any] else {
-            return nil
-        }
-            
-        return Message(from: responseDictionary[PARAM.RESULT])
-        
-    }
-    
-    public func forward(message: Message, to receiver: Sendable,
-                               disableNotification: Bool = false) -> Message? {
-        
-        var payload: [String: Any] = [
-            PARAM.MESSAGE_ID: message.message_id,
-            PARAM.FROM_CHAT_ID: message.chat.id
-        ]
-        
-        if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
-        payload.append(contentOf: receiver.receiverIdentifier)
-        
-        guard let responseDictionary = perform(method: PARAM.FORWARD_MESSAGE, payload: payload) as? [String: Any] else {
-            return nil
-        }
-        
-        return Message(from: responseDictionary[PARAM.RESULT])
-
-    }
+		var payload: [String: Any] = [
+			PARAM.TEXT: text,
+			]
+		
+		if let parseMode = parseMode { payload[PARAM.PARSE_MODE] = parseMode.rawValue }
+		if disableWebPagePreview { payload[PARAM.DISABLE_WEB_PAGE_PREVIEW] = true }
+		
+		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
+		payload.append(contentOf: receiver.receiverIdentifier)
+		
+		guard let responseDictionary = perform(method: PARAM.SEND_MESSAGE, payload: payload) as? [String: Any] else {
+			return nil
+		}
+		
+		return Message(from: responseDictionary[PARAM.RESULT])
+		
+	}
+	
+	public func forward(message: Message, to receiver: Sendable,
+	                    disableNotification: Bool = false) -> Message? {
+		
+		var payload: [String: Any] = [
+			PARAM.MESSAGE_ID: message.message_id,
+			PARAM.FROM_CHAT_ID: message.chat.id
+		]
+		
+		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
+		payload.append(contentOf: receiver.receiverIdentifier)
+		
+		guard let responseDictionary = perform(method: PARAM.FORWARD_MESSAGE, payload: payload) as? [String: Any] else {
+			return nil
+		}
+		
+		return Message(from: responseDictionary[PARAM.RESULT])
+		
+	}
 	
 	public func send(photo: PhotoSize, to receiver: Sendable,
-						disableNotification: Bool = false,
-						caption: String? = nil) -> Message? {
+	                 disableNotification: Bool = false,
+	                 caption: String? = nil) -> Message? {
 		
 		var options = [String: Any]()
 		
@@ -66,7 +66,7 @@ extension ZEGBot {
 		if disableNotification { options[PARAM.DISABLE_NOTIFICATION] = true }
 		
 		return send(contentOnServer: photo, to: receiver, options: options)
-
+		
 	}
 	
 	public func send(audio: Audio, to receiver: Sendable,
@@ -165,7 +165,7 @@ extension ZEGBot {
 		}
 		
 		return Message(from: responseDictionary[PARAM.RESULT])
-
+		
 	}
 	
 	public func sendContact(phoneNumber: String, lastName: String, firstName: String? = nil,
@@ -204,7 +204,7 @@ extension ZEGBot {
 }
 
 extension ZEGBot {
-
+	
 	internal func send(contentOnServer content: Identifiable, to receiver: Sendable,
 	                   options: [String: Any]) -> Message? {
 		

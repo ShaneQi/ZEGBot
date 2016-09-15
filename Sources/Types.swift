@@ -59,7 +59,7 @@ public class Message {
 	public var migrate_from_chat_id: Int?
 	public var pinned_message: Message?
 	
-    init() {
+    public init() {
         self.message_id = 0
         self.date = 0
         self.chat = Chat(id: 0, type: .PRIVATE)
@@ -79,7 +79,7 @@ public struct Chat {
 	public var first_name: String?
 	public var last_name: String?
     
-    init(id: Int, type: sType) {
+    public init(id: Int, type: sType) {
         
         self.id = id
         self.type = type
