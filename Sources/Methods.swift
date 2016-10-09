@@ -14,6 +14,7 @@ import PerfectLib
 
 extension ZEGBot {
 	
+	@discardableResult
 	public func send(message text: String, to receiver: Sendable,
 	                 parseMode: ParseMode? = nil,
 	                 disableWebPagePreview: Bool = false,
@@ -37,6 +38,7 @@ extension ZEGBot {
 		
 	}
 	
+	@discardableResult
 	public func forward(message: Message, to receiver: Sendable,
 	                    disableNotification: Bool = false) -> Message? {
 		
@@ -56,6 +58,7 @@ extension ZEGBot {
 		
 	}
 	
+	@discardableResult
 	public func send(photo: PhotoSize, to receiver: Sendable,
 	                 disableNotification: Bool = false,
 	                 caption: String? = nil) -> Message? {
@@ -69,6 +72,7 @@ extension ZEGBot {
 		
 	}
 	
+	@discardableResult
 	public func send(audio: Audio, to receiver: Sendable,
 	                 disableNotification: Bool = false) -> Message? {
 		
@@ -80,6 +84,7 @@ extension ZEGBot {
 		
 	}
 	
+	@discardableResult
 	public func send(document: Document, to receiver: Sendable,
 	                 disableNotification: Bool = false,
 	                 caption: String? = nil) -> Message? {
@@ -93,6 +98,7 @@ extension ZEGBot {
 		
 	}
 	
+	@discardableResult
 	public func send(sticker: Sticker, to receiver: Sendable,
 	                 disableNotification: Bool = false) -> Message? {
 		
@@ -104,6 +110,7 @@ extension ZEGBot {
 		
 	}
 	
+	@discardableResult
 	public func send(video: Video, to receiver: Sendable,
 	                 disableNotification: Bool = false) -> Message? {
 		
@@ -115,6 +122,7 @@ extension ZEGBot {
 		
 	}
 	
+	@discardableResult
 	public func send(voice: Voice, to receiver: Sendable,
 	                 disableNotification: Bool = false) -> Message? {
 		
@@ -126,6 +134,7 @@ extension ZEGBot {
 		
 	}
 	
+	@discardableResult
 	public func sendLocation(latitude: Double, longitude: Double, to receiver: Sendable,
 	                         disableNotification: Bool = false) -> Message? {
 		
@@ -144,6 +153,7 @@ extension ZEGBot {
 		return Message(from: responseDictionary[PARAM.RESULT])
 	}
 	
+	@discardableResult
 	public func sendVenue(latitude: Double, longitude: Double,
 	                      title: String, address: String, foursquare_id: String? = nil,
 	                      to receiver: Sendable,
@@ -168,6 +178,7 @@ extension ZEGBot {
 		
 	}
 	
+	@discardableResult
 	public func sendContact(phoneNumber: String, lastName: String, firstName: String? = nil,
 	                        to receiver: Sendable,
 	                        disableNotification: Bool = false) -> Message? {
@@ -189,6 +200,7 @@ extension ZEGBot {
 		
 	}
 	
+	@discardableResult
 	public func send(chatAction: ChatAction, to receiver: Sendable) {
 		
 		var payload: [String: Any] = [

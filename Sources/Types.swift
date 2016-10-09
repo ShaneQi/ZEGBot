@@ -59,17 +59,17 @@ public class Message {
 	public var migrate_from_chat_id: Int?
 	public var pinned_message: Message?
 	
-    public init() {
-        self.message_id = 0
-        self.date = 0
-        self.chat = Chat(id: 0, type: .PRIVATE)
-    }
-		
+	public init() {
+		self.message_id = 0
+		self.date = 0
+		self.chat = Chat(id: 0, type: .PRIVATE)
+	}
+	
 }
 
 
 public struct Chat {
-
+	
 	public var id: Int
 	public var type: sType
 	
@@ -78,25 +78,25 @@ public struct Chat {
 	public var username: String?
 	public var first_name: String?
 	public var last_name: String?
-    
-    public init(id: Int, type: sType) {
-        
-        self.id = id
-        self.type = type
-        
-    }
-    
-    public enum sType: String {
-        
-        init?(from string: String?) {
-            guard let typeString = string else { return nil }
-            guard let instance = sType(rawValue: typeString.uppercased()) else { return nil }
-            self = instance
-        }
-        
-        case PRIVATE, GROUP, SUPERGROUP, CHANNEL
-    }
-
+	
+	public init(id: Int, type: sType) {
+		
+		self.id = id
+		self.type = type
+		
+	}
+	
+	public enum sType: String {
+		
+		public init?(from string: String?) {
+			guard let typeString = string else { return nil }
+			guard let instance = sType(rawValue: typeString.uppercased()) else { return nil }
+			self = instance
+		}
+		
+		case PRIVATE, GROUP, SUPERGROUP, CHANNEL
+	}
+	
 }
 
 
@@ -109,10 +109,10 @@ public struct User {
 	public var last_name: String?
 	public var username: String?
 	
-	init(id: Int,
-	     first_name: String,
-	     last_name: String? = nil,
-	     username: String? = nil
+	public init(id: Int,
+	            first_name: String,
+	            last_name: String? = nil,
+	            username: String? = nil
 		) {
 		
 		self.id = id
@@ -134,17 +134,17 @@ public struct MessageEntity {
 	/* OPTIONAl. */
 	public var url: String?
 	public var user: User?
-    
-    public enum sType: String {
-        init?(from string: String?) {
-            guard let typeString = string else { return nil }
-            guard let instance = sType(rawValue: typeString.uppercased()) else { return nil }
-            self = instance
-        }
-        
-        case MENTION, HASHTAG, BOT_COMMAND, URL, EMAIL, BOLD, ITALIC, CODE, PRE, TEXT_LINK, TEXT_MENTION
-
-    }
+	
+	public enum sType: String {
+		public init?(from string: String?) {
+			guard let typeString = string else { return nil }
+			guard let instance = sType(rawValue: typeString.uppercased()) else { return nil }
+			self = instance
+		}
+		
+		case MENTION, HASHTAG, BOT_COMMAND, URL, EMAIL, BOLD, ITALIC, CODE, PRE, TEXT_LINK, TEXT_MENTION
+		
+	}
 	
 }
 
@@ -160,12 +160,12 @@ public struct Audio {
 	public var mime_type: String?
 	public var file_size: Int?
 	
-	init(file_id: String,
-	     duration: Int,
-	     performer: String? = nil,
-	     title: String? = nil,
-	     mime_type: String? = nil,
-	     file_size: Int? = nil
+	public init(file_id: String,
+	            duration: Int,
+	            performer: String? = nil,
+	            title: String? = nil,
+	            mime_type: String? = nil,
+	            file_size: Int? = nil
 		) {
 		
 		self.file_id = file_id
@@ -190,11 +190,11 @@ public struct Document {
 	public var mime_type: String?
 	public var file_size: Int?
 	
-	init(file_id: String,
-	     thumb: PhotoSize? = nil,
-	     file_name: String? = nil,
-	     mime_type: String? = nil,
-	     file_size: Int? = nil
+	public init(file_id: String,
+	            thumb: PhotoSize? = nil,
+	            file_name: String? = nil,
+	            mime_type: String? = nil,
+	            file_size: Int? = nil
 		) {
 		
 		self.file_id = file_id
@@ -217,10 +217,10 @@ public struct PhotoSize {
 	/* Optional. */
 	public var file_size: Int?
 	
-	init(file_id: String,
-	     width: Int,
-	     height: Int,
-	     file_size: Int? = nil
+	public init(file_id: String,
+	            width: Int,
+	            height: Int,
+	            file_size: Int? = nil
 		){
 		
 		self.file_id = file_id
@@ -244,12 +244,12 @@ public struct Sticker {
 	public var emoji: String?
 	public var file_size: Int?
 	
-	init(file_id: String,
-	     width: Int,
-	     height: Int,
-	     thumb: PhotoSize? = nil,
-	     emoji: String? = nil,
-	     file_size: Int? = nil
+	public init(file_id: String,
+	            width: Int,
+	            height: Int,
+	            thumb: PhotoSize? = nil,
+	            emoji: String? = nil,
+	            file_size: Int? = nil
 		) {
 		
 		self.file_id = file_id
@@ -276,13 +276,13 @@ public struct Video {
 	public var mime_type: String?
 	public var file_size: Int?
 	
-	init(file_id: String,
-	     width: Int,
-	     height: Int,
-	     duration: Int,
-	     thumb: PhotoSize? = nil,
-	     mime_type: String? = nil,
-	     file_size: Int? = nil
+	public init(file_id: String,
+	            width: Int,
+	            height: Int,
+	            duration: Int,
+	            thumb: PhotoSize? = nil,
+	            mime_type: String? = nil,
+	            file_size: Int? = nil
 		){
 		
 		self.file_id = file_id
@@ -307,10 +307,10 @@ public struct Voice {
 	public var mime_type: String?
 	public var file_size: Int?
 	
-	init(file_id: String,
-	     duration: Int,
-	     mime_type: String? = nil,
-	     file_size: Int? = nil
+	public init(file_id: String,
+	            duration: Int,
+	            mime_type: String? = nil,
+	            file_size: Int? = nil
 		) {
 		
 		self.file_id = file_id
@@ -332,10 +332,10 @@ public struct Contact {
 	public var last_name: String?
 	public var user_id: Int?
 	
-	init(phone_number: String,
-	     first_name: String,
-	     last_name: String? = nil,
-	     user_id: Int? = nil
+	public init(phone_number: String,
+	            first_name: String,
+	            last_name: String? = nil,
+	            user_id: Int? = nil
 		) {
 		
 		self.phone_number = phone_number
@@ -353,8 +353,8 @@ public struct Location {
 	public var longitude: Double
 	public var latitude: Double
 	
-	init(longitude: Double,
-	     latitude: Double
+	public init(longitude: Double,
+	            latitude: Double
 		) {
 		
 		self.longitude = longitude
@@ -373,10 +373,10 @@ public struct Venue {
 	/* OPTIONAL. */
 	public var foursquare_id: String?
 	
-	init(location: Location,
-	     title: String,
-	     address: String,
-	     foursquare_id: String? = nil
+	public init(location: Location,
+	            title: String,
+	            address: String,
+	            foursquare_id: String? = nil
 		) {
 		
 		self.location = location
