@@ -37,7 +37,7 @@ extension Update: JSONConvertible {
 				return nil
 				
 		}
-    
+		
 		self.update_id = updateId
 		self.message = Message(from: jsonDictionary[PARAM.MESSAGE])
 		self.edited_message = Message(from: jsonDictionary[PARAM.EDITED_MESSAGE])
@@ -47,13 +47,13 @@ extension Update: JSONConvertible {
 }
 
 extension Message {
-    
+	
 	internal convenience init?(from jsonConvertibleObject: Any?) {
-        
-        self.init()
-        
+		
+		self.init()
+		
 		guard jsonConvertibleObject != nil else { return nil }
-
+		
 		guard let
 			jsonDictionary = jsonConvertibleObject as? [String: Any],
 			let messageId = jsonDictionary[PARAM.MESSAGE_ID] as? Int,
@@ -66,10 +66,10 @@ extension Message {
 				
 		}
 		
-        self.message_id = messageId
-        self.date = date
-        self.chat = chat
-        self.from = User(from: jsonDictionary[PARAM.FROM])
+		self.message_id = messageId
+		self.date = date
+		self.chat = chat
+		self.from = User(from: jsonDictionary[PARAM.FROM])
 		self.forward_from = User(from: jsonDictionary[PARAM.FORWARD_FROM])
 		self.forward_from_chat = Chat(from: jsonDictionary[PARAM.FORWARD_FROM_CHAT])
 		self.forward_date = jsonDictionary[PARAM.FORWARD_DATE] as? Int
@@ -98,13 +98,13 @@ extension Message {
 		self.migrate_to_chat_id = jsonDictionary[PARAM.MIGRATE_TO_CHAT_ID] as? Int
 		self.migrate_from_chat_id = jsonDictionary[PARAM.MIGRATE_FROM_CHAT_ID] as? Int
 		self.pinned_message = Message(from: jsonDictionary[PARAM.PINNED_MESSAGE])
-
-		}
-
+		
+	}
+	
 }
 
 extension Chat: JSONConvertible {
-
+	
 	internal init?(from jsonConvertibleObject: Any?) {
 		
 		guard jsonConvertibleObject != nil else { return nil }
@@ -114,7 +114,7 @@ extension Chat: JSONConvertible {
 			let id = jsonDictionary[PARAM.ID] as? Int,
 			let type = Chat.sType(from: jsonDictionary[PARAM.TYPE] as? String)
 			else {
-		
+				
 				Log.warning(on: jsonConvertibleObject)
 				return nil
 				
@@ -124,8 +124,8 @@ extension Chat: JSONConvertible {
 		self.type = type
 		self.title = jsonDictionary[PARAM.TITLE] as? String
 		self.username = jsonDictionary[PARAM.USERNAME] as? String
-        self.first_name = jsonDictionary[PARAM.FIRST_NAME] as? String
-        self.last_name = jsonDictionary[PARAM.LAST_NAME] as? String
+		self.first_name = jsonDictionary[PARAM.FIRST_NAME] as? String
+		self.last_name = jsonDictionary[PARAM.LAST_NAME] as? String
 		
 	}
 	
@@ -145,9 +145,9 @@ extension User: JSONConvertible {
 				
 				Log.warning(on: jsonConvertibleObject)
 				return nil
-		
+				
 		}
-
+		
 		self.id = id
 		self.first_name = firstName
 		self.last_name = jsonDictionary[PARAM.LAST_NAME] as? String
@@ -158,7 +158,7 @@ extension User: JSONConvertible {
 }
 
 extension MessageEntity: JSONConvertible, ArrayConvertible {
-    
+	
 	internal init?(from jsonConvertibleObject: Any?) {
 		
 		guard jsonConvertibleObject != nil else { return nil }
@@ -174,7 +174,7 @@ extension MessageEntity: JSONConvertible, ArrayConvertible {
 				return nil
 				
 		}
-        
+		
 		self.type = type
 		self.offset = offset
 		self.length = length
@@ -192,7 +192,7 @@ extension MessageEntity: JSONConvertible, ArrayConvertible {
 				
 				Log.warning(on: jsonConvertibleObject)
 				return nil
-		
+				
 		}
 		
 		var messageEntities = [MessageEntity]()
@@ -208,13 +208,13 @@ extension MessageEntity: JSONConvertible, ArrayConvertible {
 		}
 		
 		return messageEntities
-	
+		
 	}
-
+	
 }
 
 extension Audio: JSONConvertible {
-
+	
 	internal init?(from jsonConvertibleObject: Any?) {
 		
 		guard jsonConvertibleObject != nil else { return nil }
@@ -224,25 +224,25 @@ extension Audio: JSONConvertible {
 			let fileId = jsonDictionary[PARAM.FILE_ID] as? String,
 			let duration = jsonDictionary[PARAM.DURATION] as? Int
 			else {
-			
-			Log.warning(on: jsonConvertibleObject)
-			return nil
-			
+				
+				Log.warning(on: jsonConvertibleObject)
+				return nil
+				
 		}
-        
+		
 		self.file_id = fileId
 		self.duration = duration
 		self.performer = jsonDictionary[PARAM.PERFORMER] as? String
 		self.title = jsonDictionary[PARAM.TITLE] as? String
 		self.mime_type = jsonDictionary[PARAM.MIME_SIZE] as? String
 		self.file_size = jsonDictionary[PARAM.FILE_SIZE] as? Int
-
+		
 	}
 	
 }
 
 extension Document: JSONConvertible {
-
+	
 	internal init?(from jsonConvertibleObject: Any?) {
 		
 		guard jsonConvertibleObject != nil else { return nil }
@@ -268,7 +268,7 @@ extension Document: JSONConvertible {
 }
 
 extension PhotoSize: JSONConvertible, ArrayConvertible {
-
+	
 	internal init?(from jsonConvertibleObject: Any?) {
 		
 		guard jsonConvertibleObject != nil else { return nil }
@@ -284,7 +284,7 @@ extension PhotoSize: JSONConvertible, ArrayConvertible {
 				return nil
 				
 		}
-
+		
 		self.file_id = fileId
 		self.width = width
 		self.height = height
@@ -320,7 +320,7 @@ extension PhotoSize: JSONConvertible, ArrayConvertible {
 		return photoSizes
 		
 	}
-
+	
 }
 
 extension Sticker: JSONConvertible {
@@ -340,16 +340,16 @@ extension Sticker: JSONConvertible {
 				return nil
 				
 		}
-
+		
 		self.file_id = fileId
 		self.width = width
 		self.height = height
 		self.thumb = PhotoSize(from: jsonDictionary[PARAM.THUMB])
 		self.emoji = jsonDictionary[PARAM.EMOJI] as? String
 		self.file_size = jsonDictionary[PARAM.FILE_SIZE] as? Int
-
+		
 	}
-
+	
 }
 
 extension Video: JSONConvertible {
@@ -370,7 +370,7 @@ extension Video: JSONConvertible {
 				return nil
 				
 		}
-
+		
 		self.file_id = fileId
 		self.width = width
 		self.height = height
@@ -378,9 +378,9 @@ extension Video: JSONConvertible {
 		self.thumb = PhotoSize(from: jsonDictionary[PARAM.THUMB])
 		self.mime_type = jsonDictionary[PARAM.MIME_TYPE] as? String
 		self.file_size = jsonDictionary[PARAM.FILE_SIZE] as? Int
-
+		
 	}
-
+	
 }
 
 extension Voice: JSONConvertible {
@@ -432,7 +432,7 @@ extension Contact: JSONConvertible {
 		self.user_id = jsonDictionary[PARAM.USER_ID] as? Int
 		
 	}
-
+	
 }
 
 extension Location: JSONConvertible {
@@ -456,11 +456,11 @@ extension Location: JSONConvertible {
 		self.latitude = latitude
 		
 	}
-
+	
 }
 
 extension Venue: JSONConvertible {
-
+	
 	internal init?(from jsonConvertibleObject: Any?) {
 		
 		guard jsonConvertibleObject != nil else { return nil }
@@ -476,7 +476,7 @@ extension Venue: JSONConvertible {
 				return nil
 				
 		}
-
+		
 		self.location = location
 		self.title = title
 		self.address = address

@@ -7,7 +7,7 @@
 //
 
 extension ZEGBot {
-
+	
 	
 	internal struct PARAM {
 		
@@ -49,7 +49,7 @@ extension ZEGBot {
 		static let VOICE =							"voice"
 		
 		static let SEND_LOCATION =					"sendLocation"
-
+		
 		static let SEND_VENUE =						"sendVenue"
 		static let TITLE =							"title"
 		static let ADDRESS =						"address"
@@ -162,7 +162,7 @@ extension Audio {
 		static let MIME_SIZE =              "mime_size"
 		static let FILE_SIZE =              "file_size"
 	}
-
+	
 }
 
 extension Document {
@@ -189,7 +189,7 @@ extension PhotoSize {
 }
 
 extension Sticker {
-
+	
 	internal struct PARAM {
 		static let FILE_ID =			"file_id"
 		static let WIDTH =				"width"
@@ -223,7 +223,7 @@ extension Voice {
 		static let MIME_TYPE =			"mime_type"
 		static let FILE_SIZE =			"file_size"
 	}
-
+	
 }
 
 extension Contact {
@@ -234,7 +234,7 @@ extension Contact {
 		static let LAST_NAME =				"last_name"
 		static let USER_ID =				"user_id"
 	}
-
+	
 }
 
 extension Location {
@@ -247,7 +247,7 @@ extension Location {
 }
 
 extension Venue {
-
+	
 	internal struct PARAM {
 		static let LOCATION =				"location"
 		static let TITLE =					"title"

@@ -2,36 +2,39 @@
 
 This library wraps the JSON decoding processing, making it easy to decode incoming JSON String to manipulatable objects.
 
-This library wraps the processing of converting objects to Telegram Bot API request parameters and the processing of performing request, making it easy to respond for incoming update.
+This library wraps the processing of converting objects to Telegram Bot API request parameters and the processing of performing request, making it easy to handle incoming update.
 
-**This is a server-side swift library based on [Perfect](https://github.com/PerfectlySoft/Perfect).  
-Helping build your own Perfect Telegram Bot!**
-
-## Quick Start
-
-Checkout `ZEGBotExample` project, whose `README.md`  walks through a bot's birthing.
+**This is a server-side swift library powered by [Perfect](https://github.com/PerfectlySoft/Perfect).  
+Which will help you build your own Perfect Telegram Bot!**
 
 ## Installation
 
-- Add the 4 files in `Sources` directory to your Perfect server project.
+Add this project as a dependency in your Package.swift file.
 
-- Put your bot token as a global String named `token` in your Perfect server project.
+```swift
+.Package(url: "https://github.com/ShaneQi/ZEGBot.git", versions: Version(0,0,0)..<Version(10,0,0))
+```
+## Quick Start
+
+```swift
+import ZEGBot
+
+let bot = ZEGBot(token: "TYPE YOUR TOKEN HERE")
+
+bot.run(with: {
+	update, bot in
+
+  //  Handle updates here...
+
+})
+```
 
 ## Usage
-
-- Decode incoming Update object presented by JSON string:
-  ```swift
-  func handleRequest(request: WebRequest, response: WebResponse) {
-    ...
-    let update = ZEGDecoder.decodeUpdate(request.postBodyString)
-    ...
-  }
-  ```
 
 - Get text content of the incoming message:
   ```swift
   ...
-  if let message = update?.message, text = message.text {
+  if let text = update.message?.text {
     // Do something.
   }
   ...
@@ -40,7 +43,7 @@ Checkout `ZEGBotExample` project, whose `README.md`  walks through a bot's birth
 - Get other type of content if exists:
   ```swift
   ...
-  if let message = update?.message, voice = message.voice {
+  if let voice = update.message?.voice {
     // Do something.
   }
   ...
@@ -49,8 +52,8 @@ Checkout `ZEGBotExample` project, whose `README.md`  walks through a bot's birth
 - Send a text message to a chat:
   ```swift
   ...
-  if let message = update?.message {
-    ZEGResponse.sendMessage(to: message.chat, text: "bar", parse_mode: nil, disable_web_page_preview: nil, disable_notification: nil)
+  if let message = update.message {
+    bot.send(message: "bar", to: message.chat)
   }
   ...
   ```
@@ -59,7 +62,7 @@ Checkout `ZEGBotExample` project, whose `README.md`  walks through a bot's birth
   ```swift
   ...
   if let message = update?.message {
-    ZEGResponse.sendMessage(to: message.chat, text: "[Google](https://google.com)", parse_mode: .Markdown, disable_web_page_preview: true, disable_notification: true)
+    bot.send(message: "[Google](https://google.com)", to: message.chat, parseMode: .MARKDOWN, disableWebPagePreview: true, disableNotification: true)
   }
   ...
   ```
@@ -69,16 +72,12 @@ Checkout `ZEGBotExample` project, whose `README.md`  walks through a bot's birth
   ...
   if let message = update?.message {
     /* This sends a message replying to another message. */
-    ZEGResponse.sendMessage(to: message, text: "foo", parse_mode: nil, disable_web_page_preview: nil, disable_notification: nil)
-    /* This replies to nobody. */
-    ZEGResponse.sendMessage(to: message.chat, text: "foo", parse_mode: nil, disable_web_page_preview: nil, disable_notification: nil)
+    bot.send(message: "bar", to: message)
+    /* This doesn't reply to a message. */
+    bot.send(message: "bar", to: message.chat)
   }
   ...
   ```
-
-## Dependency
-
-- [Perfect v1.0.0](https://github.com/PerfectlySoft/Perfect/releases/tag/v1.0.0)
 
 ## Support Types
 
