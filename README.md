@@ -16,9 +16,14 @@ Add this project as a dependency in your Package.swift file.
 ```
 ## Quick Start
 
+[ZEGBot-Template](https://github.com/ShaneQi/ZEGBot-Template) - a empty starter project. 
+
+Or you can just put the following code into `main.swift` of your project.
+
 ```swift
 import ZEGBot
 
+//  Don't forget to fill in your bot token.
 let bot = ZEGBot(token: "TYPE YOUR TOKEN HERE")
 
 bot.run(with: {
