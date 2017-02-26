@@ -1,5 +1,7 @@
 # ZEGBot
 
+[![Build Status](https://travis-ci.org/ShaneQi/ZEGBot.svg?branch=master)](https://travis-ci.org/ShaneQi/ZEGBot)  ![Swift Version](https://img.shields.io/badge/Swift-3.0-orange.svg?style=flat)  ![Platforms](https://img.shields.io/badge/Platforms-OS%20X%20%7C%20Linux%20-lightgray.svg?style=flat)  ![License](https://img.shields.io/badge/License-Apache-lightgrey.svg?style=flat)
+
 This library wraps the JSON decoding processing, making it easy to decode incoming JSON String to manipulatable objects.
 
 This library wraps the processing of converting objects to Telegram Bot API request parameters and the processing of performing request, making it easy to handle incoming update.
@@ -16,7 +18,7 @@ Add this project as a dependency in your Package.swift file.
 ```
 ## Quick Start
 
-[ZEGBot-Template](https://github.com/ShaneQi/ZEGBot-Template) - a empty starter project. 
+[ZEGBot-Template](https://github.com/ShaneQi/ZEGBot-Template) - an empty starter project. 
 
 Or you can just put the following code into `main.swift` of your project.
 
