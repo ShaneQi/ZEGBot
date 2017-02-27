@@ -61,14 +61,14 @@ extension ZEGBot {
 	/* For getUpdates. */
 	static func decodeUpdates(from jsonString: String) -> [Update]? {
 		
-		return Update.array(from: JSON.parse(string: jsonString))
+		return Update.array(from: JSON.parse(string: jsonString)[PARAM.RESULT])
 		
 	}
 	
 	/* For webhook. */
 	static func decodeUpdate(from jsonString: String) -> Update? {
 		
-		return Update(from: JSON.parse(string: jsonString))
+		return Update(from: JSON.parse(string: jsonString)[PARAM.RESULT])
 		
 	}
 	

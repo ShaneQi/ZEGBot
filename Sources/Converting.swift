@@ -26,6 +26,8 @@ extension ArrayConvertible where Self: JSONConvertible {
 
 	internal static func array(from json: JSON) -> [Self]? {
 		
+		guard !json.isEmpty else { return nil }
+		
 		guard let jsonArray = json.array else {
 				Log.warning(on: json)
 				return nil
@@ -55,6 +57,8 @@ extension Update: JSONConvertible, ArrayConvertible {
 extension Message {
 	
 	internal convenience init?(from json: JSON) {
+		
+		guard !json.isEmpty else { return nil }
 		
 		self.init()
 		
@@ -106,6 +110,8 @@ extension Chat: JSONConvertible {
 	
 	internal init?(from json: JSON) {
 		
+		guard !json.isEmpty else { return nil }
+		
 		guard let id = json[PARAM.ID].int,
 			let type = Chat.sType(from: json[PARAM.TYPE].string) else {
 				Log.warning(on: json)
@@ -127,6 +133,8 @@ extension User: JSONConvertible {
 	
 	internal init?(from json: JSON) {
 		
+		guard !json.isEmpty else { return nil }
+		
 		guard let id = json[PARAM.ID].int,
 			let firstName = json[PARAM.FIRST_NAME].string else {
 				Log.warning(on: json)
@@ -145,6 +153,8 @@ extension User: JSONConvertible {
 extension MessageEntity: JSONConvertible, ArrayConvertible {
 	
 	internal init?(from json: JSON) {
+		
+		guard !json.isEmpty else { return nil }
 		
 		guard let type = MessageEntity.sType(from: json[PARAM.TYPE].string),
 			let offset = json[PARAM.OFFSET].int,
@@ -165,6 +175,8 @@ extension MessageEntity: JSONConvertible, ArrayConvertible {
 extension Audio: JSONConvertible {
 	
 	internal init?(from json: JSON) {
+		
+		guard !json.isEmpty else { return nil }
 		
 		guard let fileId = json[PARAM.FILE_ID].string,
 			let duration = json[PARAM.DURATION].int else {
@@ -187,6 +199,8 @@ extension Document: JSONConvertible {
 	
 	internal init?(from json: JSON) {
 		
+		guard !json.isEmpty else { return nil }
+		
 		guard let fileId = json[PARAM.FILE_ID].string else {
 				Log.warning(on: json)
 				return nil
@@ -205,6 +219,8 @@ extension Document: JSONConvertible {
 extension PhotoSize: JSONConvertible, ArrayConvertible {
 	
 	internal init?(from json: JSON) {
+		
+		guard !json.isEmpty else { return nil }
 		
 		guard let fileId = json[PARAM.FILE_ID].string,
 			let width = json[PARAM.WIDTH].int,
@@ -225,6 +241,8 @@ extension PhotoSize: JSONConvertible, ArrayConvertible {
 extension Sticker: JSONConvertible {
 	
 	internal init?(from json: JSON) {
+		
+		guard !json.isEmpty else { return nil }
 		
 		guard let fileId = json[PARAM.FILE_ID].string,
 			let width = json[PARAM.WIDTH].int,
@@ -247,6 +265,8 @@ extension Sticker: JSONConvertible {
 extension Video: JSONConvertible {
 	
 	internal init?(from json: JSON) {
+		
+		guard !json.isEmpty else { return nil }
 		
 		guard let fileId = json[PARAM.FILE_ID].string,
 			let width = json[PARAM.WIDTH].int,
@@ -272,6 +292,8 @@ extension Voice: JSONConvertible {
 	
 	internal init?(from json: JSON) {
 		
+		guard !json.isEmpty else { return nil }
+		
 		guard let fileId = json[PARAM.FILE_ID].string,
 			let duration = json[PARAM.DURATION].int else {
 				Log.warning(on: json)
@@ -290,6 +312,8 @@ extension Voice: JSONConvertible {
 extension Contact: JSONConvertible {
 	
 	internal init?(from json: JSON) {
+		
+		guard !json.isEmpty else { return nil }
 		
 		guard let phoneNumber = json[PARAM.PHONE_NUMBER].string,
 			let firstName = json[PARAM.FIRST_NAME].string else {
@@ -310,6 +334,8 @@ extension Location: JSONConvertible {
 	
 	internal init?(from json: JSON) {
 		
+		guard !json.isEmpty else { return nil }
+		
 		guard let longitude = json[PARAM.LONGITUDE].double,
 			let latitude = json[PARAM.LATITUDE].double else {
 				Log.warning(on: json)
@@ -326,6 +352,8 @@ extension Location: JSONConvertible {
 extension Venue: JSONConvertible {
 	
 	internal init?(from json: JSON) {
+		
+		guard !json.isEmpty else { return nil }
 		
 		guard let location = Location(from: json[PARAM.LOCATION]),
 			let title = json[PARAM.TITLE].string,
