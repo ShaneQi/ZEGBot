@@ -21,7 +21,7 @@ extension ZEGBot {
 	                 disableWebPagePreview: Bool = false,
 	                 disableNotification: Bool = false) -> Message? {
 		
-		var payload: [String: Any?] = [
+		var payload: [String: Any] = [
 			PARAM.TEXT: text,
 			]
 		
@@ -43,7 +43,7 @@ extension ZEGBot {
 	public func forward(message: Message, to receiver: Sendable,
 	                    disableNotification: Bool = false) -> Message? {
 		
-		var payload: [String: Any?] = [
+		var payload: [String: Any] = [
 			PARAM.MESSAGE_ID: message.message_id,
 			PARAM.FROM_CHAT_ID: message.chat.id
 		]
@@ -139,7 +139,7 @@ extension ZEGBot {
 	public func sendLocation(latitude: Double, longitude: Double, to receiver: Sendable,
 	                         disableNotification: Bool = false) -> Message? {
 		
-		var payload: [String: Any?] = [
+		var payload: [String: Any] = [
 			PARAM.LATITUDE: latitude,
 			PARAM.LONGITUDE: longitude
 		]
@@ -160,13 +160,16 @@ extension ZEGBot {
 	                      to receiver: Sendable,
 	                      disableNotification: Bool = false) -> Message? {
 		
-		var payload: [String: Any?] = [
+		var payload: [String: Any] = [
 			PARAM.LATITUDE: latitude,
 			PARAM.LONGITUDE: longitude,
 			PARAM.TITLE: title,
-			PARAM.ADDRESS: address,
+			PARAM.ADDRESS: address
+		]
+		let optionalPayload: [String: Any?] = [
 			PARAM.FOURSQUARE_ID: foursquare_id
 		]
+		payload.append(contentOf: optionalPayload)
 		
 		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
 		payload.append(contentOf: receiver.receiverIdentifier)
@@ -184,11 +187,14 @@ extension ZEGBot {
 	                        to receiver: Sendable,
 	                        disableNotification: Bool = false) -> Message? {
 		
-		var payload: [String: Any?] = [
+		var payload: [String: Any] = [
 			PARAM.PHONE_NUMBER: phoneNumber,
-			PARAM.FIRST_NAME: firstName as Any,
 			PARAM.LAST_NAME: lastName
 		]
+		let optionalPayload: [String: Any?] = [
+			PARAM.FIRST_NAME: firstName
+		]
+		payload.append(contentOf: optionalPayload)
 		
 		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
 		payload.append(contentOf: receiver.receiverIdentifier)
@@ -204,7 +210,7 @@ extension ZEGBot {
 	@discardableResult
 	public func send(chatAction: ChatAction, to receiver: Sendable) {
 		
-		var payload: [String: Any?] = [
+		var payload: [String: Any] = [
 			PARAM.ACTION: chatAction.rawValue
 		]
 		
@@ -235,7 +241,7 @@ extension ZEGBot {
 		
 	}
 	
-	internal func perform(method: String, payload: [String: Any?]) -> JSON? {
+	internal func perform(method: String, payload: [String: Any]) -> JSON? {
 		
 		guard var bodyBytes = JSON(payload).rawString()?.bytes() else {
 			Log.warning(onMethod: method)

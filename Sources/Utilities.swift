@@ -41,4 +41,10 @@ extension Dictionary {
 		}
 	}
 	
+	mutating func append(contentOf dictionary: [Key: Value?]) {
+		for (key, optionalValue) in dictionary {
+			if let value = optionalValue { self[key] = value }
+		}
+	}
+	
 }
