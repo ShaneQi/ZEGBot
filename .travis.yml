@@ -1,0 +1,13 @@
+language: generics
+dist: trusty
+sudo: required
+script:
+  - swift build
+before_install:
+  - TOOLCHAIN_TYPE=swift-3.0.2-release
+  - TOOLCHAIN_VERSION=swift-3.0.2-RELEASE
+  - sudo apt-get install clang uuid-dev libcurl4-openssl-dev
+  - wget https://swift.org/builds/${TOOLCHAIN_TYPE}/ubuntu1404/${TOOLCHAIN_VERSION}/${TOOLCHAIN_VERSION}-ubuntu14.04.tar.gz
+  - tar -zxvf ${TOOLCHAIN_VERSION}-ubuntu14.04.tar.gz
+  - sudo mv ${TOOLCHAIN_VERSION}-ubuntu14.04 /usr/swift
+  - export PATH=/usr/swift/usr/bin:"${PATH}"
