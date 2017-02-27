@@ -10,8 +10,8 @@
 
 import cURL
 import PerfectCURL
-import PerfectLib
 import PerfectThread
+import SwiftyJSON
 
 public struct ZEGBot {
 	
@@ -61,59 +61,14 @@ extension ZEGBot {
 	/* For getUpdates. */
 	static func decodeUpdates(from jsonString: String) -> [Update]? {
 		
-		do {
-			
-			let jsonConvertibleObject = try jsonString.jsonDecode()
-			
-			guard let
-				jsonDictionary = jsonConvertibleObject as? [String: Any],
-				let updatesDictionaryArrayObject = jsonDictionary["result"],
-				let updatesDictionaryArray = updatesDictionaryArrayObject as? [Any]
-				else {
-					
-					Log.warning(on: jsonConvertibleObject)
-					return nil
-					
-			}
-			
-			var updates = [Update]()
-			
-			for updateDictionaryObject in updatesDictionaryArray {
-				
-				if let update = Update(from: updateDictionaryObject) {
-					
-					updates.append(update)
-					
-				}
-				
-			}
-			
-			return updates
-			
-		} catch {
-			
-			Log.warning(on: jsonString)
-			return nil
-			
-		}
+		return Update.array(from: JSON.parse(string: jsonString))
 		
 	}
 	
 	/* For webhook. */
 	static func decodeUpdate(from jsonString: String) -> Update? {
 		
-		do {
-			
-			let jsonConvertibleObject = try jsonString.jsonDecode()
-			
-			return Update(from: jsonConvertibleObject)
-			
-		} catch {
-			
-			Log.warning(on: jsonString)
-			return nil
-			
-		}
+		return Update(from: JSON.parse(string: jsonString))
 		
 	}
 	

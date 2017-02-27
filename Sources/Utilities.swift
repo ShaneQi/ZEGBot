@@ -6,8 +6,6 @@
 //
 //
 
-import PerfectLib
-
 extension String {
 	
 	func bytes() -> [UInt8]{
@@ -16,12 +14,21 @@ extension String {
 	
 }
 
-extension Log {
+struct Log {
+	
+	static func warning(message: String) {
+		print("[⚠️WARN] \(message)")
+	}
 	
 	static func warning(on object: Any) {
-		self.warning(message: "===>>>===<<<===")
+		self.warning(message: "====>>>====<<<====")
 		self.warning(message: "Failed to convert:")
 		self.warning(message: "\(object)")
+	}
+	
+	static func warning(onMethod method: String) {
+		self.warning(message: "====>>>====<<<====")
+		self.warning(message: "Failed in method: \(method)")
 	}
 	
 }

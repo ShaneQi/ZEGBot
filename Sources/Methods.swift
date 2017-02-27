@@ -10,7 +10,8 @@
 
 import PerfectCURL
 import cURL
-import PerfectLib
+import SwiftyJSON
+import Foundation
 
 extension ZEGBot {
 	
@@ -20,7 +21,7 @@ extension ZEGBot {
 	                 disableWebPagePreview: Bool = false,
 	                 disableNotification: Bool = false) -> Message? {
 		
-		var payload: [String: Any] = [
+		var payload: [String: Any?] = [
 			PARAM.TEXT: text,
 			]
 		
@@ -30,11 +31,11 @@ extension ZEGBot {
 		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
 		payload.append(contentOf: receiver.receiverIdentifier)
 		
-		guard let responseDictionary = perform(method: PARAM.SEND_MESSAGE, payload: payload) as? [String: Any] else {
+		guard let responseJSON = perform(method: PARAM.SEND_MESSAGE, payload: payload) else {
 			return nil
 		}
 		
-		return Message(from: responseDictionary[PARAM.RESULT])
+		return Message(from: responseJSON[PARAM.RESULT])
 		
 	}
 	
@@ -42,7 +43,7 @@ extension ZEGBot {
 	public func forward(message: Message, to receiver: Sendable,
 	                    disableNotification: Bool = false) -> Message? {
 		
-		var payload: [String: Any] = [
+		var payload: [String: Any?] = [
 			PARAM.MESSAGE_ID: message.message_id,
 			PARAM.FROM_CHAT_ID: message.chat.id
 		]
@@ -50,11 +51,11 @@ extension ZEGBot {
 		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
 		payload.append(contentOf: receiver.receiverIdentifier)
 		
-		guard let responseDictionary = perform(method: PARAM.FORWARD_MESSAGE, payload: payload) as? [String: Any] else {
+		guard let responseJSON = perform(method: PARAM.FORWARD_MESSAGE, payload: payload) else {
 			return nil
 		}
 		
-		return Message(from: responseDictionary[PARAM.RESULT])
+		return Message(from: responseJSON[PARAM.RESULT])
 		
 	}
 	
@@ -138,7 +139,7 @@ extension ZEGBot {
 	public func sendLocation(latitude: Double, longitude: Double, to receiver: Sendable,
 	                         disableNotification: Bool = false) -> Message? {
 		
-		var payload: [String: Any] = [
+		var payload: [String: Any?] = [
 			PARAM.LATITUDE: latitude,
 			PARAM.LONGITUDE: longitude
 		]
@@ -146,11 +147,11 @@ extension ZEGBot {
 		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
 		payload.append(contentOf: receiver.receiverIdentifier)
 		
-		guard let responseDictionary = perform(method: PARAM.SEND_LOCATION, payload: payload) as? [String: Any] else {
+		guard let responseJSON = perform(method: PARAM.SEND_LOCATION, payload: payload) else {
 			return nil
 		}
 		
-		return Message(from: responseDictionary[PARAM.RESULT])
+		return Message(from: responseJSON[PARAM.RESULT])
 	}
 	
 	@discardableResult
@@ -159,7 +160,7 @@ extension ZEGBot {
 	                      to receiver: Sendable,
 	                      disableNotification: Bool = false) -> Message? {
 		
-		var payload: [String: Any] = [
+		var payload: [String: Any?] = [
 			PARAM.LATITUDE: latitude,
 			PARAM.LONGITUDE: longitude,
 			PARAM.TITLE: title,
@@ -170,11 +171,11 @@ extension ZEGBot {
 		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
 		payload.append(contentOf: receiver.receiverIdentifier)
 		
-		guard let responseDictionary = perform(method: PARAM.SEND_VENUE, payload: payload) as? [String: Any] else {
+		guard let responseJSON = perform(method: PARAM.SEND_VENUE, payload: payload) else {
 			return nil
 		}
 		
-		return Message(from: responseDictionary[PARAM.RESULT])
+		return Message(from: responseJSON[PARAM.RESULT])
 		
 	}
 	
@@ -183,27 +184,27 @@ extension ZEGBot {
 	                        to receiver: Sendable,
 	                        disableNotification: Bool = false) -> Message? {
 		
-		var payload: [String: Any] = [
+		var payload: [String: Any?] = [
 			PARAM.PHONE_NUMBER: phoneNumber,
-			PARAM.FIRST_NAME: firstName,
+			PARAM.FIRST_NAME: firstName as Any,
 			PARAM.LAST_NAME: lastName
 		]
 		
 		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
 		payload.append(contentOf: receiver.receiverIdentifier)
 		
-		guard let responseDictionary = perform(method: PARAM.SEND_CONTACT, payload: payload) as? [String: Any] else {
+		guard let responseJSON = perform(method: PARAM.SEND_CONTACT, payload: payload) else {
 			return nil
 		}
 		
-		return Message(from: responseDictionary[PARAM.RESULT])
+		return Message(from: responseJSON[PARAM.RESULT])
 		
 	}
 	
 	@discardableResult
 	public func send(chatAction: ChatAction, to receiver: Sendable) {
 		
-		var payload: [String: Any] = [
+		var payload: [String: Any?] = [
 			PARAM.ACTION: chatAction.rawValue
 		]
 		
@@ -226,22 +227,18 @@ extension ZEGBot {
 		payload.append(contentOf: receiver.receiverIdentifier)
 		payload.append(contentOf: options)
 		
-		guard let responseDictionary = perform(method: content.sendingMethod, payload: payload) as? [String: Any] else {
+		guard let responseJSON = perform(method: content.sendingMethod, payload: payload) else {
 			return nil
 		}
 		
-		return Message(from: responseDictionary[PARAM.RESULT])
+		return Message(from: responseJSON[PARAM.RESULT])
 		
 	}
 	
-	internal func perform(method: String, payload: [String: Any]) -> Any? {
+	internal func perform(method: String, payload: [String: Any?]) -> JSON? {
 		
-		var bodyBytes = [UInt8]()
-		
-		do {
-			bodyBytes.append(contentsOf: try payload.jsonEncodedString().bytes())
-		} catch {
-			Log.warning(on: payload)
+		guard var bodyBytes = JSON(payload).rawString()?.bytes() else {
+			Log.warning(onMethod: method)
 			return nil
 		}
 		
@@ -250,14 +247,7 @@ extension ZEGBot {
 		curl.setOption(CURLOPT_POSTFIELDS, v: &bodyBytes)
 		curl.setOption(CURLOPT_HTTPHEADER, s: PARAM.POST_JSON_HEADER_CONTENT_TYPE)
 		
-		let responseString = curl.performFully().2.reduce("", { a, b in a + String(UnicodeScalar(b)) })
-		
-		do {
-			return try responseString.jsonDecode()
-		} catch {
-			Log.warning(on: responseString)
-			return nil
-		}
+		return JSON(data: Data(bytes: curl.performFully().2))
 		
 	}
 	
