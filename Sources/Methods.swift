@@ -237,7 +237,8 @@ extension ZEGBot {
 
 extension ZEGBot {
 	
-	internal func send(contentOnServer content: Identifiable, to receiver: Sendable,
+	internal func send(contentOnServer content: Identifiable,
+	                   to receiver: Sendable,
 	                   options: [String: Any]) -> Message? {
 		
 		var payload = [String: Any]()
