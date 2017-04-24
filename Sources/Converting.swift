@@ -370,3 +370,22 @@ extension Venue: JSONConvertible {
 	}
 	
 }
+
+extension File: JSONConvertible {
+
+	internal init?(from json: JSON) {
+		guard !json.isEmpty else { return nil }
+
+		guard let fileId = json[PARAM.FILE_ID].string,
+			let fileSize = json[PARAM.FILE_SIZE].int,
+			let filePath = json[PARAM.FILE_PATH].string else {
+				Log.warning(on: json)
+				return nil
+		}
+
+		self.fileId = fileId
+		self.fileSize = fileSize
+		self.filePath = filePath
+	}
+
+}

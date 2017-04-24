@@ -10,21 +10,18 @@
 
 import cURL
 import PerfectCURL
-import PerfectThread
 import SwiftyJSON
+import Foundation
 
 public struct ZEGBot {
-	
-	private var token: String
+
 	internal var urlPrefix: String
 	
 	public init(token: String) {
-		self.token = token
 		self.urlPrefix = "https://api.telegram.org/bot"+token+"/"
 	}
-	
-	
-	public func run(with handler: @escaping (Update, ZEGBot) -> Void ) {
+
+	public func run(with handler: @escaping ZEGUpdateHandle ) {
 		
 		let curl = CURL()
 		var offset = 0
@@ -33,23 +30,19 @@ public struct ZEGBot {
 			
 			curl.url = urlPrefix + "getupdates?timeout=60&offset=\(offset)"
 			
-			let responseBodyString = curl.performFully().2.reduce("", { a, b in a + String(UnicodeScalar(b)) })
-			
-			guard let updates = ZEGBot.decodeUpdates(from: responseBodyString) else { continue }
+			guard let updates = ZEGBot.decodeUpdates(from: Data(bytes: curl.performFully().2)) else { continue }
 			
 			if let lastUpdate = updates.last { offset = lastUpdate.update_id + 1 }
 			
 			for update in updates {
-				Threading.dispatch {
-					handler(update, self)
-				}
+				handler(update, self)
 			}
 			
 		}
 		
 	}
 	
-	public func run(with handler: ZEGHandler) {
+	public func run(with handler: ZEGUpdateHandler) {
 		run(with: handler.handle)
 	}
 	
@@ -59,22 +52,24 @@ public struct ZEGBot {
 extension ZEGBot {
 	
 	/* For getUpdates. */
-	static func decodeUpdates(from jsonString: String) -> [Update]? {
+	static func decodeUpdates(from jsonData: Data) -> [Update]? {
 		
-		return Update.array(from: JSON.parse(string: jsonString)[PARAM.RESULT])
+		return Update.array(from: JSON(data: jsonData)[PARAM.RESULT])
 		
 	}
 	
 	/* For webhook. */
-	static func decodeUpdate(from jsonString: String) -> Update? {
+	static func decodeUpdate(from jsonData: Data) -> Update? {
 		
-		return Update(from: JSON.parse(string: jsonString)[PARAM.RESULT])
+		return Update(from: JSON(data: jsonData)[PARAM.RESULT])
 		
 	}
 	
 }
 
-public protocol ZEGHandler {
+public typealias ZEGUpdateHandle = (Update, ZEGBot) -> Void
+
+public protocol ZEGUpdateHandler {
 	
 	func handle(update: Update, bot: ZEGBot)
 	

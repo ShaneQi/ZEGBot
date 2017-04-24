@@ -62,6 +62,9 @@ extension ZEGBot {
 		
 		static let SEND_CHAT_ACTION =				"sendChatAction"
 		static let ACTION =							"action"
+
+		static let GET_FILE =						"getFile"
+		static let FILE_ID =						"file_id"
 		
 	}
 	
@@ -255,4 +258,14 @@ extension Venue {
 		static let FOURSQUARE_ID =			"foursquare_id"
 	}
 	
+}
+
+extension File {
+
+	internal struct PARAM {
+		static let FILE_ID =				"file_id"
+		static let FILE_SIZE =				"file_size"
+		static let FILE_PATH =				"file_path"
+	}
+
 }

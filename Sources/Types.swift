@@ -21,7 +21,6 @@ public struct Update {
 	
 }
 
-
 public class Message {
 	
 	public var message_id: Int
@@ -67,7 +66,6 @@ public class Message {
 	
 }
 
-
 public struct Chat {
 	
 	public var id: Int
@@ -99,7 +97,6 @@ public struct Chat {
 	
 }
 
-
 public struct User {
 	
 	public var id: Int
@@ -109,21 +106,7 @@ public struct User {
 	public var last_name: String?
 	public var username: String?
 	
-	public init(id: Int,
-	            first_name: String,
-	            last_name: String? = nil,
-	            username: String? = nil
-		) {
-		
-		self.id = id
-		self.first_name = first_name
-		self.last_name = last_name
-		self.username = username
-		
-	}
-	
 }
-
 
 public struct MessageEntity {
 	
@@ -148,7 +131,6 @@ public struct MessageEntity {
 	
 }
 
-
 public struct Audio {
 	
 	public var file_id: String
@@ -160,25 +142,7 @@ public struct Audio {
 	public var mime_type: String?
 	public var file_size: Int?
 	
-	public init(file_id: String,
-	            duration: Int,
-	            performer: String? = nil,
-	            title: String? = nil,
-	            mime_type: String? = nil,
-	            file_size: Int? = nil
-		) {
-		
-		self.file_id = file_id
-		self.duration = duration
-		self.performer = performer
-		self.title = title
-		self.mime_type = mime_type
-		self.file_size = file_size
-		
-	}
-	
 }
-
 
 public struct Document {
 	
@@ -190,23 +154,7 @@ public struct Document {
 	public var mime_type: String?
 	public var file_size: Int?
 	
-	public init(file_id: String,
-	            thumb: PhotoSize? = nil,
-	            file_name: String? = nil,
-	            mime_type: String? = nil,
-	            file_size: Int? = nil
-		) {
-		
-		self.file_id = file_id
-		self.thumb = thumb
-		self.file_name = file_name
-		self.mime_type = mime_type
-		self.file_size = file_size
-		
-	}
-	
 }
-
 
 public struct PhotoSize {
 	
@@ -217,21 +165,7 @@ public struct PhotoSize {
 	/* Optional. */
 	public var file_size: Int?
 	
-	public init(file_id: String,
-	            width: Int,
-	            height: Int,
-	            file_size: Int? = nil
-		){
-		
-		self.file_id = file_id
-		self.width = width
-		self.height = height
-		self.file_size = file_size
-		
-	}
-	
 }
-
 
 public struct Sticker {
 	
@@ -244,25 +178,7 @@ public struct Sticker {
 	public var emoji: String?
 	public var file_size: Int?
 	
-	public init(file_id: String,
-	            width: Int,
-	            height: Int,
-	            thumb: PhotoSize? = nil,
-	            emoji: String? = nil,
-	            file_size: Int? = nil
-		) {
-		
-		self.file_id = file_id
-		self.width = width
-		self.height = height
-		self.thumb = thumb
-		self.emoji = emoji
-		self.file_size = file_size
-		
-	}
-	
 }
-
 
 public struct Video {
 	
@@ -275,28 +191,8 @@ public struct Video {
 	public var thumb: PhotoSize?
 	public var mime_type: String?
 	public var file_size: Int?
-	
-	public init(file_id: String,
-	            width: Int,
-	            height: Int,
-	            duration: Int,
-	            thumb: PhotoSize? = nil,
-	            mime_type: String? = nil,
-	            file_size: Int? = nil
-		){
-		
-		self.file_id = file_id
-		self.width = width
-		self.height = height
-		self.duration = duration
-		self.thumb = thumb
-		self.mime_type = mime_type
-		self.file_size = file_size
-		
-	}
-	
-}
 
+}
 
 public struct Voice {
 	
@@ -307,21 +203,7 @@ public struct Voice {
 	public var mime_type: String?
 	public var file_size: Int?
 	
-	public init(file_id: String,
-	            duration: Int,
-	            mime_type: String? = nil,
-	            file_size: Int? = nil
-		) {
-		
-		self.file_id = file_id
-		self.duration = duration
-		self.mime_type = mime_type
-		self.file_size = file_size
-		
-	}
-	
 }
-
 
 public struct Contact {
 	
@@ -331,38 +213,15 @@ public struct Contact {
 	/* OPTIONAL. */
 	public var last_name: String?
 	public var user_id: Int?
-	
-	public init(phone_number: String,
-	            first_name: String,
-	            last_name: String? = nil,
-	            user_id: Int? = nil
-		) {
-		
-		self.phone_number = phone_number
-		self.first_name = first_name
-		self.last_name = last_name
-		self.user_id = user_id
-		
-	}
-	
-}
 
+}
 
 public struct Location {
 	
 	public var longitude: Double
 	public var latitude: Double
-	
-	public init(longitude: Double,
-	            latitude: Double
-		) {
-		
-		self.longitude = longitude
-		self.latitude = latitude
-		
-	}
-}
 
+}
 
 public struct Venue {
 	
@@ -372,20 +231,17 @@ public struct Venue {
 	
 	/* OPTIONAL. */
 	public var foursquare_id: String?
-	
-	public init(location: Location,
-	            title: String,
-	            address: String,
-	            foursquare_id: String? = nil
-		) {
-		
-		self.location = location
-		self.title = title
-		self.address = address
-		self.foursquare_id = foursquare_id
-		
-	}
-	
+
+}
+
+public struct File {
+
+	public var fileId: String
+
+	/* OPTIONAL. */
+	public var fileSize: Int?
+	public var filePath: String?
+
 }
 
 public enum ParseMode: String {
