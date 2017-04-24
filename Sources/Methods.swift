@@ -206,8 +206,7 @@ extension ZEGBot {
 		return Message(from: responseJSON[PARAM.RESULT])
 		
 	}
-	
-	@discardableResult
+
 	public func send(chatAction: ChatAction, to receiver: Sendable) {
 		
 		var payload: [String: Any] = [
@@ -218,6 +217,20 @@ extension ZEGBot {
 		
 		let _ = perform(method: PARAM.SEND_CHAT_ACTION, payload: payload)
 		
+	}
+
+	public func getFile(ofId fileId: String) -> File? {
+
+		let payload: [String: Any] = [
+			PARAM.FILE_ID: fileId
+		]
+
+		guard let responseJSON = perform(method: PARAM.GET_FILE, payload: payload) else {
+			return nil
+		}
+
+		return File(from: responseJSON[PARAM.RESULT])
+
 	}
 	
 }
