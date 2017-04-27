@@ -61,7 +61,7 @@ public class Message {
 	public init() {
 		self.message_id = 0
 		self.date = 0
-		self.chat = Chat(id: 0, type: .PRIVATE)
+		self.chat = Chat(id: 9, type: .private, title: nil, username: nil, first_name: nil, last_name: nil)
 	}
 	
 }
@@ -69,7 +69,7 @@ public class Message {
 public struct Chat {
 	
 	public var id: Int
-	public var type: sType
+	public var type: StructType
 	
 	/* Optional. */
 	public var title: String?
@@ -77,22 +77,15 @@ public struct Chat {
 	public var first_name: String?
 	public var last_name: String?
 	
-	public init(id: Int, type: sType) {
-		
-		self.id = id
-		self.type = type
-		
-	}
-	
-	public enum sType: String {
+	public enum StructType: String {
 		
 		public init?(from string: String?) {
 			guard let typeString = string else { return nil }
-			guard let instance = sType(rawValue: typeString.uppercased()) else { return nil }
+			guard let instance = StructType(rawValue: typeString.lowercased()) else { return nil }
 			self = instance
 		}
 		
-		case PRIVATE, GROUP, SUPERGROUP, CHANNEL
+		case `private`, group, supergroup, channel
 	}
 	
 }
@@ -110,7 +103,7 @@ public struct User {
 
 public struct MessageEntity {
 	
-	public var type: sType
+	public var type: StructType
 	public var offset: Int
 	public var length: Int
 	
@@ -118,14 +111,18 @@ public struct MessageEntity {
 	public var url: String?
 	public var user: User?
 	
-	public enum sType: String {
+	public enum StructType: String {
 		public init?(from string: String?) {
 			guard let typeString = string else { return nil }
-			guard let instance = sType(rawValue: typeString.uppercased()) else { return nil }
+			guard let instance = StructType(rawValue: typeString.lowercased()) else { return nil }
 			self = instance
 		}
 		
-		case MENTION, HASHTAG, BOT_COMMAND, URL, EMAIL, BOLD, ITALIC, CODE, PRE, TEXT_LINK, TEXT_MENTION
+		case mention, hashtag
+		case botCommand = "bot_command"
+		case url, email, bold, italic, code, pre
+		case textLink = "text_link"
+		case textMention = "text_mention"
 		
 	}
 	
@@ -245,17 +242,17 @@ public struct File {
 }
 
 public enum ParseMode: String {
-	case MARKDOWN
-	case HTML
+	case markdown
+	case html
 }
 
 public enum ChatAction: String {
-	case TYPING
-	case UPLOAD_PHOTO
-	case RECORD_VIDEO
-	case UPLOAD_VIDEO
-	case RECORD_AUDIO
-	case UPLOAD_AUDIO
-	case UPLOAD_DOCUMENT
-	case FIND_LOCATION
+	case typing
+	case uploadPhoto = "upload_photo"
+	case recordVideo = "record_video"
+	case uploadVideo = "upload_video"
+	case recordAudio = "record_audio"
+	case uploadAudio = "upload_audio"
+	case uploadDocument = "upload_document"
+	case findLocation = "find_location"
 }

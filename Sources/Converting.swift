@@ -113,7 +113,7 @@ extension Chat: JSONConvertible {
 		guard !json.isEmpty else { return nil }
 		
 		guard let id = json[PARAM.ID].int,
-			let type = Chat.sType(from: json[PARAM.TYPE].string) else {
+			let type = Chat.StructType(from: json[PARAM.TYPE].string) else {
 				Log.warning(on: json)
 				return nil
 		}
@@ -156,7 +156,7 @@ extension MessageEntity: JSONConvertible, ArrayConvertible {
 		
 		guard !json.isEmpty else { return nil }
 		
-		guard let type = MessageEntity.sType(from: json[PARAM.TYPE].string),
+		guard let type = MessageEntity.StructType(from: json[PARAM.TYPE].string),
 			let offset = json[PARAM.OFFSET].int,
 			let length = json[PARAM.LENGTH].int else {
 				Log.warning(on: json)
