@@ -9,24 +9,24 @@
 //
 
 public struct Update {
-	
+
 	public var updateId: Int
-	
+
 	/* Optional. */
 	public var message: Message?
 	public var editedMessage: Message?
 	//	public var inlineQuery: InlineQuery?
 	//	public var chosenInlineResult: ChosenInlineResult?
 	//	public var callbackQuery: CallbackQuery?
-	
+
 }
 
 public class Message {
-	
+
 	public var messageId: Int
 	public var date: Int
 	public var chat: Chat
-	
+
 	/* Optional. */
 	public var from: User?
 	public var forwardFrom: User?
@@ -57,133 +57,133 @@ public class Message {
 	public var migrateToChatId: Int?
 	public var migrateFromChatId: Int?
 	public var pinnedMessage: Message?
-	
+
 	public init() {
 		self.messageId = 0
 		self.date = 0
 		self.chat = Chat(id: 9, type: .private, title: nil, username: nil, firstName: nil, lastName: nil)
 	}
-	
+
 }
 
 public struct Chat {
-	
+
 	public var id: Int
 	public var type: StructType
-	
+
 	/* Optional. */
 	public var title: String?
 	public var username: String?
 	public var firstName: String?
 	public var lastName: String?
-	
+
 	public enum StructType: String {
-		
+
 		public init?(from string: String?) {
 			guard let typeString = string else { return nil }
 			guard let instance = StructType(rawValue: typeString.lowercased()) else { return nil }
 			self = instance
 		}
-		
+
 		case `private`, group, supergroup, channel
 	}
-	
+
 }
 
 public struct User {
-	
+
 	public var id: Int
 	public var firstName: String
-	
+
 	/* OPTIONAL. */
 	public var lastName: String?
 	public var username: String?
-	
+
 }
 
 public struct MessageEntity {
-	
+
 	public var type: StructType
 	public var offset: Int
 	public var length: Int
-	
+
 	/* OPTIONAl. */
 	public var url: String?
 	public var user: User?
-	
+
 	public enum StructType: String {
 		public init?(from string: String?) {
 			guard let typeString = string else { return nil }
 			guard let instance = StructType(rawValue: typeString.lowercased()) else { return nil }
 			self = instance
 		}
-		
+
 		case mention, hashtag
 		case botCommand = "bot_command"
 		case url, email, bold, italic, code, pre
 		case textLink = "text_link"
 		case textMention = "text_mention"
-		
+
 	}
-	
+
 }
 
 public struct Audio {
-	
+
 	public var fileId: String
 	public var duration: Int
-	
+
 	/* OPTIONAL. */
 	public var performer: String?
 	public var title: String?
 	public var mimeType: String?
 	public var fileSize: Int?
-	
+
 }
 
 public struct Document {
-	
+
 	public var fileId: String
-	
+
 	/* OPTIONAL. */
 	public var thumb: PhotoSize?
 	public var fileName: String?
 	public var mimeType: String?
 	public var fileSize: Int?
-	
+
 }
 
 public struct PhotoSize {
-	
+
 	public var fileId: String
 	public var width: Int
 	public var height: Int
-	
+
 	/* Optional. */
 	public var fileSize: Int?
-	
+
 }
 
 public struct Sticker {
-	
+
 	public var fileId: String
 	public var width: Int
 	public var height: Int
-	
+
 	/* Optional. */
 	public var thumb: PhotoSize?
 	public var emoji: String?
 	public var fileSize: Int?
-	
+
 }
 
 public struct Video {
-	
+
 	public var fileId: String
 	public var width: Int
 	public var height: Int
 	public var duration: Int
-	
+
 	/* OPTIONAL. */
 	public var thumb: PhotoSize?
 	public var mimeType: String?
@@ -192,21 +192,21 @@ public struct Video {
 }
 
 public struct Voice {
-	
+
 	public var fileId: String
 	public var duration: Int
-	
+
 	/* Optional. */
 	public var mimeType: String?
 	public var fileSize: Int?
-	
+
 }
 
 public struct Contact {
-	
+
 	public var phoneNumber: String
 	public var firstName: String
-	
+
 	/* OPTIONAL. */
 	public var lastName: String?
 	public var userId: Int?
@@ -214,18 +214,18 @@ public struct Contact {
 }
 
 public struct Location {
-	
+
 	public var longitude: Double
 	public var latitude: Double
 
 }
 
 public struct Venue {
-	
+
 	public var location: Location
 	public var title: String
 	public var address: String
-	
+
 	/* OPTIONAL. */
 	public var foursquareId: String?
 
