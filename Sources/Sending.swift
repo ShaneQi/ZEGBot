@@ -23,7 +23,7 @@ extension Chat: Sendable {
 extension Message: Sendable {
 	
 	public var receiverIdentifier: [String: Any] {
-		return ["chat_id": self.chat.id, "reply_to_message_id": self.message_id]
+		return ["chat_id": self.chat.id, "reply_to_message_id": self.messageId]
 	}
 	
 }
@@ -38,7 +38,7 @@ public protocol Identifiable {
 extension PhotoSize: Identifiable {
 	
 	public var identifier: [String: Any] {
-		return [ZEGBot.PARAM.PHOTO: self.file_id]
+		return [ZEGBot.PARAM.PHOTO: self.fileId]
 	}
 	
 	public var sendingMethod: String { return ZEGBot.PARAM.SEND_PHOTO }
@@ -48,7 +48,7 @@ extension PhotoSize: Identifiable {
 extension Audio: Identifiable {
 	
 	public var identifier: [String: Any] {
-		return [ZEGBot.PARAM.AUDIO: self.file_id]
+		return [ZEGBot.PARAM.AUDIO: self.fileId]
 	}
 	
 	public var sendingMethod: String { return ZEGBot.PARAM.SEND_AUDIO }
@@ -58,7 +58,7 @@ extension Audio: Identifiable {
 extension Document: Identifiable {
 	
 	public var identifier: [String: Any] {
-		return [ZEGBot.PARAM.DOCUMENT: self.file_id]
+		return [ZEGBot.PARAM.DOCUMENT: self.fileId]
 	}
 	
 	public var sendingMethod: String { return ZEGBot.PARAM.SEND_DOCUMENT }
@@ -68,7 +68,7 @@ extension Document: Identifiable {
 extension Sticker: Identifiable {
 	
 	public var identifier: [String: Any] {
-		return [ZEGBot.PARAM.STICKER: self.file_id]
+		return [ZEGBot.PARAM.STICKER: self.fileId]
 	}
 	
 	public var sendingMethod: String { return ZEGBot.PARAM.SEND_STICKER }
@@ -78,7 +78,7 @@ extension Sticker: Identifiable {
 extension Video: Identifiable {
 	
 	public var identifier: [String: Any] {
-		return [ZEGBot.PARAM.VIDEO: self.file_id]
+		return [ZEGBot.PARAM.VIDEO: self.fileId]
 	}
 	
 	public var sendingMethod: String { return ZEGBot.PARAM.SEND_VIDEO }
@@ -88,7 +88,7 @@ extension Video: Identifiable {
 extension Voice: Identifiable {
 	
 	public var identifier: [String: Any] {
-		return [ZEGBot.PARAM.VOICE: self.file_id]
+		return [ZEGBot.PARAM.VOICE: self.fileId]
 	}
 	
 	public var sendingMethod: String { return ZEGBot.PARAM.SEND_VOICE }

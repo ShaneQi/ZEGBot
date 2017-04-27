@@ -10,30 +10,30 @@
 
 public struct Update {
 	
-	public var update_id: Int
+	public var updateId: Int
 	
 	/* Optional. */
 	public var message: Message?
-	public var edited_message: Message?
-	//	public var inline_query: InlineQuery?
-	//	public var chosen_inline_result: ChosenInlineResult?
-	//	public var callback_query: CallbackQuery?
+	public var editedMessage: Message?
+	//	public var inlineQuery: InlineQuery?
+	//	public var chosenInlineResult: ChosenInlineResult?
+	//	public var callbackQuery: CallbackQuery?
 	
 }
 
 public class Message {
 	
-	public var message_id: Int
+	public var messageId: Int
 	public var date: Int
 	public var chat: Chat
 	
 	/* Optional. */
 	public var from: User?
-	public var forward_from: User?
-	public var forward_from_chat: Chat?
-	public var forward_date: Int?
-	public var reply_to_message: Message?
-	public var edit_date: Int?
+	public var forwardFrom: User?
+	public var forwardFromChat: Chat?
+	public var forwardDate: Int?
+	public var replyToMessage: Message?
+	public var editDate: Int?
 	public var text: String?
 	public var entities: [MessageEntity]?
 	public var audio: Audio?
@@ -46,22 +46,22 @@ public class Message {
 	public var contact: Contact?
 	public var location: Location?
 	public var venue: Venue?
-	public var new_chat_member: User?
-	public var left_chat_member: User?
-	public var new_chat_title: String?
-	public var new_chat_photo: [PhotoSize]?
-	public var delete_chat_photo: Bool?
-	public var group_chat_created: Bool?
-	public var supergroup_chat_created: Bool?
-	public var channel_chat_created: Bool?
-	public var migrate_to_chat_id: Int?
-	public var migrate_from_chat_id: Int?
-	public var pinned_message: Message?
+	public var newChatMember: User?
+	public var leftChatMember: User?
+	public var newChatTitle: String?
+	public var newChatPhoto: [PhotoSize]?
+	public var deleteChatPhoto: Bool?
+	public var groupChatCreated: Bool?
+	public var supergroupChatCreated: Bool?
+	public var channelChatCreated: Bool?
+	public var migrateToChatId: Int?
+	public var migrateFromChatId: Int?
+	public var pinnedMessage: Message?
 	
 	public init() {
-		self.message_id = 0
+		self.messageId = 0
 		self.date = 0
-		self.chat = Chat(id: 9, type: .private, title: nil, username: nil, first_name: nil, last_name: nil)
+		self.chat = Chat(id: 9, type: .private, title: nil, username: nil, firstName: nil, lastName: nil)
 	}
 	
 }
@@ -74,8 +74,8 @@ public struct Chat {
 	/* Optional. */
 	public var title: String?
 	public var username: String?
-	public var first_name: String?
-	public var last_name: String?
+	public var firstName: String?
+	public var lastName: String?
 	
 	public enum StructType: String {
 		
@@ -93,10 +93,10 @@ public struct Chat {
 public struct User {
 	
 	public var id: Int
-	public var first_name: String
+	public var firstName: String
 	
 	/* OPTIONAL. */
-	public var last_name: String?
+	public var lastName: String?
 	public var username: String?
 	
 }
@@ -130,86 +130,86 @@ public struct MessageEntity {
 
 public struct Audio {
 	
-	public var file_id: String
+	public var fileId: String
 	public var duration: Int
 	
 	/* OPTIONAL. */
 	public var performer: String?
 	public var title: String?
-	public var mime_type: String?
-	public var file_size: Int?
+	public var mimeType: String?
+	public var fileSize: Int?
 	
 }
 
 public struct Document {
 	
-	public var file_id: String
+	public var fileId: String
 	
 	/* OPTIONAL. */
 	public var thumb: PhotoSize?
-	public var file_name: String?
-	public var mime_type: String?
-	public var file_size: Int?
+	public var fileName: String?
+	public var mimeType: String?
+	public var fileSize: Int?
 	
 }
 
 public struct PhotoSize {
 	
-	public var file_id: String
+	public var fileId: String
 	public var width: Int
 	public var height: Int
 	
 	/* Optional. */
-	public var file_size: Int?
+	public var fileSize: Int?
 	
 }
 
 public struct Sticker {
 	
-	public var file_id: String
+	public var fileId: String
 	public var width: Int
 	public var height: Int
 	
 	/* Optional. */
 	public var thumb: PhotoSize?
 	public var emoji: String?
-	public var file_size: Int?
+	public var fileSize: Int?
 	
 }
 
 public struct Video {
 	
-	public var file_id: String
+	public var fileId: String
 	public var width: Int
 	public var height: Int
 	public var duration: Int
 	
 	/* OPTIONAL. */
 	public var thumb: PhotoSize?
-	public var mime_type: String?
-	public var file_size: Int?
+	public var mimeType: String?
+	public var fileSize: Int?
 
 }
 
 public struct Voice {
 	
-	public var file_id: String
+	public var fileId: String
 	public var duration: Int
 	
 	/* Optional. */
-	public var mime_type: String?
-	public var file_size: Int?
+	public var mimeType: String?
+	public var fileSize: Int?
 	
 }
 
 public struct Contact {
 	
-	public var phone_number: String
-	public var first_name: String
+	public var phoneNumber: String
+	public var firstName: String
 	
 	/* OPTIONAL. */
-	public var last_name: String?
-	public var user_id: Int?
+	public var lastName: String?
+	public var userId: Int?
 
 }
 
@@ -227,7 +227,7 @@ public struct Venue {
 	public var address: String
 	
 	/* OPTIONAL. */
-	public var foursquare_id: String?
+	public var foursquareId: String?
 
 }
 

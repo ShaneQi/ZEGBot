@@ -44,7 +44,7 @@ extension ZEGBot {
 	                    disableNotification: Bool = false) -> Message? {
 		
 		var payload: [String: Any] = [
-			PARAM.MESSAGE_ID: message.message_id,
+			PARAM.MESSAGE_ID: message.messageId,
 			PARAM.FROM_CHAT_ID: message.chat.id
 		]
 		

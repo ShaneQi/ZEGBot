@@ -46,9 +46,9 @@ extension Update: JSONConvertible, ArrayConvertible {
 				Log.warning(on: json)
 				return nil
 		}
-		self.update_id = updateId
+		self.updateId = updateId
 		self.message = Message(from: json[PARAM.MESSAGE])
-		self.edited_message = Message(from: json[PARAM.EDITED_MESSAGE])
+		self.editedMessage = Message(from: json[PARAM.EDITED_MESSAGE])
 		
 	}
 	
@@ -69,15 +69,15 @@ extension Message {
 				return nil
 		}
 		
-		self.message_id = messageId
+		self.messageId = messageId
 		self.date = date
 		self.chat = chat
 		self.from = User(from: json[PARAM.FROM])
-		self.forward_from = User(from: json[PARAM.FORWARD_FROM])
-		self.forward_from_chat = Chat(from: json[PARAM.FORWARD_FROM_CHAT])
-		self.forward_date = json[PARAM.FORWARD_DATE].int
-		self.reply_to_message = Message(from: json[PARAM.REPLY_TO_MESSAGE])
-		self.edit_date = json[PARAM.EDIT_DATE].int
+		self.forwardFrom = User(from: json[PARAM.FORWARD_FROM])
+		self.forwardFromChat = Chat(from: json[PARAM.FORWARD_FROM_CHAT])
+		self.forwardDate = json[PARAM.FORWARD_DATE].int
+		self.replyToMessage = Message(from: json[PARAM.REPLY_TO_MESSAGE])
+		self.editDate = json[PARAM.EDIT_DATE].int
 		self.text = json[PARAM.TEXT].string
 		self.entities = MessageEntity.array(from: json[PARAM.ENTITIES])
 		self.audio = Audio(from: json[PARAM.AUDIO])
@@ -90,17 +90,17 @@ extension Message {
 		self.contact = Contact(from: json[PARAM.CONTACT])
 		self.location = Location(from: json[PARAM.LOCATION])
 		self.venue = Venue(from: json[PARAM.VENUE])
-		self.new_chat_member = User(from: json[PARAM.NEW_CHAT_MEMBER])
-		self.left_chat_member = User(from: json[PARAM.LEFT_CHAT_MEMBER])
-		self.new_chat_title = json[PARAM.NEW_CHAT_TITLE].string
-		self.new_chat_photo = PhotoSize.array(from: json[PARAM.NEW_CHAT_PHOTO])
-		self.delete_chat_photo = json[PARAM.DELETE_CHAT_PHOTO].bool
-		self.group_chat_created = json[PARAM.GROUP_CHAT_CREATED].bool
-		self.supergroup_chat_created = json[PARAM.SUPER_GROUP_CHAT_CREATED].bool
-		self.channel_chat_created = json[PARAM.CHANNEL_CHAT_CREATED].bool
-		self.migrate_to_chat_id = json[PARAM.MIGRATE_TO_CHAT_ID].int
-		self.migrate_from_chat_id = json[PARAM.MIGRATE_FROM_CHAT_ID].int
-		self.pinned_message = Message(from: json[PARAM.PINNED_MESSAGE])
+		self.newChatMember = User(from: json[PARAM.NEW_CHAT_MEMBER])
+		self.leftChatMember = User(from: json[PARAM.LEFT_CHAT_MEMBER])
+		self.newChatTitle = json[PARAM.NEW_CHAT_TITLE].string
+		self.newChatPhoto = PhotoSize.array(from: json[PARAM.NEW_CHAT_PHOTO])
+		self.deleteChatPhoto = json[PARAM.DELETE_CHAT_PHOTO].bool
+		self.groupChatCreated = json[PARAM.GROUP_CHAT_CREATED].bool
+		self.supergroupChatCreated = json[PARAM.SUPER_GROUP_CHAT_CREATED].bool
+		self.channelChatCreated = json[PARAM.CHANNEL_CHAT_CREATED].bool
+		self.migrateToChatId = json[PARAM.MIGRATE_TO_CHAT_ID].int
+		self.migrateFromChatId = json[PARAM.MIGRATE_FROM_CHAT_ID].int
+		self.pinnedMessage = Message(from: json[PARAM.PINNED_MESSAGE])
 		
 	}
 	
@@ -122,8 +122,8 @@ extension Chat: JSONConvertible {
 		self.type = type
 		self.title = json[PARAM.TITLE].string
 		self.username = json[PARAM.USERNAME].string
-		self.first_name = json[PARAM.FIRST_NAME].string
-		self.last_name = json[PARAM.LAST_NAME].string
+		self.firstName = json[PARAM.FIRST_NAME].string
+		self.lastName = json[PARAM.LAST_NAME].string
 		
 	}
 	
@@ -142,8 +142,8 @@ extension User: JSONConvertible {
 		}
 		
 		self.id = id
-		self.first_name = firstName
-		self.last_name = json[PARAM.LAST_NAME].string
+		self.firstName = firstName
+		self.lastName = json[PARAM.LAST_NAME].string
 		self.username = json[PARAM.USERNAME].string
 		
 	}
@@ -184,12 +184,12 @@ extension Audio: JSONConvertible {
 				return nil
 		}
 		
-		self.file_id = fileId
+		self.fileId = fileId
 		self.duration = duration
 		self.performer = json[PARAM.PERFORMER].string
 		self.title = json[PARAM.TITLE].string
-		self.mime_type = json[PARAM.MIME_SIZE].string
-		self.file_size = json[PARAM.FILE_SIZE].int
+		self.mimeType = json[PARAM.MIME_SIZE].string
+		self.fileSize = json[PARAM.FILE_SIZE].int
 		
 	}
 	
@@ -206,11 +206,11 @@ extension Document: JSONConvertible {
 				return nil
 		}
 		
-		self.file_id = fileId
+		self.fileId = fileId
 		self.thumb = PhotoSize(from: json[PARAM.THUMB])
-		self.file_name = json[PARAM.FILE_NAME].string
-		self.mime_type = json[PARAM.MIME_TYPE].string
-		self.file_size = json[PARAM.FILE_SIZE].int
+		self.fileName = json[PARAM.FILE_NAME].string
+		self.mimeType = json[PARAM.MIME_TYPE].string
+		self.fileSize = json[PARAM.FILE_SIZE].int
 		
 	}
 	
@@ -229,10 +229,10 @@ extension PhotoSize: JSONConvertible, ArrayConvertible {
 				return nil
 		}
 		
-		self.file_id = fileId
+		self.fileId = fileId
 		self.width = width
 		self.height = height
-		self.file_size = json[PARAM.FILE_SIZE].int
+		self.fileSize = json[PARAM.FILE_SIZE].int
 		
 	}
 	
@@ -251,12 +251,12 @@ extension Sticker: JSONConvertible {
 				return nil
 		}
 		
-		self.file_id = fileId
+		self.fileId = fileId
 		self.width = width
 		self.height = height
 		self.thumb = PhotoSize(from: json[PARAM.THUMB])
 		self.emoji = json[PARAM.EMOJI].string
-		self.file_size = json[PARAM.FILE_SIZE].int
+		self.fileSize = json[PARAM.FILE_SIZE].int
 		
 	}
 	
@@ -276,13 +276,13 @@ extension Video: JSONConvertible {
 				return nil
 		}
 		
-		self.file_id = fileId
+		self.fileId = fileId
 		self.width = width
 		self.height = height
 		self.duration = duration
 		self.thumb = PhotoSize(from: json[PARAM.THUMB])
-		self.mime_type = json[PARAM.MIME_TYPE].string
-		self.file_size = json[PARAM.FILE_SIZE].int
+		self.mimeType = json[PARAM.MIME_TYPE].string
+		self.fileSize = json[PARAM.FILE_SIZE].int
 		
 	}
 	
@@ -300,10 +300,10 @@ extension Voice: JSONConvertible {
 				return nil
 		}
 		
-		self.file_id = fileId
+		self.fileId = fileId
 		self.duration = duration
-		self.mime_type = json[PARAM.MIME_TYPE].string
-		self.file_size = json[PARAM.FILE_SIZE].int
+		self.mimeType = json[PARAM.MIME_TYPE].string
+		self.fileSize = json[PARAM.FILE_SIZE].int
 		
 	}
 	
@@ -321,10 +321,10 @@ extension Contact: JSONConvertible {
 				return nil
 		}
 		
-		self.phone_number = phoneNumber
-		self.first_name = firstName
-		self.last_name = json[PARAM.LAST_NAME].string
-		self.user_id = json[PARAM.USER_ID].int
+		self.phoneNumber = phoneNumber
+		self.firstName = firstName
+		self.lastName = json[PARAM.LAST_NAME].string
+		self.userId = json[PARAM.USER_ID].int
 		
 	}
 	
@@ -365,7 +365,7 @@ extension Venue: JSONConvertible {
 		self.location = location
 		self.title = title
 		self.address = address
-		self.foursquare_id = json[PARAM.FOURSQUARE_ID].string
+		self.foursquareId = json[PARAM.FOURSQUARE_ID].string
 		
 	}
 	

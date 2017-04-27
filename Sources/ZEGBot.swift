@@ -32,7 +32,7 @@ public struct ZEGBot {
 			
 			guard let updates = ZEGBot.decodeUpdates(from: Data(bytes: curl.performFully().2)) else { continue }
 			
-			if let lastUpdate = updates.last { offset = lastUpdate.update_id + 1 }
+			if let lastUpdate = updates.last { offset = lastUpdate.updateId + 1 }
 			
 			for update in updates {
 				handler(update, self)
