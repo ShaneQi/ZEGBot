@@ -9,7 +9,7 @@
 extension String {
 
 	func bytes() -> [UInt8] {
-		return [UInt8](self.utf8)
+		return [UInt8](utf8)
 	}
 
 }
@@ -21,26 +21,38 @@ struct Log {
 	}
 
 	static func warning(on object: Any) {
-		self.warning(message: "====>>>====<<<====")
-		self.warning(message: "Failed to convert:")
-		self.warning(message: "\(object)")
+		warning(message: "====>>>====<<<====")
+		warning(message: "Failed to convert:")
+		warning(message: "\(object)")
 	}
 
 	static func warning(onMethod method: String) {
-		self.warning(message: "====>>>====<<<====")
-		self.warning(message: "Failed in method: \(method)")
+		warning(message: "====>>>====<<<====")
+		warning(message: "Failed in method: \(method)")
 	}
 
 }
 
 extension Dictionary {
 
+
+	/// Append content of another dictionary to self.
+	///
+	/// The value will override the original value if the key is duplicated.
+	///
+	/// - Parameter dictionary: the another dictionary
 	mutating func append(contentOf dictionary: [Key: Value]) {
 		for (key, value) in dictionary {
 			self[key] = value
 		}
 	}
 
+	/// Append content of another dictionary to self.
+	///
+	/// If the optional value has some value, it will override the original value if the key is duplicated.
+	/// But if the optional value is nil, it won't override the original value if the key is duplicated.
+	///
+	/// - Parameter dictionary: the another dictionary
 	mutating func append(contentOf dictionary: [Key: Value?]) {
 		for (key, optionalValue) in dictionary {
 			if let value = optionalValue { self[key] = value }
