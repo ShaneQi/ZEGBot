@@ -102,6 +102,7 @@ bot.run(with: {
 - Contact
 - Location
 - Venue
+- File
 
 Not all the types are supported, checkout more details on [Telegram Bot API](https://core.telegram.org/bots/api#available-types).
 
@@ -119,6 +120,7 @@ Not all the types are supported, checkout more details on [Telegram Bot API](htt
 - sendVenue
 - sendContact
 - sendChatAction
+- getFile
 
 Not all the methods are supported, checkout more details on [Telegram Bot API](https://core.telegram.org/bots/api#available-methods).
 
