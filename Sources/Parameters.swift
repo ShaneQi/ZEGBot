@@ -76,6 +76,7 @@ extension Update {
 		static let UPDATE_ID = "update_id"
 		static let MESSAGE = "message"
 		static let EDITED_MESSAGE = "edited_message"
+        static let CHANNEL_POST = "channel_post"
 	}
 
 }
