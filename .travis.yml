@@ -1,15 +1,12 @@
-language: generics
-dist: trusty
 sudo: required
-script:
-  - swift build
+
+language: ruby
+
+services:
+  - docker
+
 before_install:
-  - sudo add-apt-repository ppa:0k53d-karl-f830m/openssl -y
-  - sudo apt-get update
-  - sudo apt-get install clang uuid-dev libcurl4-openssl-dev openssl -y
-  - TOOLCHAIN_TYPE=swift-3.1.1-release
-  - TOOLCHAIN_VERSION=swift-3.1.1-RELEASE
-  - wget https://swift.org/builds/${TOOLCHAIN_TYPE}/ubuntu1404/${TOOLCHAIN_VERSION}/${TOOLCHAIN_VERSION}-ubuntu14.04.tar.gz
-  - tar -zxvf ${TOOLCHAIN_VERSION}-ubuntu14.04.tar.gz
-  - sudo mv ${TOOLCHAIN_VERSION}-ubuntu14.04 /usr/swift
-  - export PATH=/usr/swift/usr/bin:"${PATH}"
+- docker pull ubuntu:16.04
+
+script:
+  - sudo docker run -it -v `pwd`/../ZEGBot:/ZEGBot ubuntu:16.04 /bin/sh -c "cd /ZEGBot; sh build.sh"
