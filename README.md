@@ -86,6 +86,14 @@ bot.run(with: {
   ...
   ```
 
+- Send a text message to a channel:
+  ```swift
+  ...
+  if let channel_post = update.channel_post {
+    bot.send(message: "bar", to: channel_post.chat)
+  }
+  ...
+
 ## Support Types
 
 - Update

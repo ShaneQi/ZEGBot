@@ -15,6 +15,7 @@ public struct Update {
 	/* Optional. */
 	public var message: Message?
 	public var editedMessage: Message?
+    public var channel_post: Message?
 	//	public var inlineQuery: InlineQuery?
 	//	public var chosenInlineResult: ChosenInlineResult?
 	//	public var callbackQuery: CallbackQuery?
