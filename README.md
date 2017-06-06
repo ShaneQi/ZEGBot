@@ -86,6 +86,14 @@ bot.run(with: {
   ...
   ```
 
+- Send a text message to a channel:
+  ```swift
+  ...
+  if let channelPost = update?.channelPost {
+    bot.send(message: "bar", to: channelPost.chat)
+  }
+  ...
+
 ## Support Types
 
 - Update
@@ -102,6 +110,7 @@ bot.run(with: {
 - Contact
 - Location
 - Venue
+- File
 
 Not all the types are supported, checkout more details on [Telegram Bot API](https://core.telegram.org/bots/api#available-types).
 
@@ -119,6 +128,7 @@ Not all the types are supported, checkout more details on [Telegram Bot API](htt
 - sendVenue
 - sendContact
 - sendChatAction
+- getFile
 
 Not all the methods are supported, checkout more details on [Telegram Bot API](https://core.telegram.org/bots/api#available-methods).
 
