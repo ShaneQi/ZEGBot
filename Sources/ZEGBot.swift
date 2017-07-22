@@ -8,12 +8,12 @@
 //  Licensed under Apache License v2.0
 //
 
-import cURL
-import PerfectCURL
 import SwiftyJSON
 import Foundation
 
 public struct ZEGBot {
+
+	internal let session = URLSession(configuration: .default)
 
 	internal var urlPrefix: String
 
@@ -21,29 +21,24 @@ public struct ZEGBot {
 		self.urlPrefix = "https://api.telegram.org/bot"+token+"/"
 	}
 
-	public func run(with handler: @escaping ZEGUpdateHandle ) {
-
-		let curl = CURL()
-		var offset = 0
-
+	public func run(withHandler handler: @escaping UpdateHandler) {
+		getUpdates(offset: 0, handler: handler)
 		while true {
+			if readLine() == "stop" { return }
+		}
+	}
 
-			curl.url = urlPrefix + "getupdates?timeout=60&offset=\(offset)"
-
-			guard let updates = ZEGBot.decodeUpdates(from: Data(bytes: curl.performFully().2)) else { continue }
-
-			if let lastUpdate = updates.last { offset = lastUpdate.updateId + 1 }
-
+	private func getUpdates(offset: Int, handler: @escaping UpdateHandler) {
+		let task = session.dataTask(with: URL(string: urlPrefix + "getupdates?timeout=60&offset=\(offset)")!) { data, _, error in
+			guard let updates = ZEGBot.decodeUpdates(from: data!) else { return }
 			for update in updates {
 				handler(update, self)
 			}
-
+			var newOffset = offset
+			if let lastUpdate = updates.last { newOffset = lastUpdate.updateId + 1 }
+			self.getUpdates(offset: newOffset, handler: handler)
 		}
-
-	}
-
-	public func run(with handler: ZEGUpdateHandler) {
-		run(with: handler.handle)
+		task.resume()
 	}
 
 }
@@ -66,10 +61,4 @@ extension ZEGBot {
 
 }
 
-public typealias ZEGUpdateHandle = (Update, ZEGBot) -> Void
-
-public protocol ZEGUpdateHandler {
-
-	func handle(update: Update, bot: ZEGBot)
-
-}
+public typealias UpdateHandler = (Update, ZEGBot) -> Void

@@ -8,8 +8,6 @@
 //  Licensed under Apache License v2.0
 //
 
-import PerfectCURL
-import cURL
 import SwiftyJSON
 import Foundation
 
@@ -257,17 +255,19 @@ extension ZEGBot {
 
 	internal func perform(method: String, payload: [String: Any]) -> JSON? {
 
-		guard var bodyBytes = JSON(payload).rawString()?.bytes() else {
+		guard let bodyData = try? JSON(payload).rawData() else {
 			Log.warning(onMethod: method)
 			return nil
 		}
+		var request = URLRequest(url: URL(string: urlPrefix + method)!)
+		request.httpMethod = "POST"
+		request.httpBody = bodyData
+		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+		let task = session.dataTask(with: request) { _, _, _ in
+		}
+		task.resume()
 
-		let curl = CURL()
-		curl.url = urlPrefix + method
-		curl.setOption(CURLOPT_POSTFIELDS, v: &bodyBytes)
-		curl.setOption(CURLOPT_HTTPHEADER, s: PARAM.POST_JSON_HEADER_CONTENT_TYPE)
-
-		return JSON(data: Data(bytes: curl.performFully().2))
+		return nil
 
 	}
 
