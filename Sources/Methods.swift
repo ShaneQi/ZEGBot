@@ -8,11 +8,11 @@
 //  Licensed under Apache License v2.0
 //
 
-import PerfectCURL
-import cURL
 import SwiftyJSON
 import Foundation
+import Dispatch
 
+///  All methods are performed synchronized.
 extension ZEGBot {
 
 	@discardableResult
@@ -23,7 +23,7 @@ extension ZEGBot {
 
 		var payload: [String: Any] = [
 			PARAM.TEXT: text
-			]
+		]
 
 		if let parseMode = parseMode { payload[PARAM.PARSE_MODE] = parseMode.rawValue }
 		if disableWebPagePreview { payload[PARAM.DISABLE_WEB_PAGE_PREVIEW] = true }
@@ -256,19 +256,30 @@ extension ZEGBot {
 	}
 
 	internal func perform(method: String, payload: [String: Any]) -> JSON? {
+		if let data: Data = performRequest(ofMethod: method, payload: payload) {
+			return JSON(data: data)
+		}
+		return nil
+	}
 
-		guard var bodyBytes = JSON(payload).rawString()?.bytes() else {
+	private func performRequest(ofMethod method: String, payload: [String: Any]) -> Data? {
+		guard let bodyData = try? JSON(payload).rawData() else {
 			Log.warning(onMethod: method)
 			return nil
 		}
-
-		let curl = CURL()
-		curl.url = urlPrefix + method
-		curl.setOption(CURLOPT_POSTFIELDS, v: &bodyBytes)
-		curl.setOption(CURLOPT_HTTPHEADER, s: PARAM.POST_JSON_HEADER_CONTENT_TYPE)
-
-		return JSON(data: Data(bytes: curl.performFully().2))
-
+		var resultData: Data?
+		let semaphore = DispatchSemaphore(value: 0)
+		var request = URLRequest(url: URL(string: urlPrefix + method)!)
+		request.httpMethod = "POST"
+		request.httpBody = bodyData
+		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+		let task = URLSession(configuration: .default).dataTask(with: request) { data, _, _ in
+			resultData = data
+			semaphore.signal()
+		}
+		task.resume()
+		semaphore.wait()
+		return resultData
 	}
 
 }
