@@ -10,6 +10,7 @@
 
 import SwiftyJSON
 import Foundation
+import Dispatch
 
 public struct ZEGBot {
 
@@ -22,23 +23,24 @@ public struct ZEGBot {
 	}
 
 	public func run(withHandler handler: @escaping UpdateHandler) {
-		getUpdates(offset: 0, handler: handler)
+		var offset = 0
+		let semaphore = DispatchSemaphore(value: 0)
 		while true {
-			if readLine() == "stop" { return }
-		}
-	}
-
-	private func getUpdates(offset: Int, handler: @escaping UpdateHandler) {
-		let task = session.dataTask(with: URL(string: urlPrefix + "getupdates?timeout=60&offset=\(offset)")!) { data, _, error in
-			guard let updates = ZEGBot.decodeUpdates(from: data!) else { return }
-			for update in updates {
-				handler(update, self)
+			let task = session.dataTask(with: URL(string: urlPrefix + "getupdates?timeout=60&offset=\(offset)")!) { data, _, _ in
+				guard let updatesData = data,
+					let updates = ZEGBot.decodeUpdates(from: updatesData) else {
+						semaphore.signal()
+						return
+				}
+				if let lastUpdate = updates.last { offset = lastUpdate.updateId + 1 }
+				semaphore.signal()
+				for update in updates {
+					handler(update, self)
+				}
 			}
-			var newOffset = offset
-			if let lastUpdate = updates.last { newOffset = lastUpdate.updateId + 1 }
-			self.getUpdates(offset: newOffset, handler: handler)
+			task.resume()
+			semaphore.wait()
 		}
-		task.resume()
 	}
 
 }

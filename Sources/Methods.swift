@@ -10,7 +10,9 @@
 
 import SwiftyJSON
 import Foundation
+import Dispatch
 
+///  All methods are performed synchronized.
 extension ZEGBot {
 
 	@discardableResult
@@ -21,7 +23,7 @@ extension ZEGBot {
 
 		var payload: [String: Any] = [
 			PARAM.TEXT: text
-			]
+		]
 
 		if let parseMode = parseMode { payload[PARAM.PARSE_MODE] = parseMode.rawValue }
 		if disableWebPagePreview { payload[PARAM.DISABLE_WEB_PAGE_PREVIEW] = true }
@@ -254,21 +256,30 @@ extension ZEGBot {
 	}
 
 	internal func perform(method: String, payload: [String: Any]) -> JSON? {
+		if let data: Data = performRequest(ofMethod: method, payload: payload) {
+			return JSON(data: data)
+		}
+		return nil
+	}
 
+	private func performRequest(ofMethod method: String, payload: [String: Any]) -> Data? {
 		guard let bodyData = try? JSON(payload).rawData() else {
 			Log.warning(onMethod: method)
 			return nil
 		}
+		var resultData: Data?
+		let semaphore = DispatchSemaphore(value: 0)
 		var request = URLRequest(url: URL(string: urlPrefix + method)!)
 		request.httpMethod = "POST"
 		request.httpBody = bodyData
 		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-		let task = session.dataTask(with: request) { _, _, _ in
+		let task = URLSession(configuration: .default).dataTask(with: request) { data, _, _ in
+			resultData = data
+			semaphore.signal()
 		}
 		task.resume()
-
-		return nil
-
+		semaphore.wait()
+		return resultData
 	}
 
 }
