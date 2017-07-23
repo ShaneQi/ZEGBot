@@ -6,15 +6,12 @@ This library wraps the JSON decoding processing, making it easy to decode incomi
 
 This library wraps the processing of converting objects to Telegram Bot API request parameters and the processing of performing request, making it easy to handle incoming update.
 
-**This is a server-side swift library powered by [Perfect](https://github.com/PerfectlySoft/Perfect).  
-Which will help you build your own Perfect Telegram Bot!**
-
 ## Installation
 
 Add this project as a dependency in your Package.swift file.
 
 ```swift
-.Package(url: "https://github.com/ShaneQi/ZEGBot.git", versions: Version(0,0,0)..<Version(10,0,0))
+.Package(url: "https://github.com/shaneqi/ZEGBot.git", majorVersion: 2)
 ```
 ## Quick Start
 
@@ -28,9 +25,7 @@ import ZEGBot
 //  Don't forget to fill in your bot token.
 let bot = ZEGBot(token: "TYPE YOUR TOKEN HERE")
 
-bot.run(with: {
-	update, bot in
-
+bot.run { update, bot in       
   //  Handle updates here...
 
 })
@@ -69,7 +64,7 @@ bot.run(with: {
   ```swift
   ...
   if let message = update?.message {
-    bot.send(message: "[Google](https://google.com)", to: message.chat, parseMode: .MARKDOWN, disableWebPagePreview: true, disableNotification: true)
+    bot.send(message: "[Google](https://google.com)", to: message.chat, parseMode: .markdown, disableWebPagePreview: true, disableNotification: true)
   }
   ...
   ```
@@ -134,3 +129,4 @@ Not all the methods are supported, checkout more details on [Telegram Bot API](h
 
 ## License
 This project is licensed under [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
