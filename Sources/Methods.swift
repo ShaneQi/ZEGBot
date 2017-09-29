@@ -8,37 +8,25 @@
 //  Licensed under Apache License v2.0
 //
 
-//import SwiftyJSON
-//import Foundation
-//import Dispatch
+import Foundation
+import Dispatch
 
 ///  All methods are performed synchronized.
-//extension ZEGBot {
-//
-//	@discardableResult
-//	public func send(message text: String, to receiver: Sendable,
-//	                 parseMode: ParseMode? = nil,
-//	                 disableWebPagePreview: Bool = false,
-//	                 disableNotification: Bool = false) -> Message? {
-//
-//		var payload: [String: Any] = [
-//			PARAM.TEXT: text
-//		]
-//
-//		if let parseMode = parseMode { payload[PARAM.PARSE_MODE] = parseMode.rawValue }
-//		if disableWebPagePreview { payload[PARAM.DISABLE_WEB_PAGE_PREVIEW] = true }
-//
-//		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
-//		payload.append(contentOf: receiver.receiverIdentifier)
-//
-//		guard let responseJSON = perform(method: PARAM.SEND_MESSAGE, payload: payload) else {
-//			return nil
-//		}
-//
-//		return Message(from: responseJSON[PARAM.RESULT])
-//
-//	}
-//
+extension ZEGBot {
+
+	@discardableResult
+	public func send(message text: String, to receiver: Sendable,
+	                 parseMode: ParseMode? = nil,
+	                 disableWebPagePreview: Bool? = nil,
+	                 disableNotification: Bool? = nil) -> Result<Message> {
+		let payload = SendingPayload(text: text,
+		                             receiver: receiver,
+		                             parseMode: parseMode,
+		                             disableWebPagePreview: disableWebPagePreview,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "sendMessage", payload: payload)
+	}
+
 //	@discardableResult
 //	public func forward(message: Message, to receiver: Sendable,
 //	                    disableNotification: Bool = false) -> Message? {
@@ -261,26 +249,67 @@
 //		}
 //		return nil
 //	}
-//
-//	private func performRequest(ofMethod method: String, payload: [String: Any]) -> Data? {
-//		guard let bodyData = try? JSON(payload).rawData() else {
-//			Log.warning(onMethod: method)
-//			return nil
-//		}
-//		var resultData: Data?
-//		let semaphore = DispatchSemaphore(value: 0)
-//		var request = URLRequest(url: URL(string: urlPrefix + method)!)
-//		request.httpMethod = "POST"
-//		request.httpBody = bodyData
-//		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//		let task = URLSession(configuration: .default).dataTask(with: request) { data, _, _ in
-//			resultData = data
-//			semaphore.signal()
-//		}
-//		task.resume()
-//		semaphore.wait()
-//		return resultData
-//	}
-//
-//}
 
+	private func performRequest<Input, Output>(ofMethod method: String, payload: Input) -> Result<Output>
+		where Input: Codable, Output: Codable {
+			// Preparing the request.
+			let bodyData = (try? JSONEncoder().encode(payload))!
+			let semaphore = DispatchSemaphore(value: 0)
+			var request = URLRequest(url: URL(string: urlPrefix + method)!)
+			request.httpMethod = "POST"
+			request.httpBody = bodyData
+			request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+			// Perform the request.
+			var result: Result<Data>?
+			let task = URLSession(configuration: .default).dataTask(with: request) { data, _, error in
+				if data != nil {
+					result = .success(data!)
+				} else {
+					result = .failure(error!)
+				}
+				semaphore.signal()
+			}
+			task.resume()
+			semaphore.wait()
+
+			// Handle the response.
+			switch result! {
+			case .success(let data):
+				do {
+					let messageResult = try JSONDecoder().decode(TelegramResult<Output>.self, from: data).result
+					switch messageResult {
+					case .success(let message): return .success(message)
+					case .failure(let error): throw error
+					}
+				} catch(let error) {
+					return .failure(error)
+				}
+			case .failure(let error):
+				return .failure(error)
+			}
+	}
+
+}
+
+struct TelegramResult<T>: Codable where T: Codable {
+
+	let isOk: Bool
+	let value: T?
+	let description: String?
+
+	enum CodingKeys: String, CodingKey {
+		case description
+		case isOk = "ok"
+		case value = "result"
+	}
+
+	var result: Result<T> {
+		if let value = value {
+			return .success(value)
+		} else {
+			return .failure(Error.telegram(description))
+		}
+	}
+
+}

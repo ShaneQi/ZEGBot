@@ -8,18 +8,6 @@
 //  Licensed under Apache License v2.0
 //
 
-public struct LongPollResult: Codable {
-
-	public let isOk: Bool
-	public let updates: [Update]
-
-	enum CodingKeys: String, CodingKey {
-		case isOk = "ok"
-		case updates = "result"
-	}
-
-}
-
 public struct Update: Codable {
 
 	public let updateId: Int

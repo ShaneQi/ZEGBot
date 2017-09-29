@@ -27,21 +27,25 @@ public struct ZEGBot {
 		var offset = 0
 		let semaphore = DispatchSemaphore(value: 0)
 		while true {
-			let task = session.dataTask(with: URL(string: urlPrefix + "getupdates?timeout=60&offset=\(offset)")!) { data, _, _ in
+			let task = session.dataTask(with: URL(string: urlPrefix + "getupdates?timeout=60&offset=\(offset)")!) { data, _, error in
 				guard let data = data else {
+					handler(.failure(error!), self)
 					semaphore.signal()
 					return
 				}
 				do {
-					let updates = try JSONDecoder().decode(LongPollResult.self, from: data).updates
-					if let lastUpdate = updates.last { offset = lastUpdate.updateId + 1 }
-					semaphore.signal()
-					for update in updates {
-						handler(.success(update), self)
-					}}
-				catch(let error) {
+					switch try JSONDecoder().decode(TelegramResult<[Update]>.self, from: data).result {
+					case .success(let updates):
+						if let lastUpdate = updates.last { offset = lastUpdate.updateId + 1 }
+						for update in updates {
+							handler(.success(update), self)
+						}
+					case .failure(let error): throw error
+					}
+				} catch(let error) {
 					handler(.failure(error), self)
 				}
+				semaphore.signal()
 			}
 			task.resume()
 			semaphore.wait()
