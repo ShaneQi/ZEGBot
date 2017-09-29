@@ -1,5 +1,5 @@
 import XCTest
-@testable import helloTests
+@testable import ZEGBotTests
 
 XCTMain([
 	testCase(ZEGBotTests.allTests),

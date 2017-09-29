@@ -1,10 +1,7 @@
 sudo docker run \
+--rm \
 -v `pwd`/:/ZEGBot \
+-w /ZEGBot \
 shaneqi/swift:4.0 \
 /bin/sh -c \
-"\
-apt-get update;\
-apt-get install uuid-dev -y;\
-cd ZEGBot;\
-swift build;\
-"
+"swift test && swift build"
