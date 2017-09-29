@@ -13,11 +13,30 @@ struct SendingPayload: Encodable {
 	let replyToMessageId: Int?
 	let disableNotification: Bool?
 
+	init(content: Content,
+	     chatId: Int,
+	     replyToMessageId: Int? = nil,
+	     disableNotification: Bool? = nil) {
+		self.content = content
+		self.chatId = chatId
+		self.replyToMessageId = replyToMessageId
+		self.disableNotification = disableNotification
+	}
+	
 	enum Content {
 		case message(text: String, parseMode: ParseMode?, disableWebPagePreview: Bool?)
 		case forwardMessage(chatId: Int, messageId: Int)
-		case photo(fileId: String, caption: String?)
 		case sticker(fileId: String)
+		case photo(fileId: String, caption: String?)
+		case audio(fileId: String, caption: String?)
+		case document(fileId: String, caption: String?)
+		case video(fileId: String, caption: String?)
+		case voice(fileId: String, caption: String?)
+		case videoNote(fileId: String)
+		case location(latitude: Double, longitude: Double)
+		case venue(latitude: Double, longitude: Double, title: String, address: String, foursquareId: String?)
+		case contact(phoneNumber: String, firstName: String, lastName: String?)
+		case chatAction(chatAction: ChatAction)
 	}
 
 	enum CodingKeys: String, CodingKey {
@@ -35,11 +54,25 @@ struct SendingPayload: Encodable {
 		case fromChatId = "from_chat_id"
 		case messageId = "message_id"
 
-		// sendPhoto
-		case photo, caption
-
-		// sendSticker
 		case sticker
+		case caption, photo, audio, document, video, voice, location, venue, contact
+		case videoNote = "video_note"
+
+		// sendLocation
+		case latitude, longitude
+
+		// sendVenue
+		case address, title
+		case foursquareId = "foursquare_id"
+
+		// sendContact
+		case phoneNumber = "phone_number"
+		case firstName = "firstName"
+		case lastName = "lastName"
+
+		// sendChatAction
+		case chatAction = "action"
+
 	}
 
 	func encode(to encoder: Encoder) throws {
@@ -62,11 +95,40 @@ struct SendingPayload: Encodable {
 		case .forwardMessage(chatId: let chatId, messageId: let messageId):
 			try container.encode(chatId, forKey: .fromChatId)
 			try container.encode(messageId, forKey: .messageId)
+		case .sticker(fileId: let fileId):
+			try container.encode(fileId, forKey: .sticker)
 		case .photo(fileId: let fileId, caption: let caption):
 			try container.encode(fileId, forKey: .photo)
 			if let caption = caption { try container.encode(caption, forKey: .caption) }
-		case .sticker(fileId: let fileId):
-			try container.encode(fileId, forKey: .sticker)
+		case .audio(fileId: let fileId, caption: let caption):
+			try container.encode(fileId, forKey: .audio)
+			if let caption = caption { try container.encode(caption, forKey: .caption) }
+		case .document(fileId: let fileId, caption: let caption):
+			try container.encode(fileId, forKey: .document)
+			if let caption = caption { try container.encode(caption, forKey: .caption) }
+		case .video(fileId: let fileId, caption: let caption):
+			try container.encode(fileId, forKey: .video)
+			if let caption = caption { try container.encode(caption, forKey: .caption) }
+		case .voice(fileId: let fileId, caption: let caption):
+			try container.encode(fileId, forKey: .voice)
+			if let caption = caption { try container.encode(caption, forKey: .caption) }
+		case .videoNote(fileId: let fileId):
+			try container.encode(fileId, forKey: .videoNote)
+		case .location(latitude: let latitude, longitude: let longitude):
+			try container.encode(latitude, forKey: .latitude)
+			try container.encode(longitude, forKey: .longitude)
+		case .venue(latitude: let latitude, longitude: let longitude, title: let title, address: let address, foursquareId: let foursquareId):
+			try container.encode(latitude, forKey: .latitude)
+			try container.encode(longitude, forKey: .longitude)
+			try container.encode(title, forKey: .title)
+			try container.encode(address, forKey: .address)
+			if let foursquareId = foursquareId { try container.encode(foursquareId, forKey: .foursquareId) }
+		case .contact(phoneNumber: let phoneNumber, firstName: let firstName, lastName: let lastName):
+			try container.encode(phoneNumber, forKey: .phoneNumber)
+			try container.encode(firstName, forKey: .firstName)
+			if let lastName = lastName { try container.encode(lastName, forKey: .lastName) }
+		case .chatAction(chatAction: let chatAction):
+			try container.encode(chatAction, forKey: .chatAction)
 		}
 	}
 
