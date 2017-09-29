@@ -27,11 +27,11 @@ public struct ZEGBot {
 		let semaphore = DispatchSemaphore(value: 0)
 		while true {
 			let task = session.dataTask(with: URL(string: urlPrefix + "getupdates?timeout=60&offset=\(offset)")!) { data, _, _ in
-				guard let updatesData = data,
-					let updates = ZEGBot.decodeUpdates(from: updatesData) else {
-						semaphore.signal()
-						return
+				guard let updatesData = data else {
+					semaphore.signal()
+					return
 				}
+				let updates = try! JSONDecoder().decode(LongPullResult.self, from: updatesData).result
 				if let lastUpdate = updates.last { offset = lastUpdate.updateId + 1 }
 				semaphore.signal()
 				for update in updates {
@@ -41,24 +41,6 @@ public struct ZEGBot {
 			task.resume()
 			semaphore.wait()
 		}
-	}
-
-}
-
-extension ZEGBot {
-
-	/* For getUpdates. */
-	static func decodeUpdates(from jsonData: Data) -> [Update]? {
-
-		return Update.array(from: JSON(data: jsonData)[PARAM.RESULT])
-
-	}
-
-	/* For webhook. */
-	static func decodeUpdate(from jsonData: Data) -> Update? {
-
-		return Update(from: JSON(data: jsonData)[PARAM.RESULT])
-
 	}
 
 }

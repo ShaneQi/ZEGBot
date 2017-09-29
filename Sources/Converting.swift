@@ -47,9 +47,9 @@ extension Update: JSONConvertible, ArrayConvertible {
 			return nil
 		}
 		self.updateId = updateId
-		self.message = Message(from: json[PARAM.MESSAGE])
-		self.editedMessage = Message(from: json[PARAM.EDITED_MESSAGE])
-		self.channelPost = Message(from: json[PARAM.CHANNEL_POST])
+//		self.message = Message(from: json[PARAM.MESSAGE])
+//		self.editedMessage = Message(from: json[PARAM.EDITED_MESSAGE])
+//		self.channelPost = Message(from: json[PARAM.CHANNEL_POST])
 	}
 
 }

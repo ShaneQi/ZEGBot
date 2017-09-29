@@ -8,21 +8,37 @@
 //  Licensed under Apache License v2.0
 //
 
-public struct Update {
+public struct LongPullResult: Codable {
+
+	public let isOk: Bool
+	public let result: [Update]
+
+	enum CodingKeys: String, CodingKey {
+		case isOk = "ok"
+		case result
+	}
+
+}
+
+public struct Update: Codable {
 
 	public var updateId: Int
 
 	/* Optional. */
-	public var message: Message?
-	public var editedMessage: Message?
-	public var channelPost: Message?
+//	public var message: Message?
+//	public var editedMessage: Message?
+//	public var channelPost: Message?
 	//	public var inlineQuery: InlineQuery?
 	//	public var chosenInlineResult: ChosenInlineResult?
 	//	public var callbackQuery: CallbackQuery?
 
+	enum CodingKeys: String, CodingKey {
+		case updateId = "update_id"
+	}
+
 }
 
-public class Message {
+public class Message: Codable {
 
 	public var messageId: Int
 	public var date: Int
@@ -67,7 +83,7 @@ public class Message {
 
 }
 
-public struct Chat {
+public struct Chat: Codable {
 
 	public var id: Int
 	public var type: StructType
@@ -78,7 +94,7 @@ public struct Chat {
 	public var firstName: String?
 	public var lastName: String?
 
-	public enum StructType: String {
+	public enum StructType: String, Codable {
 
 		public init?(from string: String?) {
 			guard let typeString = string else { return nil }
@@ -91,7 +107,7 @@ public struct Chat {
 
 }
 
-public struct User {
+public struct User: Codable {
 
 	public var id: Int
 	public var firstName: String
@@ -102,7 +118,7 @@ public struct User {
 
 }
 
-public struct MessageEntity {
+public struct MessageEntity: Codable {
 
 	public var type: StructType
 	public var offset: Int
@@ -112,7 +128,7 @@ public struct MessageEntity {
 	public var url: String?
 	public var user: User?
 
-	public enum StructType: String {
+	public enum StructType: String, Codable {
 		public init?(from string: String?) {
 			guard let typeString = string else { return nil }
 			guard let instance = StructType(rawValue: typeString.lowercased()) else { return nil }
@@ -129,7 +145,7 @@ public struct MessageEntity {
 
 }
 
-public struct Audio {
+public struct Audio: Codable {
 
 	public var fileId: String
 	public var duration: Int
@@ -142,7 +158,7 @@ public struct Audio {
 
 }
 
-public struct Document {
+public struct Document: Codable {
 
 	public var fileId: String
 
@@ -154,7 +170,7 @@ public struct Document {
 
 }
 
-public struct PhotoSize {
+public struct PhotoSize: Codable {
 
 	public var fileId: String
 	public var width: Int
@@ -165,7 +181,7 @@ public struct PhotoSize {
 
 }
 
-public struct Sticker {
+public struct Sticker: Codable {
 
 	public var fileId: String
 	public var width: Int
@@ -178,7 +194,7 @@ public struct Sticker {
 
 }
 
-public struct Video {
+public struct Video: Codable {
 
 	public var fileId: String
 	public var width: Int
@@ -192,7 +208,7 @@ public struct Video {
 
 }
 
-public struct Voice {
+public struct Voice: Codable {
 
 	public var fileId: String
 	public var duration: Int
@@ -203,7 +219,7 @@ public struct Voice {
 
 }
 
-public struct Contact {
+public struct Contact: Codable {
 
 	public var phoneNumber: String
 	public var firstName: String
@@ -214,14 +230,14 @@ public struct Contact {
 
 }
 
-public struct Location {
+public struct Location: Codable {
 
 	public var longitude: Double
 	public var latitude: Double
 
 }
 
-public struct Venue {
+public struct Venue: Codable {
 
 	public var location: Location
 	public var title: String
@@ -232,7 +248,7 @@ public struct Venue {
 
 }
 
-public struct File {
+public struct File: Codable {
 
 	public var fileId: String
 

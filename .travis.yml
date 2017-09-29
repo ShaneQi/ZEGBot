@@ -5,3 +5,8 @@ services:
 
 script:
   - sudo sh ./scripts/build.sh 
+
+notifications:
+  email: false
+  webhooks:
+    secure: ndSvz7X5FGaJNrQNwdUqQssLehVgRnLl1OqJ9b41UjfBvJpyh23QLcLCcx51+aYRlV+9O/IT5Kw7Dj9F/K5ndwY82OV6Zt5ayP9T1w1ZaXuwCR8SUFSOeEf4yyu/nzEY/EgGbUXctnKyqFsv98khWIC3Wvrl1DwhWEGu/hq02mccy+L3kg89G6AG2P7B/d3htbP2fN+u0dFi23otj/wRGpvpTZCV+k/3vCVjk7TLB1ti4AM9JdVzr8wN+oRbwAT+V1QJGJh2FCH44hkZmuzdqpM7gFxErZA856r1BzZJBEFd1AviVUfd9bzjHQ06jDXbxGHcZdUIwTmID74za59av9mCAM30mr9KXxM3FIMnbL2KqR0NGAOPmYVZV/HMt+s0iVyyW2IBQIiEtCiS3R24Zm1KgeWNoQeetYVHdeWyfg+FxurcKkxJ7b7SORPkXthqKf+pzbac6+wZ/IFAFmxOCchTuO+6VIHiGaUjylRV7c0i6XMWLZohr2kAMmH7LUyTduwrjxQkgQnCn7rmfVQRueIatYVYrKfanRvTKKh3iKTk68JoVCea72mFutvG8mvr/bf599Ipf6ZCQKxdwi2lYBY473Ra2NLFWID5/f+fMYZzCz7l13CkbOs142VtxtJv4roFKDthIBE8QekftSkHhSOZdtElj6lcN3HhV5iqtjA=
