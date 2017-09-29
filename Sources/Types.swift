@@ -8,262 +8,296 @@
 //  Licensed under Apache License v2.0
 //
 
-public struct LongPullResult: Codable {
+public struct LongPollResult: Codable {
 
 	public let isOk: Bool
-	public let result: [Update]
+	public let updates: [Update]
 
 	enum CodingKeys: String, CodingKey {
 		case isOk = "ok"
-		case result
+		case updates = "result"
 	}
 
 }
 
 public struct Update: Codable {
 
-	public var updateId: Int
+	public let updateId: Int
 
 	/* Optional. */
-//	public var message: Message?
-//	public var editedMessage: Message?
-//	public var channelPost: Message?
-	//	public var inlineQuery: InlineQuery?
-	//	public var chosenInlineResult: ChosenInlineResult?
-	//	public var callbackQuery: CallbackQuery?
+	public let message: Message?
+	public let editedMessage: Message?
+	public let channelPost: Message?
 
 	enum CodingKeys: String, CodingKey {
 		case updateId = "update_id"
+		case message
+		case editedMessage = "edited_message"
+		case channelPost = "channel_post"
 	}
 
 }
 
 public class Message: Codable {
 
-	public var messageId: Int
-	public var date: Int
-	public var chat: Chat
+	public let messageId: Int
+	public let date: Int
+	public let chat: Chat
 
 	/* Optional. */
-	public var from: User?
-	public var forwardFrom: User?
-	public var forwardFromChat: Chat?
-	public var forwardDate: Int?
-	public var replyToMessage: Message?
-	public var editDate: Int?
-	public var text: String?
-	public var entities: [MessageEntity]?
-	public var audio: Audio?
-	public var document: Document?
-	public var photo: [PhotoSize]?
-	public var sticker: Sticker?
-	public var video: Video?
-	public var voice: Voice?
-	public var caption: String?
-	public var contact: Contact?
-	public var location: Location?
-	public var venue: Venue?
-	public var newChatMember: User?
-	public var leftChatMember: User?
-	public var newChatTitle: String?
-	public var newChatPhoto: [PhotoSize]?
-	public var deleteChatPhoto: Bool?
-	public var groupChatCreated: Bool?
-	public var supergroupChatCreated: Bool?
-	public var channelChatCreated: Bool?
-	public var migrateToChatId: Int?
-	public var migrateFromChatId: Int?
-	public var pinnedMessage: Message?
+	public let from: User?
+	public let forwardFrom: User?
+	public let forwardFromChat: Chat?
+	public let forwardDate: Int?
+	public let replyToMessage: Message?
+	public let editDate: Int?
+	public let text: String?
+	public let entities: [MessageEntity]?
+	public let audio: Audio?
+	public let document: Document?
+	public let photo: [PhotoSize]?
+	public let sticker: Sticker?
+	public let video: Video?
+	public let voice: Voice?
+	public let caption: String?
+	public let contact: Contact?
+	public let location: Location?
+	public let venue: Venue?
+	public let newChatMember: User?
+	public let leftChatMember: User?
+	public let newChatTitle: String?
+	public let newChatPhoto: [PhotoSize]?
+	public let deleteChatPhoto: Bool?
+	public let groupChatCreated: Bool?
+	public let supergroupChatCreated: Bool?
+	public let channelChatCreated: Bool?
+	public let migrateToChatId: Int?
+	public let migrateFromChatId: Int?
+	public let pinnedMessage: Message?
 
-	public init() {
-		self.messageId = 0
-		self.date = 0
-		self.chat = Chat(id: 9, type: .private, title: nil, username: nil, firstName: nil, lastName: nil)
+	enum CodingKeys: String, CodingKey {
+		case messageId = "message_id"
+		case date
+		case chat
+		case from
+		case forwardFrom = "forward_from"
+		case forwardFromChat = "forward_from_chat"
+		case forwardDate = "forward_date"
+		case replyToMessage = "reply_to_message"
+		case editDate = "edit_date"
+		case text
+		case entities
+		case audio
+		case document
+		case photo
+		case sticker
+		case video
+		case voice
+		case caption
+		case contact
+		case location
+		case venue
+		case newChatMember = "new_chat_member"
+		case leftChatMember = "left_chat_member"
+		case newChatTitle = "new_chat_title"
+		case newChatPhoto = "new_chat_photo"
+		case deleteChatPhoto = "delete_chat_photo"
+		case groupChatCreated = "group_chat_created"
+		case supergroupChatCreated = "supergroup_chat_created"
+		case channelChatCreated = "channel_chat_created"
+		case migrateToChatId = "migrate_to_chat_id"
+		case migrateFromChatId = "migrate_from_chat_id"
+		case pinnedMessage = "pinned_message"
 	}
 
 }
 
 public struct Chat: Codable {
 
-	public var id: Int
-	public var type: StructType
+	public let id: Int
+	public let type: StructType
 
 	/* Optional. */
-	public var title: String?
-	public var username: String?
-	public var firstName: String?
-	public var lastName: String?
+	public let title: String?
+	public let username: String?
+	public let firstName: String?
+	public let lastName: String?
 
 	public enum StructType: String, Codable {
-
-		public init?(from string: String?) {
-			guard let typeString = string else { return nil }
-			guard let instance = StructType(rawValue: typeString.lowercased()) else { return nil }
-			self = instance
-		}
-
 		case `private`, group, supergroup, channel
+	}
+
+	enum CodingKeys: String, CodingKey {
+		case id, type, title, username
+		case firstName = "first_name"
+		case lastName = "last_name"
 	}
 
 }
 
 public struct User: Codable {
 
-	public var id: Int
-	public var firstName: String
+	public let id: Int
+	public let firstName: String
 
 	/* OPTIONAL. */
-	public var lastName: String?
-	public var username: String?
+	public let lastName: String?
+	public let username: String?
+
+	enum CodingKeys: String, CodingKey {
+		case id, username
+		case firstName = "first_name"
+		case lastName = "last_name"
+	}
 
 }
 
 public struct MessageEntity: Codable {
 
-	public var type: StructType
-	public var offset: Int
-	public var length: Int
+	public let type: StructType
+	public let offset: Int
+	public let length: Int
 
 	/* OPTIONAl. */
-	public var url: String?
-	public var user: User?
+	public let url: String?
+	public let user: User?
 
 	public enum StructType: String, Codable {
-		public init?(from string: String?) {
-			guard let typeString = string else { return nil }
-			guard let instance = StructType(rawValue: typeString.lowercased()) else { return nil }
-			self = instance
-		}
-
 		case mention, hashtag
 		case botCommand = "bot_command"
 		case url, email, bold, italic, code, pre
 		case textLink = "text_link"
 		case textMention = "text_mention"
-
 	}
 
 }
 
 public struct Audio: Codable {
 
-	public var fileId: String
-	public var duration: Int
+	public let fileId: String
+	public let duration: Int
 
 	/* OPTIONAL. */
-	public var performer: String?
-	public var title: String?
-	public var mimeType: String?
-	public var fileSize: Int?
+	public let performer: String?
+	public let title: String?
+	public let mimeType: String?
+	public let fileSize: Int?
+
+	enum CodingKeys: String, CodingKey {
+		case duration, performer, title
+		case fileId = "file_id"
+		case mimeType = "mime_type"
+		case fileSize = "file_size"
+	}
 
 }
 
 public struct Document: Codable {
 
-	public var fileId: String
+	public let fileId: String
 
 	/* OPTIONAL. */
-	public var thumb: PhotoSize?
-	public var fileName: String?
-	public var mimeType: String?
-	public var fileSize: Int?
+	public let thumb: PhotoSize?
+	public let fileName: String?
+	public let mimeType: String?
+	public let fileSize: Int?
 
 }
 
 public struct PhotoSize: Codable {
 
-	public var fileId: String
-	public var width: Int
-	public var height: Int
+	public let fileId: String
+	public let width: Int
+	public let height: Int
 
 	/* Optional. */
-	public var fileSize: Int?
+	public let fileSize: Int?
 
 }
 
 public struct Sticker: Codable {
 
-	public var fileId: String
-	public var width: Int
-	public var height: Int
+	public let fileId: String
+	public let width: Int
+	public let height: Int
 
 	/* Optional. */
-	public var thumb: PhotoSize?
-	public var emoji: String?
-	public var fileSize: Int?
+	public let thumb: PhotoSize?
+	public let emoji: String?
+	public let fileSize: Int?
 
 }
 
 public struct Video: Codable {
 
-	public var fileId: String
-	public var width: Int
-	public var height: Int
-	public var duration: Int
+	public let fileId: String
+	public let width: Int
+	public let height: Int
+	public let duration: Int
 
 	/* OPTIONAL. */
-	public var thumb: PhotoSize?
-	public var mimeType: String?
-	public var fileSize: Int?
+	public let thumb: PhotoSize?
+	public let mimeType: String?
+	public let fileSize: Int?
 
 }
 
 public struct Voice: Codable {
 
-	public var fileId: String
-	public var duration: Int
+	public let fileId: String
+	public let duration: Int
 
 	/* Optional. */
-	public var mimeType: String?
-	public var fileSize: Int?
+	public let mimeType: String?
+	public let fileSize: Int?
 
 }
 
 public struct Contact: Codable {
 
-	public var phoneNumber: String
-	public var firstName: String
+	public let phoneNumber: String
+	public let firstName: String
 
 	/* OPTIONAL. */
-	public var lastName: String?
-	public var userId: Int?
+	public let lastName: String?
+	public let userId: Int?
 
 }
 
 public struct Location: Codable {
 
-	public var longitude: Double
-	public var latitude: Double
+	public let longitude: Double
+	public let latitude: Double
 
 }
 
 public struct Venue: Codable {
 
-	public var location: Location
-	public var title: String
-	public var address: String
+	public let location: Location
+	public let title: String
+	public let address: String
 
 	/* OPTIONAL. */
-	public var foursquareId: String?
+	public let foursquareId: String?
 
 }
 
 public struct File: Codable {
 
-	public var fileId: String
+	public let fileId: String
 
 	/* OPTIONAL. */
-	public var fileSize: Int?
-	public var filePath: String?
+	public let fileSize: Int?
+	public let filePath: String?
 
 }
 
-public enum ParseMode: String {
+public enum ParseMode: String, Codable {
 	case markdown
 	case html
 }
 
-public enum ChatAction: String {
+public enum ChatAction: String, Codable {
 	case typing
 	case uploadPhoto = "upload_photo"
 	case recordVideo = "record_video"

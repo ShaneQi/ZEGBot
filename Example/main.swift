@@ -10,6 +10,11 @@ import Foundation
 
 let bot = ZEGBot(token: "229521725:AAHM_LCcQ1vT3hV8_wP_YawriyBvfbpJN3A")
 
-bot.run { update, _ in
-	dump(update)
+bot.run { updateResult, _ in
+	switch updateResult {
+	case .success(let update):
+		dump(update)
+	case .failure(let error):
+		dump(error)
+	}
 }

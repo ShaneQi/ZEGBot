@@ -8,9 +8,10 @@
 //  Licensed under Apache License v2.0
 //
 
-import SwiftyJSON
 import Foundation
 import Dispatch
+
+public typealias UpdateHandler = (Result<Update>, ZEGBot) -> Void
 
 public struct ZEGBot {
 
@@ -27,15 +28,19 @@ public struct ZEGBot {
 		let semaphore = DispatchSemaphore(value: 0)
 		while true {
 			let task = session.dataTask(with: URL(string: urlPrefix + "getupdates?timeout=60&offset=\(offset)")!) { data, _, _ in
-				guard let updatesData = data else {
+				guard let data = data else {
 					semaphore.signal()
 					return
 				}
-				let updates = try! JSONDecoder().decode(LongPullResult.self, from: updatesData).result
-				if let lastUpdate = updates.last { offset = lastUpdate.updateId + 1 }
-				semaphore.signal()
-				for update in updates {
-					handler(update, self)
+				do {
+					let updates = try JSONDecoder().decode(LongPollResult.self, from: data).updates
+					if let lastUpdate = updates.last { offset = lastUpdate.updateId + 1 }
+					semaphore.signal()
+					for update in updates {
+						handler(.success(update), self)
+					}}
+				catch(let error) {
+					handler(.failure(error), self)
 				}
 			}
 			task.resume()
@@ -44,5 +49,3 @@ public struct ZEGBot {
 	}
 
 }
-
-public typealias UpdateHandler = (Update, ZEGBot) -> Void
