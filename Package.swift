@@ -12,13 +12,11 @@ let package = Package(
 			name: "ZEGBotExample",
 			targets: ["ZEGBotExample"])
 		],
-	dependencies: [
-		.package(url: "https://github.com/IBM-Swift/SwiftyJSON.git", from: Version(15, 0, 6))
-	],
+	dependencies: [],
 	targets: [
 		.target(
 			name: "ZEGBot",
-			dependencies: ["SwiftyJSON"],
+			dependencies: [],
 			path: "./Sources"),
 		.target(
 			name: "ZEGBotExample",

@@ -8,9 +8,9 @@
 //  Licensed under Apache License v2.0
 //
 
-import SwiftyJSON
-import Foundation
-import Dispatch
+//import SwiftyJSON
+//import Foundation
+//import Dispatch
 
 ///  All methods are performed synchronized.
 //extension ZEGBot {
