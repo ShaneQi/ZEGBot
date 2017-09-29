@@ -19,10 +19,9 @@ extension ZEGBot {
 	                 parseMode: ParseMode? = nil,
 	                 disableWebPagePreview: Bool? = nil,
 	                 disableNotification: Bool? = nil) -> Result<Message> {
-		let payload = SendingPayload(text: text,
-		                             receiver: receiver,
-		                             parseMode: parseMode,
-		                             disableWebPagePreview: disableWebPagePreview,
+		let payload = SendingPayload(content: .message(text: text, parseMode: parseMode, disableWebPagePreview: disableWebPagePreview),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
 		                             disableNotification: disableNotification)
 		return performRequest(ofMethod: "sendMessage", payload: payload)
 	}
@@ -30,8 +29,9 @@ extension ZEGBot {
 	@discardableResult
 	public func forward(message: Message, to receiver: Sendable,
 	                    disableNotification: Bool? = nil) -> Result<Message> {
-		let payload = SendingPayload(forwardMessage: message,
-		                             receiver: receiver,
+		let payload = SendingPayload(content: .forwardMessage(chatId: message.chatId, messageId: message.messageId),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
 		                             disableNotification: disableNotification)
 		return performRequest(ofMethod: "forwardMessage", payload: payload)
 
@@ -40,9 +40,9 @@ extension ZEGBot {
 	@discardableResult
 	public func send(photo fileId: String, caption: String? = nil, to receiver: Sendable,
 	                 disableNotification: Bool = false) -> Result<Message> {
-		let payload = SendingPayload(photo: fileId,
-		                             caption: caption,
-		                             receiver: receiver,
+		let payload = SendingPayload(content: .photo(fileId: fileId, caption: caption),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
 		                             disableNotification: disableNotification)
 		return performRequest(ofMethod: "sendPhoto", payload: payload)
 	}
@@ -212,7 +212,7 @@ extension ZEGBot {
 extension ZEGBot {
 
 	private func performRequest<Input, Output>(ofMethod method: String, payload: Input) -> Result<Output>
-		where Input: Codable, Output: Codable {
+		where Input: Encodable, Output: Decodable {
 			// Preparing the request.
 			let bodyData = (try? JSONEncoder().encode(payload))!
 			let semaphore = DispatchSemaphore(value: 0)
@@ -253,7 +253,7 @@ extension ZEGBot {
 
 }
 
-struct TelegramResult<T>: Codable where T: Codable {
+struct TelegramResult<T>: Decodable where T: Decodable {
 
 	let isOk: Bool
 	let value: T?
