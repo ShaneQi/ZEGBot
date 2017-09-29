@@ -30,8 +30,8 @@ public struct Update: Codable {
 	public let channelPost: Message?
 
 	enum CodingKeys: String, CodingKey {
-		case updateId = "update_id"
 		case message
+		case updateId = "update_id"
 		case editedMessage = "edited_message"
 		case channelPost = "channel_post"
 	}
@@ -76,27 +76,13 @@ public class Message: Codable {
 	public let pinnedMessage: Message?
 
 	enum CodingKeys: String, CodingKey {
+		case date, chat, from, text, entities, audio, document, photo, sticker, video, voice, caption, contact, location, venue
 		case messageId = "message_id"
-		case date
-		case chat
-		case from
 		case forwardFrom = "forward_from"
 		case forwardFromChat = "forward_from_chat"
 		case forwardDate = "forward_date"
 		case replyToMessage = "reply_to_message"
 		case editDate = "edit_date"
-		case text
-		case entities
-		case audio
-		case document
-		case photo
-		case sticker
-		case video
-		case voice
-		case caption
-		case contact
-		case location
-		case venue
 		case newChatMember = "new_chat_member"
 		case leftChatMember = "left_chat_member"
 		case newChatTitle = "new_chat_title"
@@ -163,9 +149,8 @@ public struct MessageEntity: Codable {
 	public let user: User?
 
 	public enum StructType: String, Codable {
-		case mention, hashtag
+		case mention, hashtag, url, email, bold, italic, code, pre
 		case botCommand = "bot_command"
-		case url, email, bold, italic, code, pre
 		case textLink = "text_link"
 		case textMention = "text_mention"
 	}
@@ -202,6 +187,14 @@ public struct Document: Codable {
 	public let mimeType: String?
 	public let fileSize: Int?
 
+	enum CodingKeys: String, CodingKey {
+		case thumb
+		case fileId = "file_id"
+		case fileName = "file_name"
+		case mimeType = "mime_type"
+		case fileSize = "file_size"
+	}
+
 }
 
 public struct PhotoSize: Codable {
@@ -212,6 +205,12 @@ public struct PhotoSize: Codable {
 
 	/* Optional. */
 	public let fileSize: Int?
+
+	enum CodingKeys: String, CodingKey {
+		case width, height
+		case fileId = "file_id"
+		case fileSize = "file_size"
+	}
 
 }
 
@@ -225,6 +224,12 @@ public struct Sticker: Codable {
 	public let thumb: PhotoSize?
 	public let emoji: String?
 	public let fileSize: Int?
+
+	enum CodingKeys: String, CodingKey {
+		case width, height, thumb, emoji
+		case fileId = "file_id"
+		case fileSize = "file_size"
+	}
 
 }
 
@@ -240,6 +245,13 @@ public struct Video: Codable {
 	public let mimeType: String?
 	public let fileSize: Int?
 
+	enum CodingKeys: String, CodingKey {
+		case width, height, duration, thumb
+		case fileId = "file_id"
+		case mimeType = "mime_type"
+		case fileSize = "file_size"
+	}
+
 }
 
 public struct Voice: Codable {
@@ -251,6 +263,13 @@ public struct Voice: Codable {
 	public let mimeType: String?
 	public let fileSize: Int?
 
+	enum CodingKeys: String, CodingKey {
+		case duration
+		case fileId = "file_id"
+		case mimeType = "mime_type"
+		case fileSize = "file_size"
+	}
+
 }
 
 public struct Contact: Codable {
@@ -261,6 +280,13 @@ public struct Contact: Codable {
 	/* OPTIONAL. */
 	public let lastName: String?
 	public let userId: Int?
+
+	enum CodingKeys: String, CodingKey {
+		case phoneNumber = "phone_number"
+		case firstName = "first_name"
+		case lastName = "last_name"
+		case userId = "user_id"
+	}
 
 }
 
@@ -280,6 +306,11 @@ public struct Venue: Codable {
 	/* OPTIONAL. */
 	public let foursquareId: String?
 
+	enum CodingKeys: String, CodingKey {
+		case location, title, address
+		case foursquareId = "foursquare_id"
+	}
+
 }
 
 public struct File: Codable {
@@ -289,6 +320,12 @@ public struct File: Codable {
 	/* OPTIONAL. */
 	public let fileSize: Int?
 	public let filePath: String?
+
+	enum CodingKeys: String, CodingKey {
+		case fileSize = "file_size"
+		case fileId = "file_id"
+		case filePath = "file_path"
+	}
 
 }
 
