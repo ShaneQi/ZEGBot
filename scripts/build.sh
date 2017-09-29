@@ -1,6 +1,6 @@
 sudo docker run \
 -v `pwd`/:/ZEGBot \
-swift:latest \
+shaneqi/swift:4.0 \
 /bin/sh -c \
 "\
 apt-get update;\
