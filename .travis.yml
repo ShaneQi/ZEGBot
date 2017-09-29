@@ -4,7 +4,7 @@ services:
   - docker
 
 script:
-  - sudo sh ./scripts/build.sh 
+  - sudo bash ./docker/test.sh 
 
 notifications:  
   email: false  
