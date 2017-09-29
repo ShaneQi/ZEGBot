@@ -27,39 +27,25 @@ extension ZEGBot {
 		return performRequest(ofMethod: "sendMessage", payload: payload)
 	}
 
-//	@discardableResult
-//	public func forward(message: Message, to receiver: Sendable,
-//	                    disableNotification: Bool = false) -> Message? {
-//
-//		var payload: [String: Any] = [
-//			PARAM.MESSAGE_ID: message.messageId,
-//			PARAM.FROM_CHAT_ID: message.chat.id
-//		]
-//
-//		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
-//		payload.append(contentOf: receiver.receiverIdentifier)
-//
-//		guard let responseJSON = perform(method: PARAM.FORWARD_MESSAGE, payload: payload) else {
-//			return nil
-//		}
-//
-//		return Message(from: responseJSON[PARAM.RESULT])
-//
-//	}
-//
-//	@discardableResult
-//	public func send(photo: PhotoSize, to receiver: Sendable,
-//	                 disableNotification: Bool = false,
-//	                 caption: String? = nil) -> Message? {
-//
-//		var options = [String: Any]()
-//
-//		options[PARAM.CAPTION] = caption
-//		if disableNotification { options[PARAM.DISABLE_NOTIFICATION] = true }
-//
-//		return send(contentOnServer: photo, to: receiver, options: options)
-//
-//	}
+	@discardableResult
+	public func forward(message: Message, to receiver: Sendable,
+	                    disableNotification: Bool? = nil) -> Result<Message> {
+		let payload = SendingPayload(forwardMessage: message,
+		                             receiver: receiver,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "forwardMessage", payload: payload)
+
+	}
+
+	@discardableResult
+	public func send(photo fileId: String, caption: String? = nil, to receiver: Sendable,
+	                 disableNotification: Bool = false) -> Result<Message> {
+		let payload = SendingPayload(photo: fileId,
+		                             caption: caption,
+		                             receiver: receiver,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "sendPhoto", payload: payload)
+	}
 //
 //	@discardableResult
 //	public func send(audio: Audio, to receiver: Sendable,
@@ -221,34 +207,9 @@ extension ZEGBot {
 //
 //	}
 //
-//}
-//
-//extension ZEGBot {
-//
-//	internal func send(contentOnServer content: Identifiable,
-//	                   to receiver: Sendable,
-//	                   options: [String: Any]) -> Message? {
-//
-//		var payload = [String: Any]()
-//
-//		payload.append(contentOf: content.identifier)
-//		payload.append(contentOf: receiver.receiverIdentifier)
-//		payload.append(contentOf: options)
-//
-//		guard let responseJSON = perform(method: content.sendingMethod, payload: payload) else {
-//			return nil
-//		}
-//
-//		return Message(from: responseJSON[PARAM.RESULT])
-//
-//	}
-//
-//	internal func perform(method: String, payload: [String: Any]) -> JSON? {
-//		if let data: Data = performRequest(ofMethod: method, payload: payload) {
-//			return JSON(data: data)
-//		}
-//		return nil
-//	}
+}
+
+extension ZEGBot {
 
 	private func performRequest<Input, Output>(ofMethod method: String, payload: Input) -> Result<Output>
 		where Input: Codable, Output: Codable {

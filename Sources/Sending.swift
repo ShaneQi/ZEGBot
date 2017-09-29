@@ -11,25 +11,38 @@ struct SendingPayload: Codable {
 	let chatId: Int
 	let replyToMessageId: Int?
 	let text: String?
+	let fromChatId: Int?
+	let messageId: Int?
+	let photo: String?
+	let caption: String?
 	let parseMode: ParseMode?
 	let disableWebPagePreview: Bool?
 	let disableNotification: Bool?
 
 	enum CodingKeys: String, CodingKey {
-		case text
+		case text, photo, caption
 		case chatId = "chat_id"
 		case replyToMessageId = "reply_to_message_id"
 		case parseMode = "parse_mode"
 		case disableWebPagePreview = "disable_web_page_preview"
 		case disableNotification = "disable_notification"
+		case fromChatId = "from_chat_id"
+		case messageId = "message_id"
 	}
 
 	init(text: String? = nil,
+	     forwardMessage: Message? = nil,
+	     photo photoFileId: String? = nil,
+	     caption: String? = nil,
 	     receiver: Sendable,
 	     parseMode: ParseMode? = nil,
 	     disableWebPagePreview: Bool? = nil,
 	     disableNotification: Bool? = nil) {
 		self.chatId = receiver.chatId
+		self.fromChatId = forwardMessage?.chatId
+		self.messageId = forwardMessage?.messageId
+		self.photo = photoFileId
+		self.caption = caption
 		self.replyToMessageId = receiver.replyToMessageId
 		self.text = text
 		self.parseMode = parseMode
@@ -59,70 +72,3 @@ extension Message: Sendable {
 	public var replyToMessageId: Int? { return messageId }
 
 }
-
-//public protocol Identifiable {
-//
-//	var identifier: [String: Any] { get }
-//	var sendingMethod: String { get }
-//
-//}
-//
-//extension PhotoSize: Identifiable {
-//
-//	public var identifier: [String: Any] {
-//		return [ZEGBot.PARAM.PHOTO: self.fileId]
-//	}
-//
-//	public var sendingMethod: String { return ZEGBot.PARAM.SEND_PHOTO }
-//
-//}
-//
-//extension Audio: Identifiable {
-//
-//	public var identifier: [String: Any] {
-//		return [ZEGBot.PARAM.AUDIO: self.fileId]
-//	}
-//
-//	public var sendingMethod: String { return ZEGBot.PARAM.SEND_AUDIO }
-//
-//}
-//
-//extension Document: Identifiable {
-//
-//	public var identifier: [String: Any] {
-//		return [ZEGBot.PARAM.DOCUMENT: self.fileId]
-//	}
-//
-//	public var sendingMethod: String { return ZEGBot.PARAM.SEND_DOCUMENT }
-//
-//}
-//
-//extension Sticker: Identifiable {
-//
-//	public var identifier: [String: Any] {
-//		return [ZEGBot.PARAM.STICKER: self.fileId]
-//	}
-//
-//	public var sendingMethod: String { return ZEGBot.PARAM.SEND_STICKER }
-//
-//}
-//
-//extension Video: Identifiable {
-//
-//	public var identifier: [String: Any] {
-//		return [ZEGBot.PARAM.VIDEO: self.fileId]
-//	}
-//
-//	public var sendingMethod: String { return ZEGBot.PARAM.SEND_VIDEO }
-//
-//}
-//
-//extension Voice: Identifiable {
-//
-//	public var identifier: [String: Any] {
-//		return [ZEGBot.PARAM.VOICE: self.fileId]
-//	}
-//
-//	public var sendingMethod: String { return ZEGBot.PARAM.SEND_VOICE }
-//
-//}
