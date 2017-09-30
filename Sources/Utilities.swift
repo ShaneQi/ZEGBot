@@ -6,57 +6,41 @@
 //
 //
 
-extension String {
+import Foundation
 
-	func bytes() -> [UInt8] {
-		return [UInt8](utf8)
+public enum Result<T>: Decodable where T: Decodable {
+
+	case success(T)
+	case failure(Swift.Error)
+
+	enum CodingKeys: String, CodingKey {
+		case ok, result, description
+	}
+
+	public init(from decoder: Decoder) {
+		do {
+			let container = try decoder.container(keyedBy: CodingKeys.self)
+			switch try container.decode(Bool.self, forKey: .ok) {
+			case true:
+				self = .success(try container.decode(T.self, forKey: .result))
+			case false:
+				self = .failure(Error.telegram(try container.decode(String.self, forKey: .description)))
+			}
+		} catch(let error) {
+			self = .failure(error)
+		}
+	}
+
+	static func decode(from data: Data) -> Result {
+		do {
+			return try JSONDecoder().decode(Result.self, from: data)
+		} catch(let error) {
+			return .failure(error)
+		}
 	}
 
 }
 
-struct Log {
-
-	static func warning(message: String) {
-		print("[⚠️WARN] \(message)")
-	}
-
-	static func warning(on object: Any) {
-		warning(message: "====>>>====<<<====")
-		warning(message: "Failed to convert:")
-		warning(message: "\(object)")
-	}
-
-	static func warning(onMethod method: String) {
-		warning(message: "====>>>====<<<====")
-		warning(message: "Failed in method: \(method)")
-	}
-
-}
-
-extension Dictionary {
-
-
-	/// Append content of another dictionary to self.
-	///
-	/// The value will override the original value if the key is duplicated.
-	///
-	/// - Parameter dictionary: the another dictionary
-	mutating func append(contentOf dictionary: [Key: Value]) {
-		for (key, value) in dictionary {
-			self[key] = value
-		}
-	}
-
-	/// Append content of another dictionary to self.
-	///
-	/// If the optional value has some value, it will override the original value if the key is duplicated.
-	/// But if the optional value is nil, it won't override the original value if the key is duplicated.
-	///
-	/// - Parameter dictionary: the another dictionary
-	mutating func append(contentOf dictionary: [Key: Value?]) {
-		for (key, optionalValue) in dictionary {
-			if let value = optionalValue { self[key] = value }
-		}
-	}
-
+public enum Error: Swift.Error {
+	case telegram(String?)
 }

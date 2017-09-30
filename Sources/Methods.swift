@@ -8,7 +8,6 @@
 //  Licensed under Apache License v2.0
 //
 
-import SwiftyJSON
 import Foundation
 import Dispatch
 
@@ -18,268 +17,158 @@ extension ZEGBot {
 	@discardableResult
 	public func send(message text: String, to receiver: Sendable,
 	                 parseMode: ParseMode? = nil,
-	                 disableWebPagePreview: Bool = false,
-	                 disableNotification: Bool = false) -> Message? {
-
-		var payload: [String: Any] = [
-			PARAM.TEXT: text
-		]
-
-		if let parseMode = parseMode { payload[PARAM.PARSE_MODE] = parseMode.rawValue }
-		if disableWebPagePreview { payload[PARAM.DISABLE_WEB_PAGE_PREVIEW] = true }
-
-		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
-		payload.append(contentOf: receiver.receiverIdentifier)
-
-		guard let responseJSON = perform(method: PARAM.SEND_MESSAGE, payload: payload) else {
-			return nil
-		}
-
-		return Message(from: responseJSON[PARAM.RESULT])
-
+	                 disableWebPagePreview: Bool? = nil,
+	                 disableNotification: Bool? = nil) -> Result<Message> {
+		let payload = SendingPayload(content: .message(text: text, parseMode: parseMode, disableWebPagePreview: disableWebPagePreview),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "sendMessage", payload: payload)
 	}
 
 	@discardableResult
 	public func forward(message: Message, to receiver: Sendable,
-	                    disableNotification: Bool = false) -> Message? {
-
-		var payload: [String: Any] = [
-			PARAM.MESSAGE_ID: message.messageId,
-			PARAM.FROM_CHAT_ID: message.chat.id
-		]
-
-		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
-		payload.append(contentOf: receiver.receiverIdentifier)
-
-		guard let responseJSON = perform(method: PARAM.FORWARD_MESSAGE, payload: payload) else {
-			return nil
-		}
-
-		return Message(from: responseJSON[PARAM.RESULT])
+	                    disableNotification: Bool? = nil) -> Result<Message> {
+		let payload = SendingPayload(content: .forwardMessage(chatId: message.chatId, messageId: message.messageId),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "forwardMessage", payload: payload)
 
 	}
 
 	@discardableResult
-	public func send(photo: PhotoSize, to receiver: Sendable,
-	                 disableNotification: Bool = false,
-	                 caption: String? = nil) -> Message? {
-
-		var options = [String: Any]()
-
-		options[PARAM.CAPTION] = caption
-		if disableNotification { options[PARAM.DISABLE_NOTIFICATION] = true }
-
-		return send(contentOnServer: photo, to: receiver, options: options)
-
+	public func send(sticker fileId: String, to receiver: Sendable,
+	                 disableNotification: Bool? = nil) -> Result<Message> {
+		let payload = SendingPayload(content: .sticker(fileId: fileId),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "sendSticker", payload: payload)
 	}
 
 	@discardableResult
-	public func send(audio: Audio, to receiver: Sendable,
-	                 disableNotification: Bool = false) -> Message? {
-
-		var options = [String: Any]()
-
-		if disableNotification { options[PARAM.DISABLE_NOTIFICATION] = true }
-
-		return send(contentOnServer: audio, to: receiver, options: options)
-
+	public func send(photo fileId: String, caption: String? = nil, to receiver: Sendable,
+	                 disableNotification: Bool? = nil) -> Result<Message> {
+		let payload = SendingPayload(content: .photo(fileId: fileId, caption: caption),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "sendPhoto", payload: payload)
 	}
 
 	@discardableResult
-	public func send(document: Document, to receiver: Sendable,
-	                 disableNotification: Bool = false,
-	                 caption: String? = nil) -> Message? {
-
-		var options = [String: Any]()
-
-		options[PARAM.CAPTION] = caption
-		if disableNotification { options[PARAM.DISABLE_NOTIFICATION] = true }
-
-		return send(contentOnServer: document, to: receiver, options: options)
-
+	public func send(audio fileId: String, caption: String? = nil, to receiver: Sendable,
+	                 disableNotification: Bool? = nil) -> Result<Message> {
+		let payload = SendingPayload(content: .audio(fileId: fileId, caption: caption),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "sendAudio", payload: payload)
 	}
 
 	@discardableResult
-	public func send(sticker: Sticker, to receiver: Sendable,
-	                 disableNotification: Bool = false) -> Message? {
+	public func send(document fileId: String, caption: String? = nil, to receiver: Sendable,
+	                 disableNotification: Bool? = nil) -> Result<Message> {
+		let payload = SendingPayload(content: .document(fileId: fileId, caption: caption),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "sendDocument", payload: payload)
+	}
 
-		var options = [String: Any]()
 
-		if disableNotification { options[PARAM.DISABLE_NOTIFICATION] = true }
-
-		return send(contentOnServer: sticker, to: receiver, options: options)
-
+	@discardableResult
+	public func send(video fileId: String, caption: String? = nil, to receiver: Sendable,
+	                 disableNotification: Bool? = nil) -> Result<Message> {
+		let payload = SendingPayload(content: .video(fileId: fileId, caption: caption),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "sendVideo", payload: payload)
 	}
 
 	@discardableResult
-	public func send(video: Video, to receiver: Sendable,
-	                 disableNotification: Bool = false) -> Message? {
-
-		var options = [String: Any]()
-
-		if disableNotification { options[PARAM.DISABLE_NOTIFICATION] = true }
-
-		return send(contentOnServer: video, to: receiver, options: options)
-
-	}
-
-	@discardableResult
-	public func send(voice: Voice, to receiver: Sendable,
-	                 disableNotification: Bool = false) -> Message? {
-
-		var options = [String: Any]()
-
-		if disableNotification { options[PARAM.DISABLE_NOTIFICATION] = true }
-
-		return send(contentOnServer: voice, to: receiver, options: options)
-
+	public func send(voice fileId: String, caption: String? = nil, to receiver: Sendable,
+	                 disableNotification: Bool? = nil) -> Result<Message> {
+		let payload = SendingPayload(content: .voice(fileId: fileId, caption: caption),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "sendVoice", payload: payload)
 	}
 
 	@discardableResult
 	public func sendLocation(latitude: Double, longitude: Double, to receiver: Sendable,
-	                         disableNotification: Bool = false) -> Message? {
-
-		var payload: [String: Any] = [
-			PARAM.LATITUDE: latitude,
-			PARAM.LONGITUDE: longitude
-		]
-
-		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
-		payload.append(contentOf: receiver.receiverIdentifier)
-
-		guard let responseJSON = perform(method: PARAM.SEND_LOCATION, payload: payload) else {
-			return nil
-		}
-
-		return Message(from: responseJSON[PARAM.RESULT])
+	                         disableNotification: Bool? = nil) -> Result<Message> {
+		let payload = SendingPayload(content: .location(latitude: latitude, longitude: longitude),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "sendLocation", payload: payload)
 	}
 
 	@discardableResult
 	public func sendVenue(latitude: Double, longitude: Double,
 	                      title: String, address: String, foursquareId: String? = nil,
 	                      to receiver: Sendable,
-	                      disableNotification: Bool = false) -> Message? {
-
-		var payload: [String: Any] = [
-			PARAM.LATITUDE: latitude,
-			PARAM.LONGITUDE: longitude,
-			PARAM.TITLE: title,
-			PARAM.ADDRESS: address
-		]
-		let optionalPayload: [String: Any?] = [
-			PARAM.FOURSQUARE_ID: foursquareId
-		]
-		payload.append(contentOf: optionalPayload)
-
-		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
-		payload.append(contentOf: receiver.receiverIdentifier)
-
-		guard let responseJSON = perform(method: PARAM.SEND_VENUE, payload: payload) else {
-			return nil
-		}
-
-		return Message(from: responseJSON[PARAM.RESULT])
-
+	                      disableNotification: Bool? = nil) -> Result<Message> {
+		let payload = SendingPayload(content: .venue(latitude: latitude, longitude: longitude, title: title, address: address, foursquareId: foursquareId),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "sendVenue", payload: payload)
 	}
 
 	@discardableResult
-	public func sendContact(phoneNumber: String, lastName: String, firstName: String? = nil,
+	public func sendContact(phoneNumber: String, firstName: String, lastName: String? = nil,
 	                        to receiver: Sendable,
-	                        disableNotification: Bool = false) -> Message? {
-
-		var payload: [String: Any] = [
-			PARAM.PHONE_NUMBER: phoneNumber,
-			PARAM.LAST_NAME: lastName
-		]
-		let optionalPayload: [String: Any?] = [
-			PARAM.FIRST_NAME: firstName
-		]
-		payload.append(contentOf: optionalPayload)
-
-		if disableNotification { payload[PARAM.DISABLE_NOTIFICATION] = true }
-		payload.append(contentOf: receiver.receiverIdentifier)
-
-		guard let responseJSON = perform(method: PARAM.SEND_CONTACT, payload: payload) else {
-			return nil
-		}
-
-		return Message(from: responseJSON[PARAM.RESULT])
-
+	                        disableNotification: Bool? = nil) -> Result<Message> {
+		let payload = SendingPayload(content: .contact(phoneNumber: phoneNumber, firstName: firstName, lastName: lastName),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "sendContact", payload: payload)
 	}
 
-	public func send(chatAction: ChatAction, to receiver: Sendable) {
-
-		var payload: [String: Any] = [
-			PARAM.ACTION: chatAction.rawValue
-		]
-
-		payload.append(contentOf: receiver.receiverIdentifier)
-
-		let _ = perform(method: PARAM.SEND_CHAT_ACTION, payload: payload)
-
+	@discardableResult
+	public func send(chatAction: ChatAction, toChat chatId: Int) -> Result<Bool> {
+		let payload = SendingPayload(content: .chatAction(chatAction: chatAction),
+		                             chatId: chatId)
+		return performRequest(ofMethod: "sendChatAction", payload: payload)
 	}
 
-	public func getFile(ofId fileId: String) -> File? {
-
-		let payload: [String: Any] = [
-			PARAM.FILE_ID: fileId
-		]
-
-		guard let responseJSON = perform(method: PARAM.GET_FILE, payload: payload) else {
-			return nil
-		}
-
-		return File(from: responseJSON[PARAM.RESULT])
-
+	public func getFile(ofId fileId: String) -> Result<File> {
+		return performRequest(ofMethod: "getFile", payload: ["file_id": fileId])
 	}
 
 }
 
 extension ZEGBot {
 
-	internal func send(contentOnServer content: Identifiable,
-	                   to receiver: Sendable,
-	                   options: [String: Any]) -> Message? {
+	private func performRequest<Input, Output>(ofMethod method: String, payload: Input) -> Result<Output>
+		where Input: Encodable, Output: Decodable {
+			// Preparing the request.
+			let bodyData = (try? JSONEncoder().encode(payload))!
+			let semaphore = DispatchSemaphore(value: 0)
+			var request = URLRequest(url: URL(string: urlPrefix + method)!)
+			request.httpMethod = "POST"
+			request.httpBody = bodyData
+			request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
-		var payload = [String: Any]()
-
-		payload.append(contentOf: content.identifier)
-		payload.append(contentOf: receiver.receiverIdentifier)
-		payload.append(contentOf: options)
-
-		guard let responseJSON = perform(method: content.sendingMethod, payload: payload) else {
-			return nil
-		}
-
-		return Message(from: responseJSON[PARAM.RESULT])
-
-	}
-
-	internal func perform(method: String, payload: [String: Any]) -> JSON? {
-		if let data: Data = performRequest(ofMethod: method, payload: payload) {
-			return JSON(data: data)
-		}
-		return nil
-	}
-
-	private func performRequest(ofMethod method: String, payload: [String: Any]) -> Data? {
-		guard let bodyData = try? JSON(payload).rawData() else {
-			Log.warning(onMethod: method)
-			return nil
-		}
-		var resultData: Data?
-		let semaphore = DispatchSemaphore(value: 0)
-		var request = URLRequest(url: URL(string: urlPrefix + method)!)
-		request.httpMethod = "POST"
-		request.httpBody = bodyData
-		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-		let task = URLSession(configuration: .default).dataTask(with: request) { data, _, _ in
-			resultData = data
-			semaphore.signal()
-		}
-		task.resume()
-		semaphore.wait()
-		return resultData
+			// Perform the request.
+			var result: Result<Output>?
+			let task = URLSession(configuration: .default).dataTask(with: request) { data, _, error in
+				if let data = data {
+					result = Result<Output>.decode(from: data)
+				} else {
+					result = .failure(error!)
+				}
+				semaphore.signal()
+			}
+			task.resume()
+			semaphore.wait()
+			return result!
 	}
 
 }

@@ -1,8 +1,29 @@
+// swift-tools-version:4.0
+
 import PackageDescription
 
 let package = Package(
 	name: "ZEGBot",
-	dependencies: [
-		.Package(url: "https://github.com/IBM-Swift/SwiftyJSON.git", majorVersion: 15)
-	]
+	products: [
+		.library(
+			name: "ZEGBot",
+			targets: ["ZEGBot"]),
+		.executable(
+			name: "ZEGBotExample",
+			targets: ["ZEGBotExample"])
+		],
+	dependencies: [],
+	targets: [
+		.target(
+			name: "ZEGBot",
+			dependencies: [],
+			path: "./Sources"),
+		.target(
+			name: "ZEGBotExample",
+			dependencies: ["ZEGBot"],
+			path: "./Example"),
+		.testTarget(
+			name: "ZEGBotTests",
+			dependencies: ["ZEGBot"]),
+		]
 )

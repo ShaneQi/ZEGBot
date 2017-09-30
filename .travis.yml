@@ -4,10 +4,9 @@ services:
   - docker
 
 script:
-  - sudo sh ./scripts/build.sh 
+  - sudo bash ./docker/test.sh 
 
-notifications: 
-  email: false 
-  webhooks: 
-    secure: qBLY9VOBi/W5Mf0pgLd7h79d0g+/4qRu5ClEd/C7zSLSx9XsPbC7vYZ8CALZNnR8xCrfZj1osTWcY4O/g9Wso1iWt7k9ekdQi+ze36LgxYk4ouW2p3BbxUlIgSJ38AvRCxXrb457/LK/ddi/E3/433APE78VSQU6ZMawDmdYe8L20kIhodXgJxsxMjVt+nhTjktMCRCgrXaOUz4UtfNSwiIP1Woo4L7xAnuFdhy1XmhOV1ARP8Z+smgRia00JsOBD6P+S5DLguOQ8Ri1glSer7bAJzD9eYA4pc+C/5ZvgJ8sqH8Le/2LR8XFhH6Pg+d3r+6VPfOXc20sXmRXgFT8SUQCCnzQ4pqsC4vRijsD1ZLkHMCYw3lbF4u4JTwYquDmwb9CRvPNA9bFepbMbVR65g8ox9RzAQu3Z9oXrtI/IDRMEjNP3mgHopt6IzqdHvcmHxnhYiu5GH9fw1ZQLC/wSsecH6hI6dKJ6zQwnjtyJIFkfMOetknmvAFlMo/HN3YH8NBCeGsvFKPJ698fG1gOWuBsIdMz/LqavmSSBKD05J47OnxMlI41Pf1uxdo5Q0jAzMlJaC1IFc4bawN23N1wtw/XClA32XPxsirZWKfrOKo1jPYw5R5DP7BcwCP+Y8pEEQqqbeML5gqhXKmsUV9ilHqD5s9Lju3E+Ig7k/RUKws=
-
+notifications:  
+  email: false  
+  webhooks:  
+    secure: qBLY9VOBi/W5Mf0pgLd7h79d0g+/4qRu5ClEd/C7zSLSx9XsPbC7vYZ8CALZNnR8xCrfZj1osTWcY4O/g9Wso1iWt7k9ekdQi+ze36LgxYk4ouW2p3BbxUlIgSJ38AvRCxXrb457/LK/ddi/E3/433APE78VSQU6ZMawDmdYe8L20kIhodXgJxsxMjVt+nhTjktMCRCgrXaOUz4UtfNSwiIP1Woo4L7xAnuFdhy1XmhOV1ARP8Z+smgRia00JsOBD6P+S5DLguOQ8Ri1glSer7bAJzD9eYA4pc+C/5ZvgJ8sqH8Le/2LR8XFhH6Pg+d3r+6VPfOXc20sXmRXgFT8SUQCCnzQ4pqsC4vRijsD1ZLkHMCYw3lbF4u4JTwYquDmwb9CRvPNA9bFepbMbVR65g8ox9RzAQu3Z9oXrtI/IDRMEjNP3mgHopt6IzqdHvcmHxnhYiu5GH9fw1ZQLC/wSsecH6hI6dKJ6zQwnjtyJIFkfMOetknmvAFlMo/HN3YH8NBCeGsvFKPJ698fG1gOWuBsIdMz/LqavmSSBKD05J47OnxMlI41Pf1uxdo5Q0jAzMlJaC1IFc4bawN23N1wtw/XClA32XPxsirZWKfrOKo1jPYw5R5DP7BcwCP+Y8pEEQqqbeML5gqhXKmsUV9ilHqD5s9Lju3E+Ig7k/RUKws= 
