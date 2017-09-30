@@ -8,9 +8,10 @@
 //  Licensed under Apache License v2.0
 //
 
-import SwiftyJSON
 import Foundation
 import Dispatch
+
+public typealias UpdateHandler = (Result<Update>, ZEGBot) -> Void
 
 public struct ZEGBot {
 
@@ -26,17 +27,21 @@ public struct ZEGBot {
 		var offset = 0
 		let semaphore = DispatchSemaphore(value: 0)
 		while true {
-			let task = session.dataTask(with: URL(string: urlPrefix + "getupdates?timeout=60&offset=\(offset)")!) { data, _, _ in
-				guard let updatesData = data,
-					let updates = ZEGBot.decodeUpdates(from: updatesData) else {
-						semaphore.signal()
-						return
+			let task = session.dataTask(with: URL(string: urlPrefix + "getupdates?timeout=60&offset=\(offset)")!) { data, _, error in
+				guard let data = data else {
+					handler(.failure(error!), self)
+					semaphore.signal()
+					return
 				}
-				if let lastUpdate = updates.last { offset = lastUpdate.updateId + 1 }
+				switch Result<[Update]>.decode(from: data) {
+				case .success(let updates):
+					if let lastUpdate = updates.last { offset = lastUpdate.updateId + 1 }
+					for update in updates {
+						handler(.success(update), self)
+					}
+				case .failure(let error): handler(.failure(error), self)
+				}
 				semaphore.signal()
-				for update in updates {
-					handler(update, self)
-				}
 			}
 			task.resume()
 			semaphore.wait()
@@ -44,23 +49,3 @@ public struct ZEGBot {
 	}
 
 }
-
-extension ZEGBot {
-
-	/* For getUpdates. */
-	static func decodeUpdates(from jsonData: Data) -> [Update]? {
-
-		return Update.array(from: JSON(data: jsonData)[PARAM.RESULT])
-
-	}
-
-	/* For webhook. */
-	static func decodeUpdate(from jsonData: Data) -> Update? {
-
-		return Update(from: JSON(data: jsonData)[PARAM.RESULT])
-
-	}
-
-}
-
-public typealias UpdateHandler = (Update, ZEGBot) -> Void
