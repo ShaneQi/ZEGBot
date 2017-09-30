@@ -33,17 +33,13 @@ public struct ZEGBot {
 					semaphore.signal()
 					return
 				}
-				do {
-					switch try JSONDecoder().decode(TelegramResult<[Update]>.self, from: data).result {
-					case .success(let updates):
-						if let lastUpdate = updates.last { offset = lastUpdate.updateId + 1 }
-						for update in updates {
-							handler(.success(update), self)
-						}
-					case .failure(let error): throw error
+				switch Result<[Update]>.decode(from: data) {
+				case .success(let updates):
+					if let lastUpdate = updates.last { offset = lastUpdate.updateId + 1 }
+					for update in updates {
+						handler(.success(update), self)
 					}
-				} catch(let error) {
-					handler(.failure(error), self)
+				case .failure(let error): handler(.failure(error), self)
 				}
 				semaphore.signal()
 			}

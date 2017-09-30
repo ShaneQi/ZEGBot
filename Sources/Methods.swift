@@ -157,10 +157,10 @@ extension ZEGBot {
 			request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
 			// Perform the request.
-			var result: Result<Data>?
+			var result: Result<Output>?
 			let task = URLSession(configuration: .default).dataTask(with: request) { data, _, error in
-				if data != nil {
-					result = .success(data!)
+				if let data = data {
+					result = Result<Output>.decode(from: data)
 				} else {
 					result = .failure(error!)
 				}
@@ -168,42 +168,7 @@ extension ZEGBot {
 			}
 			task.resume()
 			semaphore.wait()
-
-			// Handle the response.
-			switch result! {
-			case .success(let data):
-				do {
-					let messageResult = try JSONDecoder().decode(TelegramResult<Output>.self, from: data).result
-					switch messageResult {
-					case .success(let message): return .success(message)
-					case .failure(let error): throw error
-					}
-				} catch(let error) {
-					return .failure(error)
-				}
-			case .failure(let error):
-				return .failure(error)
-			}
-	}
-
-}
-
-struct TelegramResult<T>: Decodable where T: Decodable {
-
-	let value: T?
-	let description: String?
-
-	enum CodingKeys: String, CodingKey {
-		case description
-		case value = "result"
-	}
-
-	var result: Result<T> {
-		if let value = value {
-			return .success(value)
-		} else {
-			return .failure(Error.telegram(description))
-		}
+			return result!
 	}
 
 }
