@@ -27,9 +27,19 @@ extension ZEGBot {
 	}
 
 	@discardableResult
+	public func send(serverStoredContent: ServerStoredContent, to receiver: Sendable,
+	                 disableNotification: Bool? = nil) -> Result<Message> {
+		let payload = SendingPayload(content: .serverStoredContent(serverStoredContent),
+		                             chatId: receiver.chatId,
+		                             replyToMessageId: receiver.replyToMessageId,
+		                             disableNotification: disableNotification)
+		return performRequest(ofMethod: "sendSticker", payload: payload)
+	}
+
+	@discardableResult
 	public func forward(message: Message, to receiver: Sendable,
 	                    disableNotification: Bool? = nil) -> Result<Message> {
-		let payload = SendingPayload(content: .forwardMessage(chatId: message.chatId, messageId: message.messageId),
+		let payload = SendingPayload(content: .serverStoredContent(.message(chatId: message.chatId, messageId: message.messageId)),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 		                             disableNotification: disableNotification)
@@ -38,9 +48,9 @@ extension ZEGBot {
 	}
 
 	@discardableResult
-	public func send(sticker fileId: String, to receiver: Sendable,
+	public func send(_ sticker: Sticker, to receiver: Sendable,
 	                 disableNotification: Bool? = nil) -> Result<Message> {
-		let payload = SendingPayload(content: .sticker(fileId: fileId),
+		let payload = SendingPayload(content: .serverStoredContent(.sticker(fileId: sticker.fileId)),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 		                             disableNotification: disableNotification)
@@ -48,9 +58,9 @@ extension ZEGBot {
 	}
 
 	@discardableResult
-	public func send(photo fileId: String, caption: String? = nil, to receiver: Sendable,
+	public func send(_ photo: PhotoSize, caption: String? = nil, to receiver: Sendable,
 	                 disableNotification: Bool? = nil) -> Result<Message> {
-		let payload = SendingPayload(content: .photo(fileId: fileId, caption: caption),
+		let payload = SendingPayload(content: .serverStoredContent(.photo(fileId: photo.fileId, caption: caption)),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 		                             disableNotification: disableNotification)
@@ -58,9 +68,9 @@ extension ZEGBot {
 	}
 
 	@discardableResult
-	public func send(audio fileId: String, caption: String? = nil, to receiver: Sendable,
+	public func send(_ audio: Audio, caption: String? = nil, to receiver: Sendable,
 	                 disableNotification: Bool? = nil) -> Result<Message> {
-		let payload = SendingPayload(content: .audio(fileId: fileId, caption: caption),
+		let payload = SendingPayload(content: .serverStoredContent(.audio(fileId: audio.fileId, caption: caption)),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 		                             disableNotification: disableNotification)
@@ -68,9 +78,9 @@ extension ZEGBot {
 	}
 
 	@discardableResult
-	public func send(document fileId: String, caption: String? = nil, to receiver: Sendable,
+	public func send(_ document: Document, caption: String? = nil, to receiver: Sendable,
 	                 disableNotification: Bool? = nil) -> Result<Message> {
-		let payload = SendingPayload(content: .document(fileId: fileId, caption: caption),
+		let payload = SendingPayload(content: .serverStoredContent(.document(fileId: document.fileId, caption: caption)),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 		                             disableNotification: disableNotification)
@@ -79,9 +89,9 @@ extension ZEGBot {
 
 
 	@discardableResult
-	public func send(video fileId: String, caption: String? = nil, to receiver: Sendable,
+	public func send(_ video: Video, caption: String? = nil, to receiver: Sendable,
 	                 disableNotification: Bool? = nil) -> Result<Message> {
-		let payload = SendingPayload(content: .video(fileId: fileId, caption: caption),
+		let payload = SendingPayload(content: .serverStoredContent(.video(fileId: video.fileId, caption: caption)),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 		                             disableNotification: disableNotification)
@@ -89,9 +99,9 @@ extension ZEGBot {
 	}
 
 	@discardableResult
-	public func send(voice fileId: String, caption: String? = nil, to receiver: Sendable,
+	public func send(_ voice: Voice, caption: String? = nil, to receiver: Sendable,
 	                 disableNotification: Bool? = nil) -> Result<Message> {
-		let payload = SendingPayload(content: .voice(fileId: fileId, caption: caption),
+		let payload = SendingPayload(content: .serverStoredContent(.voice(fileId: voice.fileId, caption: caption)),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 		                             disableNotification: disableNotification)
@@ -134,7 +144,7 @@ extension ZEGBot {
 	@discardableResult
 	public func send(chatAction: ChatAction, toChat chatId: Int) -> Result<Bool> {
 		let payload = SendingPayload(content: .chatAction(chatAction: chatAction),
-		                             chatId: chatId)
+		                             chatId: chatId, replyToMessageId: nil, disableNotification: nil)
 		return performRequest(ofMethod: "sendChatAction", payload: payload)
 	}
 
