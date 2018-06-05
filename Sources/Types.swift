@@ -8,20 +8,62 @@
 //  Licensed under Apache License v2.0
 //
 
-public struct Update: Codable {
+import Foundation
 
-	public let updateId: Int
+public enum Update: Decodable {
 
-	/* Optional. */
-	public let message: Message?
-	public let editedMessage: Message?
-	public let channelPost: Message?
+	public init(from decoder: Decoder) throws {
+		let container = try decoder.container(keyedBy: CodingKeys.self)
+		let updateId = try container.decode(Int.self, forKey: .updateId)
+		if container.contains(.message) {
+			self = .message(updateId: updateId, message: try container.decode(Message.self, forKey: .message))
+		} else if container.contains(.editedMessage) {
+			self = .editedMessage(updateId: updateId, message: try container.decode(Message.self, forKey: .editedMessage))
+		} else if container.contains(.channelPost) {
+			self = .channelPost(updateId: updateId, message: try container.decode(Message.self, forKey: .channelPost))
+		} else {
+			throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: """
+				Failed to find value under keys: \
+				"\(CodingKeys.message.rawValue)", \
+				"\(CodingKeys.editedMessage.rawValue)" or \
+				"\(CodingKeys.channelPost.rawValue)".
+				"""))
+		}
+	}
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case message
 		case updateId = "update_id"
 		case editedMessage = "edited_message"
 		case channelPost = "channel_post"
+	}
+
+	case message(updateId: Int, message: Message)
+	case editedMessage(updateId: Int, message: Message)
+	case channelPost(updateId: Int, message: Message)
+
+	public var message: Message? {
+		if case .message(_, let message) = self {
+			return message
+		} else {
+			return nil
+		}
+	}
+
+	public var editedMessage: Message? {
+		if case .editedMessage(_, let message) = self {
+			return message
+		} else {
+			return nil
+		}
+	}
+
+	public var channelPost: Message? {
+		if case .channelPost(_, let message) = self {
+			return message
+		} else {
+			return nil
+		}
 	}
 
 }
