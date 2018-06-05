@@ -35,7 +35,12 @@ public struct ZEGBot {
 				}
 				switch Result<[Update]>.decode(from: data) {
 				case .success(let updates):
-					if let lastUpdate = updates.last { offset = lastUpdate.updateId + 1 }
+					if let lastUpdate = updates.last {
+						switch lastUpdate {
+						case .message(let updateId, _), .editedMessage(let updateId , _), .channelPost(let updateId, _):
+							offset = updateId + 1
+						}
+					}
 					for update in updates {
 						handler(.success(update), self)
 					}
