@@ -148,6 +148,12 @@ extension ZEGBot {
 		return performRequest(ofMethod: "sendChatAction", payload: payload)
 	}
 
+	@discardableResult
+	public func deleteMessage(inChat chatId: Int, messageId: Int) -> Result<Bool> {
+		return performRequest(ofMethod: "deleteMessage",
+							  payload: ["chat_id": chatId, "message_id": messageId])
+	}
+
 	public func getFile(ofId fileId: String) -> Result<File> {
 		return performRequest(ofMethod: "getFile", payload: ["file_id": fileId])
 	}
