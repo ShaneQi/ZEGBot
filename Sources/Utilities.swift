@@ -17,6 +17,22 @@ public enum Result<T>: Decodable where T: Decodable {
 		case ok, result, description
 	}
 
+	public var value: T? {
+		if case .success(let value) = self {
+			return value
+		} else {
+			return nil
+		}
+	}
+
+	public var error: Swift.Error? {
+		if case .failure(let error) = self {
+			return error
+		} else {
+			return nil
+		}
+	}
+
 	public init(from decoder: Decoder) {
 		do {
 			let container = try decoder.container(keyedBy: CodingKeys.self)
