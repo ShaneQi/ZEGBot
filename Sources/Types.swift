@@ -376,3 +376,9 @@ public enum ChatAction: String, Codable {
 	case uploadDocument = "upload_document"
 	case findLocation = "find_location"
 }
+
+public struct ChatMember: Codable {
+
+	public let user: User
+
+}
