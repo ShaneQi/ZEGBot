@@ -11,7 +11,7 @@ let package = Package(
 		.executable(
 			name: "ZEGBotExample",
 			targets: ["ZEGBotExample"])
-		],
+	],
 	dependencies: [],
 	targets: [
 		.target(
@@ -25,5 +25,6 @@ let package = Package(
 		.testTarget(
 			name: "ZEGBotTests",
 			dependencies: ["ZEGBot"]),
-		]
+		],
+	swiftLanguageVersions: [.v4_2]
 )
