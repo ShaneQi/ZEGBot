@@ -2,6 +2,6 @@ sudo docker run \
 --rm \
 -v `pwd`/:/ZEGBot \
 -w /ZEGBot \
-swiftdocker/swift:4.1 \
+swift:4.2 \
 /bin/sh -c \
 "swift test"
