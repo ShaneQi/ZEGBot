@@ -155,6 +155,7 @@ public struct User: Codable {
 
 	public let id: Int
 	public let firstName: String
+	public let isBot: Bool
 
 	/* OPTIONAL. */
 	public let lastName: String?
@@ -164,6 +165,7 @@ public struct User: Codable {
 		case id, username
 		case firstName = "first_name"
 		case lastName = "last_name"
+		case isBot = "is_bot"
 	}
 
 }
