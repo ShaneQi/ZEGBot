@@ -21,6 +21,8 @@ public enum Update: Decodable {
 			self = .editedMessage(updateId: updateId, message: try container.decode(Message.self, forKey: .editedMessage))
 		} else if container.contains(.channelPost) {
 			self = .channelPost(updateId: updateId, message: try container.decode(Message.self, forKey: .channelPost))
+		} else if container.contains(.callbackQuery) {
+			self = .callbackQuery(updateId: updateId, query: try container.decode(CallbackQuery.self, forKey: .callbackQuery))
 		} else {
 			throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: """
 				Failed to find value under keys: \
@@ -36,11 +38,13 @@ public enum Update: Decodable {
 		case updateId = "update_id"
 		case editedMessage = "edited_message"
 		case channelPost = "channel_post"
+		case callbackQuery = "callback_query"
 	}
 
 	case message(updateId: Int, message: Message)
 	case editedMessage(updateId: Int, message: Message)
 	case channelPost(updateId: Int, message: Message)
+	case callbackQuery(updateId: Int, query: CallbackQuery)
 
 	public var message: Message? {
 		if case .message(_, let message) = self {
@@ -380,5 +384,69 @@ public enum ChatAction: String, Codable {
 public struct ChatMember: Codable {
 
 	public let user: User
+
+}
+
+/// https://core.telegram.org/bots/api#inlinekeyboardbutton
+public struct InlineKeyboardButton: Codable {
+
+	public let text: String
+	public let url: String?
+	public let callbackData: String?
+	public let switchInlineQuery: String?
+	public let switchInlineQueryCurrentChat: String?
+
+	enum CodingKeys: String, CodingKey {
+		case text, url
+		case callbackData = "callback_data"
+		case switchInlineQuery = "switch_inline_query"
+		case switchInlineQueryCurrentChat = "switch_inline_query_current_chat"
+	}
+
+	public init(
+		text: String,
+		url: String? = nil,
+		callbackData: String? = nil,
+		switchInlineQuery: String? = nil,
+		switchInlineQueryCurrentChat: String? = nil) {
+		self.text = text
+		self.url = url
+		self.callbackData = callbackData
+		self.switchInlineQuery = switchInlineQuery
+		self.switchInlineQueryCurrentChat = switchInlineQueryCurrentChat
+	}
+
+}
+
+/// https://core.telegram.org/bots/api#inlinekeyboardmarkup
+public struct InlineKeyboardMarkup: Codable {
+
+	public let inlineKeyboard: [[InlineKeyboardButton]]
+
+	enum CodingKeys: String, CodingKey {
+		case inlineKeyboard = "inline_keyboard"
+	}
+
+	public init(inlineKeyboard: [[InlineKeyboardButton]]) {
+		self.inlineKeyboard = inlineKeyboard
+	}
+
+}
+
+/// https://core.telegram.org/bots/api#callbackquery
+public struct CallbackQuery: Decodable {
+
+	public let id: String
+	public let from: User
+	public let message: Message?
+	public let inlineMessageId: String?
+	public let chatInstance: String?
+	public let data: String?
+
+	enum CodingKeys: String, CodingKey {
+		case id, from, message, data
+		case inlineMessageId = "inline_message_id"
+		case chatInstance = "chat_instance"
+	}
 
 }

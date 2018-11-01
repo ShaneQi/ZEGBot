@@ -37,7 +37,7 @@ public struct ZEGBot {
 				case .success(let updates):
 					if let lastUpdate = updates.last {
 						switch lastUpdate {
-						case .message(let updateId, _), .editedMessage(let updateId , _), .channelPost(let updateId, _):
+						case .message(let updateId, _), .editedMessage(let updateId , _), .channelPost(let updateId, _), .callbackQuery(updateId: let updateId, _):
 							offset = updateId + 1
 						}
 					}
