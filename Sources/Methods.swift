@@ -174,6 +174,23 @@ extension ZEGBot {
 		return performRequest(ofMethod: "getChatAdministrators", payload: ["chat_id": chatId])
 	}
 
+	@discardableResult
+	public func answerCallbackQuery(
+		callbackQueryId: String,
+		text: String? = nil,
+		showAlert: Bool? = nil,
+		url: String? = nil,
+		cacheTime: Int? = nil) -> Result<Bool> {
+		return performRequest(
+			ofMethod: "answerCallbackQuery",
+			payload: AnswerCallbackQueryPayload(
+				callbackQueryId: callbackQueryId,
+				text: text,
+				showAlert: showAlert,
+				url: url,
+				cacheTime: cacheTime))
+	}
+
 }
 
 extension ZEGBot {
@@ -201,6 +218,23 @@ extension ZEGBot {
 			task.resume()
 			semaphore.wait()
 			return result!
+	}
+
+}
+
+private struct AnswerCallbackQueryPayload: Encodable {
+
+	let callbackQueryId: String
+	let text: String?
+	let showAlert: Bool?
+	let url: String?
+	let cacheTime: Int?
+
+	enum CodingKeys: String, CodingKey {
+		case text, url
+		case callbackQueryId = "callback_query_id"
+		case showAlert = "show_alert"
+		case cacheTime = "cache_time"
 	}
 
 }

@@ -70,6 +70,14 @@ public enum Update: Decodable {
 		}
 	}
 
+	public var callbackQuery: CallbackQuery? {
+		if case .callbackQuery(_, let query) = self {
+			return query
+		} else {
+			return nil
+		}
+	}
+
 }
 
 public class Message: Codable {
