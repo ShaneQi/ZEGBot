@@ -1,6 +1,6 @@
 # ZEGBot
 
-[![Build Status](https://travis-ci.org/ShaneQi/ZEGBot.svg?branch=master)](https://travis-ci.org/ShaneQi/ZEGBot)  [![Swift Version](https://img.shields.io/badge/Swift-4.0-orange.svg?style=flat)](https://swift.org)  ![Platforms](https://img.shields.io/badge/Platforms-OS%20X%20%7C%20Linux%20-blue.svg?style=flat)  ![License](https://img.shields.io/badge/License-Apache-red.svg?style=flat)
+[![Build Status](https://travis-ci.org/ShaneQi/ZEGBot.svg?branch=master)](https://travis-ci.org/ShaneQi/ZEGBot)  [![Swift Version](https://img.shields.io/badge/Swift-4.2-orange.svg?style=flat)](https://swift.org)  ![Platforms](https://img.shields.io/badge/Platforms-OS%20X%20%7C%20Linux%20-blue.svg?style=flat)  ![License](https://img.shields.io/badge/License-Apache-red.svg?style=flat)
 
 This library wraps the JSON decoding processing, making it easy to decode incoming JSON String to manipulatable objects.
 
@@ -106,6 +106,9 @@ bot.run { update, bot in
 - Location
 - Venue
 - File
+- ParseMode
+- ChatAction
+- ChatMember
 
 Not all the types are supported, checkout more details on [Telegram Bot API](https://core.telegram.org/bots/api#available-types).
 
@@ -124,6 +127,8 @@ Not all the types are supported, checkout more details on [Telegram Bot API](htt
 - sendContact
 - sendChatAction
 - getFile
+- deleteMessage
+- getChatAdministrators
 
 Not all the methods are supported, checkout more details on [Telegram Bot API](https://core.telegram.org/bots/api#available-methods).
 
