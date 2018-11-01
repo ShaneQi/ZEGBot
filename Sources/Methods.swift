@@ -27,16 +27,6 @@ extension ZEGBot {
 	}
 
 	@discardableResult
-	public func send(serverStoredContent: ServerStoredContent, to receiver: Sendable,
-	                 disableNotification: Bool? = nil) -> Result<Message> {
-		let payload = SendingPayload(content: .serverStoredContent(serverStoredContent),
-		                             chatId: receiver.chatId,
-		                             replyToMessageId: receiver.replyToMessageId,
-		                             disableNotification: disableNotification)
-		return performRequest(ofMethod: "sendSticker", payload: payload)
-	}
-
-	@discardableResult
 	public func forward(message: Message, to receiver: Sendable,
 	                    disableNotification: Bool? = nil) -> Result<Message> {
 		let payload = SendingPayload(content: .serverStoredContent(.message(chatId: message.chatId, messageId: message.messageId)),
