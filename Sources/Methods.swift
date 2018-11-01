@@ -158,6 +158,10 @@ extension ZEGBot {
 		return performRequest(ofMethod: "getFile", payload: ["file_id": fileId])
 	}
 
+	public func getChatAdministrators(ofChatWithId chatId: Int) -> Result<[ChatMember]> {
+		return performRequest(ofMethod: "getChatAdministrators", payload: ["chat_id": chatId])
+	}
+
 }
 
 extension ZEGBot {
