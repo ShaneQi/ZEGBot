@@ -22,6 +22,7 @@ struct SendingPayload: Encodable {
 	let chatId: Int
 	let replyToMessageId: Int?
 	let disableNotification: Bool?
+	let replyMarkup: InlineKeyboardMarkup?
 
 	enum Content {
 		case serverStoredContent(ServerStoredContent)
@@ -37,6 +38,7 @@ struct SendingPayload: Encodable {
 		case chatId = "chat_id"
 		case replyToMessageId = "reply_to_message_id"
 		case disableNotification = "disable_notification"
+		case replyMarkup = "reply_markup"
 
 		// sendMessage
 		case text
@@ -75,6 +77,9 @@ struct SendingPayload: Encodable {
 		}
 		if let disableNotification = disableNotification {
 			try container.encode(disableNotification, forKey: .disableNotification)
+		}
+		if let replyMarkup = replyMarkup {
+			try container.encode(replyMarkup, forKey: .replyMarkup)
 		}
 
 		switch content {

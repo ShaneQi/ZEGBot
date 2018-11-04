@@ -26,10 +26,12 @@ public struct ZEGBot {
 	public func run(withHandler handler: @escaping UpdateHandler) {
 		var offset = 0
 		let semaphore = DispatchSemaphore(value: 0)
-		while true {
+		var encounterError: Swift.Error?
+		while encounterError == nil {
 			let task = session.dataTask(with: URL(string: urlPrefix + "getupdates?timeout=60&offset=\(offset)")!) { data, _, error in
 				guard let data = data else {
 					handler(.failure(error!), self)
+					encounterError = error!
 					semaphore.signal()
 					return
 				}
@@ -37,20 +39,24 @@ public struct ZEGBot {
 				case .success(let updates):
 					if let lastUpdate = updates.last {
 						switch lastUpdate {
-						case .message(let updateId, _), .editedMessage(let updateId , _), .channelPost(let updateId, _):
+						case .message(let updateId, _), .editedMessage(let updateId , _), .channelPost(let updateId, _), .callbackQuery(updateId: let updateId, _):
 							offset = updateId + 1
 						}
 					}
 					for update in updates {
 						handler(.success(update), self)
 					}
-				case .failure(let error): handler(.failure(error), self)
+				case .failure(let error):
+					handler(.failure(error), self)
+					encounterError = error
 				}
 				semaphore.signal()
 			}
 			task.resume()
 			semaphore.wait()
 		}
+		NSLog("Exit due to error: \(encounterError!)")
+		exit(2)
 	}
 
 }
