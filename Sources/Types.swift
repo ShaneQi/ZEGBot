@@ -197,6 +197,8 @@ public struct MessageEntity: Codable {
 		case botCommand = "bot_command"
 		case textLink = "text_link"
 		case textMention = "text_mention"
+		case cashtag
+		case phoneNumber = "phone_number"
 	}
 
 }
