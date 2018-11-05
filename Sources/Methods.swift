@@ -152,17 +152,15 @@ extension ZEGBot {
 		return try performRequest(ofMethod: "sendContact", payload: payload)
 	}
 
-	@discardableResult
-	public func send(chatAction: ChatAction, toChat chatId: Int) throws -> Bool {
+	public func send(chatAction: ChatAction, toChat chatId: Int) throws {
 		let payload = SendingPayload(content: .chatAction(chatAction: chatAction),
 									 chatId: chatId, replyToMessageId: nil, disableNotification: nil,
 									 replyMarkup: nil)
-		return try performRequest(ofMethod: "sendChatAction", payload: payload)
+		let _: Bool = try performRequest(ofMethod: "sendChatAction", payload: payload)
 	}
 
-	@discardableResult
-	public func deleteMessage(inChat chatId: Int, messageId: Int) throws -> Bool {
-		return try performRequest(ofMethod: "deleteMessage",
+	public func deleteMessage(inChat chatId: Int, messageId: Int) throws {
+		let _: Bool = try performRequest(ofMethod: "deleteMessage",
 							  payload: ["chat_id": chatId, "message_id": messageId])
 	}
 
@@ -174,14 +172,13 @@ extension ZEGBot {
 		return try performRequest(ofMethod: "getChatAdministrators", payload: ["chat_id": chatId])
 	}
 
-	@discardableResult
 	public func answerCallbackQuery(
 		callbackQueryId: String,
 		text: String? = nil,
 		showAlert: Bool? = nil,
 		url: String? = nil,
-		cacheTime: Int? = nil) throws -> Bool {
-		return try performRequest(
+		cacheTime: Int? = nil) throws {
+		let _: Bool = try performRequest(
 			ofMethod: "answerCallbackQuery",
 			payload: AnswerCallbackQueryPayload(
 				callbackQueryId: callbackQueryId,
@@ -191,7 +188,6 @@ extension ZEGBot {
 				cacheTime: cacheTime))
 	}
 
-	@discardableResult
 	public func restrictChatMember(
 		chatId: Int,
 		userId: Int,
@@ -199,8 +195,8 @@ extension ZEGBot {
 		canSendMessages: Bool? = nil,
 		canSendMediaMessages: Bool? = nil,
 		canSendOtherMessages: Bool? = nil,
-		canSendWebPagePreviews: Bool? = nil) throws -> Bool  {
-		return try performRequest(
+		canSendWebPagePreviews: Bool? = nil) throws {
+		let _: Bool = try performRequest(
 			ofMethod: "restrictChatMember",
 			payload: RestrictChatMemberPayload(
 				chatId: chatId,
