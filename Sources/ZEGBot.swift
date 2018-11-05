@@ -11,7 +11,7 @@
 import Foundation
 import Dispatch
 
-public typealias UpdateHandler = (Result<Update>, ZEGBot) -> Void
+public typealias UpdateHandler = (Update, ZEGBot) -> Void
 
 public struct ZEGBot {
 
@@ -23,14 +23,13 @@ public struct ZEGBot {
 		self.urlPrefix = "https://api.telegram.org/bot"+token+"/"
 	}
 
-	public func run(withHandler handler: @escaping UpdateHandler) {
+	public func run(withHandler handler: @escaping UpdateHandler) throws {
 		var offset = 0
 		let semaphore = DispatchSemaphore(value: 0)
 		var encounterError: Swift.Error?
 		while encounterError == nil {
 			let task = session.dataTask(with: URL(string: urlPrefix + "getupdates?timeout=60&offset=\(offset)")!) { data, _, error in
 				guard let data = data else {
-					handler(.failure(error!), self)
 					encounterError = error!
 					semaphore.signal()
 					return
@@ -44,10 +43,9 @@ public struct ZEGBot {
 						}
 					}
 					for update in updates {
-						handler(.success(update), self)
+						handler(update, self)
 					}
 				case .failure(let error):
-					handler(.failure(error), self)
 					encounterError = error
 				}
 				semaphore.signal()
@@ -55,8 +53,7 @@ public struct ZEGBot {
 			task.resume()
 			semaphore.wait()
 		}
-		NSLog("Exit due to error: \(encounterError!)")
-		exit(2)
+		throw encounterError!
 	}
 
 }
