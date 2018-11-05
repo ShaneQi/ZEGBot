@@ -191,6 +191,27 @@ extension ZEGBot {
 				cacheTime: cacheTime))
 	}
 
+	@discardableResult
+	public func restrictChatMember(
+		chatId: Int,
+		userId: Int,
+		untilDate: Int? = nil,
+		canSendMessages: Bool? = nil,
+		canSendMediaMessages: Bool? = nil,
+		canSendOtherMessages: Bool? = nil,
+		canSendWebPagePreviews: Bool? = nil) -> Result<Bool>  {
+		return performRequest(
+			ofMethod: "restrictChatMember",
+			payload: RestrictChatMemberPayload(
+				chatId: chatId,
+				userId: userId,
+				untilDate: untilDate,
+				canSendMessages: canSendMessages,
+				canSendMediaMessages: canSendMediaMessages,
+				canSendOtherMessages: canSendOtherMessages,
+				canSendWebPagePreviews: canSendWebPagePreviews))
+	}
+
 }
 
 extension ZEGBot {
@@ -236,5 +257,17 @@ private struct AnswerCallbackQueryPayload: Encodable {
 		case showAlert = "show_alert"
 		case cacheTime = "cache_time"
 	}
+
+}
+
+private struct RestrictChatMemberPayload: Encodable {
+
+	let chatId: Int
+	let userId: Int
+	let untilDate: Int?
+	let canSendMessages: Bool?
+	let canSendMediaMessages: Bool?
+	let canSendOtherMessages: Bool?
+	let canSendWebPagePreviews: Bool?
 
 }
