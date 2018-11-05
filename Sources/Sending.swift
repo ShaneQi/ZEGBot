@@ -33,7 +33,7 @@ struct SendingPayload: Encodable {
 		case chatAction(chatAction: ChatAction)
 	}
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 
 		case chatId = "chat_id"
 		case replyToMessageId = "reply_to_message_id"
@@ -61,11 +61,11 @@ struct SendingPayload: Encodable {
 
 		// sendContact
 		case phoneNumber = "phone_number"
-		case firstName = "firstName"
-		case lastName = "lastName"
+		case firstName = "first_name"
+		case lastName = "last_name"
 
 		// sendChatAction
-		case chatAction = "action"
+		case action
 
 	}
 
@@ -126,7 +126,7 @@ struct SendingPayload: Encodable {
 			try container.encode(firstName, forKey: .firstName)
 			if let lastName = lastName { try container.encode(lastName, forKey: .lastName) }
 		case .chatAction(chatAction: let chatAction):
-			try container.encode(chatAction, forKey: .chatAction)
+			try container.encode(chatAction, forKey: .action)
 		}
 	}
 

@@ -230,7 +230,7 @@ private struct AnswerCallbackQueryPayload: Encodable {
 	let url: String?
 	let cacheTime: Int?
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case text, url
 		case callbackQueryId = "callback_query_id"
 		case showAlert = "show_alert"
