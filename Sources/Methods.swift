@@ -19,110 +19,110 @@ extension ZEGBot {
 	                 parseMode: ParseMode? = nil,
 	                 disableWebPagePreview: Bool? = nil,
 	                 disableNotification: Bool? = nil,
-					 replyMarkup: InlineKeyboardMarkup? = nil) -> Result<Message> {
+					 replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(content: .message(text: text, parseMode: parseMode, disableWebPagePreview: disableWebPagePreview),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 									 disableNotification: disableNotification,
 									 replyMarkup: replyMarkup)
-		return performRequest(ofMethod: "sendMessage", payload: payload)
+		return try performRequest(ofMethod: "sendMessage", payload: payload)
 	}
 
 	@discardableResult
 	public func forward(message: Message, to receiver: Sendable,
-	                    disableNotification: Bool? = nil) -> Result<Message> {
+	                    disableNotification: Bool? = nil) throws -> Message {
 		let payload = SendingPayload(content: .serverStoredContent(.message(chatId: message.chatId, messageId: message.messageId)),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 									 disableNotification: disableNotification,
 									 replyMarkup: nil)
-		return performRequest(ofMethod: "forwardMessage", payload: payload)
+		return try performRequest(ofMethod: "forwardMessage", payload: payload)
 
 	}
 
 	@discardableResult
 	public func send(_ sticker: Sticker, to receiver: Sendable,
 					 disableNotification: Bool? = nil,
-					 replyMarkup: InlineKeyboardMarkup? = nil) -> Result<Message> {
+					 replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(content: .serverStoredContent(.sticker(fileId: sticker.fileId)),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 									 disableNotification: disableNotification,
 									 replyMarkup: nil)
-		return performRequest(ofMethod: "sendSticker", payload: payload)
+		return try performRequest(ofMethod: "sendSticker", payload: payload)
 	}
 
 	@discardableResult
 	public func send(_ photo: PhotoSize, caption: String? = nil, to receiver: Sendable,
 					 disableNotification: Bool? = nil,
-					 replyMarkup: InlineKeyboardMarkup? = nil) -> Result<Message> {
+					 replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(content: .serverStoredContent(.photo(fileId: photo.fileId, caption: caption)),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 									 disableNotification: disableNotification,
 									 replyMarkup: nil)
-		return performRequest(ofMethod: "sendPhoto", payload: payload)
+		return try performRequest(ofMethod: "sendPhoto", payload: payload)
 	}
 
 	@discardableResult
 	public func send(_ audio: Audio, caption: String? = nil, to receiver: Sendable,
 					 disableNotification: Bool? = nil,
-					 replyMarkup: InlineKeyboardMarkup? = nil) -> Result<Message> {
+					 replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(content: .serverStoredContent(.audio(fileId: audio.fileId, caption: caption)),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 									 disableNotification: disableNotification,
 									 replyMarkup: nil)
-		return performRequest(ofMethod: "sendAudio", payload: payload)
+		return try performRequest(ofMethod: "sendAudio", payload: payload)
 	}
 
 	@discardableResult
 	public func send(_ document: Document, caption: String? = nil, to receiver: Sendable,
 					 disableNotification: Bool? = nil,
-					 replyMarkup: InlineKeyboardMarkup? = nil) -> Result<Message> {
+					 replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(content: .serverStoredContent(.document(fileId: document.fileId, caption: caption)),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 									 disableNotification: disableNotification,
 									 replyMarkup: nil)
-		return performRequest(ofMethod: "sendDocument", payload: payload)
+		return try performRequest(ofMethod: "sendDocument", payload: payload)
 	}
 
 
 	@discardableResult
 	public func send(_ video: Video, caption: String? = nil, to receiver: Sendable,
 					 disableNotification: Bool? = nil,
-					 replyMarkup: InlineKeyboardMarkup? = nil) -> Result<Message> {
+					 replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(content: .serverStoredContent(.video(fileId: video.fileId, caption: caption)),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 									 disableNotification: disableNotification,
 									 replyMarkup: nil)
-		return performRequest(ofMethod: "sendVideo", payload: payload)
+		return try performRequest(ofMethod: "sendVideo", payload: payload)
 	}
 
 	@discardableResult
 	public func send(_ voice: Voice, caption: String? = nil, to receiver: Sendable,
 					 disableNotification: Bool? = nil,
-					 replyMarkup: InlineKeyboardMarkup? = nil) -> Result<Message> {
+					 replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(content: .serverStoredContent(.voice(fileId: voice.fileId, caption: caption)),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 									 disableNotification: disableNotification,
 									 replyMarkup: nil)
-		return performRequest(ofMethod: "sendVoice", payload: payload)
+		return try performRequest(ofMethod: "sendVoice", payload: payload)
 	}
 
 	@discardableResult
 	public func sendLocation(latitude: Double, longitude: Double, to receiver: Sendable,
 							 disableNotification: Bool? = nil,
-							 replyMarkup: InlineKeyboardMarkup? = nil) -> Result<Message> {
+							 replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(content: .location(latitude: latitude, longitude: longitude),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 									 disableNotification: disableNotification,
 									 replyMarkup: nil)
-		return performRequest(ofMethod: "sendLocation", payload: payload)
+		return try performRequest(ofMethod: "sendLocation", payload: payload)
 	}
 
 	@discardableResult
@@ -130,48 +130,48 @@ extension ZEGBot {
 	                      title: String, address: String, foursquareId: String? = nil,
 	                      to receiver: Sendable,
 						  disableNotification: Bool? = nil,
-						  replyMarkup: InlineKeyboardMarkup? = nil) -> Result<Message> {
+						  replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(content: .venue(latitude: latitude, longitude: longitude, title: title, address: address, foursquareId: foursquareId),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 									 disableNotification: disableNotification,
 									 replyMarkup: nil)
-		return performRequest(ofMethod: "sendVenue", payload: payload)
+		return try performRequest(ofMethod: "sendVenue", payload: payload)
 	}
 
 	@discardableResult
 	public func sendContact(phoneNumber: String, firstName: String, lastName: String? = nil,
 	                        to receiver: Sendable,
 							disableNotification: Bool? = nil,
-							replyMarkup: InlineKeyboardMarkup? = nil) -> Result<Message> {
+							replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(content: .contact(phoneNumber: phoneNumber, firstName: firstName, lastName: lastName),
 		                             chatId: receiver.chatId,
 		                             replyToMessageId: receiver.replyToMessageId,
 									 disableNotification: disableNotification,
 									 replyMarkup: nil)
-		return performRequest(ofMethod: "sendContact", payload: payload)
+		return try performRequest(ofMethod: "sendContact", payload: payload)
 	}
 
 	@discardableResult
-	public func send(chatAction: ChatAction, toChat chatId: Int) -> Result<Bool> {
+	public func send(chatAction: ChatAction, toChat chatId: Int) throws -> Bool {
 		let payload = SendingPayload(content: .chatAction(chatAction: chatAction),
 									 chatId: chatId, replyToMessageId: nil, disableNotification: nil,
 									 replyMarkup: nil)
-		return performRequest(ofMethod: "sendChatAction", payload: payload)
+		return try performRequest(ofMethod: "sendChatAction", payload: payload)
 	}
 
 	@discardableResult
-	public func deleteMessage(inChat chatId: Int, messageId: Int) -> Result<Bool> {
-		return performRequest(ofMethod: "deleteMessage",
+	public func deleteMessage(inChat chatId: Int, messageId: Int) throws -> Bool {
+		return try performRequest(ofMethod: "deleteMessage",
 							  payload: ["chat_id": chatId, "message_id": messageId])
 	}
 
-	public func getFile(ofId fileId: String) -> Result<File> {
-		return performRequest(ofMethod: "getFile", payload: ["file_id": fileId])
+	public func getFile(ofId fileId: String) throws -> File {
+		return try performRequest(ofMethod: "getFile", payload: ["file_id": fileId])
 	}
 
-	public func getChatAdministrators(ofChatWithId chatId: Int) -> Result<[ChatMember]> {
-		return performRequest(ofMethod: "getChatAdministrators", payload: ["chat_id": chatId])
+	public func getChatAdministrators(ofChatWithId chatId: Int) throws -> [ChatMember] {
+		return try performRequest(ofMethod: "getChatAdministrators", payload: ["chat_id": chatId])
 	}
 
 	@discardableResult
@@ -180,8 +180,8 @@ extension ZEGBot {
 		text: String? = nil,
 		showAlert: Bool? = nil,
 		url: String? = nil,
-		cacheTime: Int? = nil) -> Result<Bool> {
-		return performRequest(
+		cacheTime: Int? = nil) throws -> Bool {
+		return try performRequest(
 			ofMethod: "answerCallbackQuery",
 			payload: AnswerCallbackQueryPayload(
 				callbackQueryId: callbackQueryId,
@@ -199,8 +199,8 @@ extension ZEGBot {
 		canSendMessages: Bool? = nil,
 		canSendMediaMessages: Bool? = nil,
 		canSendOtherMessages: Bool? = nil,
-		canSendWebPagePreviews: Bool? = nil) -> Result<Bool>  {
-		return performRequest(
+		canSendWebPagePreviews: Bool? = nil) throws -> Bool  {
+		return try performRequest(
 			ofMethod: "restrictChatMember",
 			payload: RestrictChatMemberPayload(
 				chatId: chatId,
@@ -216,7 +216,7 @@ extension ZEGBot {
 
 extension ZEGBot {
 
-	private func performRequest<Input, Output>(ofMethod method: String, payload: Input) -> Result<Output>
+	private func performRequest<Input, Output>(ofMethod method: String, payload: Input) throws -> Output
 		where Input: Encodable, Output: Decodable {
 			// Preparing the request.
 			let bodyData = (try? JSONEncoder().encode(payload))!
@@ -238,7 +238,12 @@ extension ZEGBot {
 			}
 			task.resume()
 			semaphore.wait()
-			return result!
+			switch result! {
+			case .success(let output):
+				return output
+			case .failure(let error):
+				throw error
+			}
 	}
 
 }
