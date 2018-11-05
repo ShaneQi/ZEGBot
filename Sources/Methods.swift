@@ -270,4 +270,14 @@ private struct RestrictChatMemberPayload: Encodable {
 	let canSendOtherMessages: Bool?
 	let canSendWebPagePreviews: Bool?
 
+	private enum CodingKeys: String, CodingKey {
+		case chatId = "chat_id"
+		case userId = "user_id"
+		case untilDate = "until_date"
+		case canSendMessages = "can_send_messages"
+		case canSendMediaMessages = "can_send_media_messages"
+		case canSendOtherMessages = "can_send_other_messages"
+		case canSendWebPagePreviews = "can_send_web_page_previews"
+	}
+
 }
