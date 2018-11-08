@@ -191,7 +191,7 @@ extension ZEGBot {
 	public func restrictChatMember(
 		chatId: Int,
 		userId: Int,
-		untilDate: Int? = nil,
+		untilDate: Date? = nil,
 		canSendMessages: Bool? = nil,
 		canSendMediaMessages: Bool? = nil,
 		canSendOtherMessages: Bool? = nil,
@@ -201,11 +201,23 @@ extension ZEGBot {
 			payload: RestrictChatMemberPayload(
 				chatId: chatId,
 				userId: userId,
-				untilDate: untilDate,
+				untilDate: untilDate?.unixTimeInt ?? nil,
 				canSendMessages: canSendMessages,
 				canSendMediaMessages: canSendMediaMessages,
 				canSendOtherMessages: canSendOtherMessages,
 				canSendWebPagePreviews: canSendWebPagePreviews))
+	}
+
+	public func kickChatMember(
+		chatId: Int,
+		userId: Int,
+		untilDate: Date? = nil) throws {
+		let _: Bool = try performRequest(
+			ofMethod: "kickChatMember",
+			payload: KickChatMemberPayload(
+				chatId: chatId,
+				userId: userId,
+				untilDate: untilDate?.unixTimeInt ?? nil))
 	}
 
 }
@@ -279,6 +291,20 @@ private struct RestrictChatMemberPayload: Encodable {
 		case canSendMediaMessages = "can_send_media_messages"
 		case canSendOtherMessages = "can_send_other_messages"
 		case canSendWebPagePreviews = "can_send_web_page_previews"
+	}
+
+}
+
+private struct KickChatMemberPayload: Encodable {
+
+	let chatId: Int
+	let userId: Int
+	let untilDate: Int?
+
+	private enum CodingKeys: String, CodingKey {
+		case chatId = "chat_id"
+		case userId = "user_id"
+		case untilDate = "until_date"
 	}
 
 }
