@@ -17,7 +17,7 @@ public struct ZEGBot {
 
 	internal let session = URLSession(configuration: .default)
 
-	internal var urlPrefix: String
+	internal let urlPrefix: String
 
 	public init(token: String) {
 		self.urlPrefix = "https://api.telegram.org/bot"+token+"/"

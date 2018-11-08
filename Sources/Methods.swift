@@ -227,7 +227,7 @@ extension ZEGBot {
 	private func performRequest<Input, Output>(ofMethod method: String, payload: Input) throws -> Output
 		where Input: Encodable, Output: Decodable {
 			// Preparing the request.
-			let bodyData = (try? JSONEncoder().encode(payload))!
+			let bodyData = try JSONEncoder().encode(payload)
 			let semaphore = DispatchSemaphore(value: 0)
 			var request = URLRequest(url: URL(string: urlPrefix + method)!)
 			request.httpMethod = "POST"
