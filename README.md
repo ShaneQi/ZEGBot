@@ -11,7 +11,7 @@ This library wraps the processing of converting objects to Telegram Bot API requ
 Add this project as a dependency in your Package.swift file.
 
 ```swift
-.package(url: "https://github.com/shaneqi/ZEGBot.git", from: Version(4, 0, 0))
+.package(url: "https://github.com/shaneqi/ZEGBot.git", from: Version(4, 2, 0))
 ```
 ## Quick Start
 
@@ -25,10 +25,13 @@ import ZEGBot
 //  Don't forget to fill in your bot token.
 let bot = ZEGBot(token: "TYPE YOUR TOKEN HERE")
 
-bot.run { update, bot in       
-  //  Handle updates here...
-
-})
+do {
+  try bot.run { update, bot in       
+    //  Handle updates here...
+  })
+} catch let error {
+  NSLog("Bot exit due to: \(error)") 
+}
 ```
 
 ## Usage
@@ -55,7 +58,11 @@ bot.run { update, bot in
   ```swift
   ...
   if let message = update.message {
-    bot.send(message: "bar", to: message.chat)
+    do {
+      try bot.send(message: "bar", to: message.chat)
+    } catch let error {
+      NSLog("Failed to send message due to: \(error)")
+    }
   }
   ...
   ```
@@ -64,7 +71,11 @@ bot.run { update, bot in
   ```swift
   ...
   if let message = update?.message {
-    bot.send(message: "[Google](https://google.com)", to: message.chat, parseMode: .markdown, disableWebPagePreview: true, disableNotification: true)
+    do {
+      try bot.send(message: "[Google](https://google.com)", to: message.chat, parseMode: .markdown, disableWebPagePreview: true, disableNotification: true)
+    } catch let error {
+      NSLog("Failed to send message due to: \(error)")
+    }
   }
   ...
   ```
@@ -73,10 +84,14 @@ bot.run { update, bot in
   ```swift
   ...
   if let message = update?.message {
-    /* This sends a message replying to another message. */
-    bot.send(message: "bar", to: message)
-    /* This doesn't reply to a message. */
-    bot.send(message: "bar", to: message.chat)
+    do {
+      /* This sends a message replying to another message. */
+      try bot.send(message: "bar", to: message)
+      /* This doesn't reply to a message. */
+      try bot.send(message: "bar", to: message.chat)
+    } catch let error {
+      NSLog("Failed to send message due to: \(error)")
+    }
   }
   ...
   ```
@@ -85,7 +100,11 @@ bot.run { update, bot in
   ```swift
   ...
   if let channelPost = update?.channelPost {
-    bot.send(message: "bar", to: channelPost.chat)
+    do {
+      try bot.send(message: "bar", to: channelPost.chat)
+    } catch let error {
+      NSLog("Failed to send message due to: \(error)")
+    }
   }
   ...
 
