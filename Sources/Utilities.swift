@@ -13,7 +13,7 @@ public enum Result<T>: Decodable where T: Decodable {
 	case success(T)
 	case failure(Swift.Error)
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case ok, result, description
 	}
 

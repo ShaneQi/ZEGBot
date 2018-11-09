@@ -117,7 +117,7 @@ public class Message: Codable {
 	public let migrateFromChatId: Int?
 	public let pinnedMessage: Message?
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case date, chat, from, text, entities, audio, document, photo, sticker, video, voice, caption, contact, location, venue
 		case messageId = "message_id"
 		case forwardFrom = "forward_from"
@@ -155,7 +155,7 @@ public struct Chat: Codable {
 		case `private`, group, supergroup, channel
 	}
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case id, type, title, username
 		case firstName = "first_name"
 		case lastName = "last_name"
@@ -173,7 +173,7 @@ public struct User: Codable {
 	public let lastName: String?
 	public let username: String?
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case id, username
 		case firstName = "first_name"
 		case lastName = "last_name"
@@ -214,7 +214,7 @@ public struct Audio: Codable {
 	public let mimeType: String?
 	public let fileSize: Int?
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case duration, performer, title
 		case fileId = "file_id"
 		case mimeType = "mime_type"
@@ -233,7 +233,7 @@ public struct Document: Codable {
 	public let mimeType: String?
 	public let fileSize: Int?
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case thumb
 		case fileId = "file_id"
 		case fileName = "file_name"
@@ -252,7 +252,7 @@ public struct PhotoSize: Codable {
 	/* Optional. */
 	public let fileSize: Int?
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case width, height
 		case fileId = "file_id"
 		case fileSize = "file_size"
@@ -271,7 +271,7 @@ public struct Sticker: Codable {
 	public let emoji: String?
 	public let fileSize: Int?
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case width, height, thumb, emoji
 		case fileId = "file_id"
 		case fileSize = "file_size"
@@ -291,7 +291,7 @@ public struct Video: Codable {
 	public let mimeType: String?
 	public let fileSize: Int?
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case width, height, duration, thumb
 		case fileId = "file_id"
 		case mimeType = "mime_type"
@@ -309,7 +309,7 @@ public struct Voice: Codable {
 	public let mimeType: String?
 	public let fileSize: Int?
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case duration
 		case fileId = "file_id"
 		case mimeType = "mime_type"
@@ -327,7 +327,7 @@ public struct Contact: Codable {
 	public let lastName: String?
 	public let userId: Int?
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case phoneNumber = "phone_number"
 		case firstName = "first_name"
 		case lastName = "last_name"
@@ -352,7 +352,7 @@ public struct Venue: Codable {
 	/* OPTIONAL. */
 	public let foursquareId: String?
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case location, title, address
 		case foursquareId = "foursquare_id"
 	}
@@ -367,7 +367,7 @@ public struct File: Codable {
 	public let fileSize: Int?
 	public let filePath: String?
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case fileSize = "file_size"
 		case fileId = "file_id"
 		case filePath = "file_path"
@@ -406,7 +406,7 @@ public struct InlineKeyboardButton: Codable {
 	public let switchInlineQuery: String?
 	public let switchInlineQueryCurrentChat: String?
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case text, url
 		case callbackData = "callback_data"
 		case switchInlineQuery = "switch_inline_query"
@@ -433,7 +433,7 @@ public struct InlineKeyboardMarkup: Codable {
 
 	public let inlineKeyboard: [[InlineKeyboardButton]]
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case inlineKeyboard = "inline_keyboard"
 	}
 
@@ -453,7 +453,7 @@ public struct CallbackQuery: Decodable {
 	public let chatInstance: String?
 	public let data: String?
 
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		case id, from, message, data
 		case inlineMessageId = "inline_message_id"
 		case chatInstance = "chat_instance"
