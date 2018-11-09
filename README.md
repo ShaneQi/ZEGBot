@@ -109,6 +109,9 @@ bot.run { update, bot in
 - ParseMode
 - ChatAction
 - ChatMember
+- InlineKeyboardButton
+- InlineKeyboardMarkup
+- CallbackQuery
 
 Not all the types are supported, checkout more details on [Telegram Bot API](https://core.telegram.org/bots/api#available-types).
 
@@ -129,6 +132,9 @@ Not all the types are supported, checkout more details on [Telegram Bot API](htt
 - getFile
 - deleteMessage
 - getChatAdministrators
+- answerCallbackQuery
+- restrictChatMember
+- kickChatMember
 
 Not all the methods are supported, checkout more details on [Telegram Bot API](https://core.telegram.org/bots/api#available-methods).
 
