@@ -195,7 +195,7 @@ extension ZEGBot {
 		canSendMessages: Bool? = nil,
 		canSendMediaMessages: Bool? = nil,
 		canSendOtherMessages: Bool? = nil,
-		canSendWebPagePreviews: Bool? = nil) throws {
+		canAddWebPagePreviews: Bool? = nil) throws {
 		let _: Bool = try performRequest(
 			ofMethod: "restrictChatMember",
 			payload: RestrictChatMemberPayload(
@@ -205,7 +205,7 @@ extension ZEGBot {
 				canSendMessages: canSendMessages,
 				canSendMediaMessages: canSendMediaMessages,
 				canSendOtherMessages: canSendOtherMessages,
-				canSendWebPagePreviews: canSendWebPagePreviews))
+				canAddWebPagePreviews: canAddWebPagePreviews))
 	}
 
 	public func kickChatMember(
@@ -281,7 +281,7 @@ private struct RestrictChatMemberPayload: Encodable {
 	let canSendMessages: Bool?
 	let canSendMediaMessages: Bool?
 	let canSendOtherMessages: Bool?
-	let canSendWebPagePreviews: Bool?
+	let canAddWebPagePreviews: Bool?
 
 	private enum CodingKeys: String, CodingKey {
 		case chatId = "chat_id"
@@ -290,7 +290,7 @@ private struct RestrictChatMemberPayload: Encodable {
 		case canSendMessages = "can_send_messages"
 		case canSendMediaMessages = "can_send_media_messages"
 		case canSendOtherMessages = "can_send_other_messages"
-		case canSendWebPagePreviews = "can_send_web_page_previews"
+		case canAddWebPagePreviews = "can_add_web_page_previews"
 	}
 
 }
