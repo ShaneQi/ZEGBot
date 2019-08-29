@@ -28,7 +28,8 @@ public struct ZEGBot {
 		let semaphore = DispatchSemaphore(value: 0)
 		var encounterError: Swift.Error?
 		while encounterError == nil {
-			let task = session.dataTask(with: URL(string: urlPrefix + "getupdates?timeout=60&offset=\(offset)")!) { data, _, error in
+			let task = session.dataTask(
+			with: URL(string: urlPrefix + "getupdates?timeout=60&offset=\(offset)")!) { data, _, error in
 				guard let data = data else {
 					encounterError = error!
 					semaphore.signal()
@@ -38,7 +39,10 @@ public struct ZEGBot {
 				case .success(let updates):
 					if let lastUpdate = updates.last {
 						switch lastUpdate {
-						case .message(let updateId, _), .editedMessage(let updateId , _), .channelPost(let updateId, _), .callbackQuery(updateId: let updateId, _):
+						case .message(let updateId, _),
+							 .editedMessage(let updateId, _),
+							 .channelPost(let updateId, _),
+							 .callbackQuery(updateId: let updateId, _):
 							offset = updateId + 1
 						}
 					}

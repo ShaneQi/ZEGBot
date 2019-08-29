@@ -118,7 +118,8 @@ public class Message: Codable {
 	public let pinnedMessage: Message?
 
 	private enum CodingKeys: String, CodingKey {
-		case date, chat, from, text, entities, audio, document, photo, sticker, video, voice, caption, contact, location, venue
+		case date, chat, from, text, entities
+		case audio, document, photo, sticker, video, voice, caption, contact, location, venue
 		case messageId = "message_id"
 		case forwardFrom = "forward_from"
 		case forwardFromChat = "forward_from_chat"

@@ -69,6 +69,7 @@ struct SendingPayload: Encodable {
 
 	}
 
+	// swiftlint:disable cyclomatic_complexity
 	func encode(to encoder: Encoder) throws {
 		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(chatId, forKey: .chatId)
@@ -115,7 +116,9 @@ struct SendingPayload: Encodable {
 		case .location(latitude: let latitude, longitude: let longitude):
 			try container.encode(latitude, forKey: .latitude)
 			try container.encode(longitude, forKey: .longitude)
-		case .venue(latitude: let latitude, longitude: let longitude, title: let title, address: let address, foursquareId: let foursquareId):
+		case .venue(
+			latitude: let latitude, longitude: let longitude, title: let title,
+			address: let address, foursquareId: let foursquareId):
 			try container.encode(latitude, forKey: .latitude)
 			try container.encode(longitude, forKey: .longitude)
 			try container.encode(title, forKey: .title)

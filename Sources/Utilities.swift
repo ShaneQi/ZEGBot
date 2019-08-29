@@ -42,7 +42,7 @@ public enum Result<T>: Decodable where T: Decodable {
 			case false:
 				self = .failure(Error.telegram(try container.decode(String.self, forKey: .description)))
 			}
-		} catch(let error) {
+		} catch {
 			self = .failure(error)
 		}
 	}
@@ -50,7 +50,7 @@ public enum Result<T>: Decodable where T: Decodable {
 	static func decode(from data: Data) -> Result {
 		do {
 			return try JSONDecoder().decode(Result.self, from: data)
-		} catch(let error) {
+		} catch {
 			return .failure(error)
 		}
 	}
