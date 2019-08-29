@@ -1,4 +1,4 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.0
 
 import PackageDescription
 
@@ -24,7 +24,7 @@ let package = Package(
 			path: "./Example"),
 		.testTarget(
 			name: "ZEGBotTests",
-			dependencies: ["ZEGBot"]),
+			dependencies: ["ZEGBot"])
 		],
-	swiftLanguageVersions: [.v4_2]
+	swiftLanguageVersions: [.v5]
 )
