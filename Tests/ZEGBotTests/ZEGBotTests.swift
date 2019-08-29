@@ -4,13 +4,15 @@ import Foundation
 
 class ZEGBotTests: XCTestCase {
 
-	static var allTests : [(String, (ZEGBotTests) -> () throws -> Void)] {
+	static var allTests: [(String, (ZEGBotTests) -> () throws -> Void)] {
 		return [
 			("testMessageEntities", testMessageEntities)
 		]
 	}
 
+	// swiftlint:disable function_body_length
 	func testMessageEntities() {
+		// swiftlint:disable force_try
 		let message1 = try! JSONDecoder().decode(Message.self, from: """
 		{
 			"message_id": 1502,
@@ -30,7 +32,8 @@ class ZEGBotTests: XCTestCase {
 				"type": "private"
 			},
 			"date": 1506745637,
-			"text": "@ShaneQi\\n#hashtag\\nhttps://google.com\\nqizengtai@gmail.com\\nbold\\nitalic\\ncode\\nlet hello = \\"world\\"\\n\\ngoogle",
+			"text": "@ShaneQi\\n#hashtag\\nhttps://google.com\\nqizengtai@gmail.com\
+			\\nbold\\nitalic\\ncode\\nlet hello = \\"world\\"\\n\\ngoogle",
 			"entities": [{
 				"offset": 0,
 				"length": 8,
@@ -128,6 +131,7 @@ class ZEGBotTests: XCTestCase {
 		XCTAssert(message1.entities![8].url == "https://google.com/")
 		XCTAssert(message1.entities![8].user == nil)
 
+		// swiftlint:disable force_try
 		let message2 = try! JSONDecoder().decode(Message.self, from: """
 		{
 			"message_id": 1510,

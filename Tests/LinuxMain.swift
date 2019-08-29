@@ -2,5 +2,5 @@ import XCTest
 @testable import ZEGBotTests
 
 XCTMain([
-	testCase(ZEGBotTests.allTests),
+	testCase(ZEGBotTests.allTests)
 	])
