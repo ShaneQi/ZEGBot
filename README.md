@@ -1,6 +1,6 @@
 # ZEGBot
 
-[![Build Status](https://travis-ci.org/ShaneQi/ZEGBot.svg?branch=master)](https://travis-ci.org/ShaneQi/ZEGBot)  [![Swift Version](https://img.shields.io/badge/Swift-5-orange.svg?style=flat)](https://swift.org)  ![Platforms](https://img.shields.io/badge/Platforms-OS%20X%20%7C%20Linux%20-blue.svg?style=flat)  ![License](https://img.shields.io/badge/License-Apache-red.svg?style=flat)
+![CI](https://github.com/ShaneQi/ZEGBot/workflows/CI/badge.svg?branch=master)  [![Swift Version](https://img.shields.io/badge/Swift-5-orange.svg?style=flat)](https://swift.org)  ![Platforms](https://img.shields.io/badge/Platforms-OS%20X%20%7C%20Linux%20-blue.svg?style=flat)  ![License](https://img.shields.io/badge/License-Apache-red.svg?style=flat)
 
 This library wraps the JSON decoding processing, making it easy to decode incoming JSON String to manipulatable objects.
 
