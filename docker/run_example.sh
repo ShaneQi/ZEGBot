@@ -4,6 +4,6 @@ sudo docker run \
 -v `pwd`:/ZEGBotExample \
 -w /ZEGBotExample \
 --name ZEGBotExample \
-shaneqi/swift:5.0 \
+swift:"$1" \
 bash -c \
 "swift run"

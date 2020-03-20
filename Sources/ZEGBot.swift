@@ -9,6 +9,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import Dispatch
 
 public typealias UpdateHandler = (Update, ZEGBot) -> Void
