@@ -247,6 +247,31 @@ extension ZEGBot {
 				untilDate: untilDate?.unixTimeInt ?? nil))
 	}
 
+	@discardableResult
+	public func editMessage(
+		messageId: Int,
+		chatId: Int,
+		newText: String,
+		parseMode: ParseMode? = nil,
+		disableWebPagePreview: Bool? = nil) throws -> Message {
+		let payload = UpdatingPayload(
+			messageId: messageId, chatId: chatId,
+			newContent: .text(newText: newText, parseMode: parseMode, disableWebPagePreview: disableWebPagePreview))
+		return try performRequest(ofMethod: "editMessageText", payload: payload)
+	}
+
+	@discardableResult
+	public func editMessage(
+		messageId: Int,
+		chatId: Int,
+		newCaption: String,
+		parseMode: ParseMode? = nil) throws -> Message {
+		let payload = UpdatingPayload(
+			messageId: messageId, chatId: chatId,
+			newContent: .caption(newCaption: newCaption, parseMode: parseMode))
+		return try performRequest(ofMethod: "editMessageCaption", payload: payload)
+	}
+
 }
 
 extension ZEGBot {

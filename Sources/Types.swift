@@ -93,6 +93,7 @@ public class Message: Codable {
 	public let forwardDate: Int?
 	public let replyToMessage: Message?
 	public let editDate: Int?
+	public let mediaGroupId: String?
 	public let text: String?
 	public let entities: [MessageEntity]?
 	public let audio: Audio?
@@ -137,6 +138,7 @@ public class Message: Codable {
 		case migrateToChatId = "migrate_to_chat_id"
 		case migrateFromChatId = "migrate_from_chat_id"
 		case pinnedMessage = "pinned_message"
+		case mediaGroupId = "media_group_id"
 	}
 
 }

@@ -1,6 +1,6 @@
 # ZEGBot
 
-[![Build Status](https://travis-ci.org/ShaneQi/ZEGBot.svg?branch=master)](https://travis-ci.org/ShaneQi/ZEGBot)  [![Swift Version](https://img.shields.io/badge/Swift-5-orange.svg?style=flat)](https://swift.org)  ![Platforms](https://img.shields.io/badge/Platforms-OS%20X%20%7C%20Linux%20-blue.svg?style=flat)  ![License](https://img.shields.io/badge/License-Apache-red.svg?style=flat)
+![CI](https://github.com/ShaneQi/ZEGBot/workflows/CI/badge.svg?branch=master)  [![Swift Version](https://img.shields.io/badge/Swift-5-orange.svg?style=flat)](https://swift.org)  ![Platforms](https://img.shields.io/badge/Platforms-OS%20X%20%7C%20Linux%20-blue.svg?style=flat)  ![License](https://img.shields.io/badge/License-Apache-red.svg?style=flat)
 
 This library wraps the JSON decoding processing, making it easy to decode incoming JSON String to manipulatable objects.
 
@@ -11,7 +11,7 @@ This library wraps the processing of converting objects to Telegram Bot API requ
 Add this project as a dependency in your Package.swift file.
 
 ```swift
-.package(url: "https://github.com/shaneqi/ZEGBot.git", from: Version(4, 2, 2))
+.package(url: "https://github.com/shaneqi/ZEGBot.git", from: Version(4, 2, 3))
 ```
 ## Quick Start
 
@@ -154,6 +154,8 @@ Not all the types are supported, checkout more details on [Telegram Bot API](htt
 - answerCallbackQuery
 - restrictChatMember
 - kickChatMember
+- editMessageText
+- editMessageCaption
 
 Not all the methods are supported, checkout more details on [Telegram Bot API](https://core.telegram.org/bots/api#available-methods).
 

@@ -12,4 +12,8 @@ jobs:
     - uses: docker://swift:5.0
       with:
         entrypoint: swift
-        args: build
+        args: test
+    - uses: docker://swift:5.1.5
+      with:
+        entrypoint: swift
+        args: test
