@@ -11,7 +11,7 @@ This library wraps the processing of converting objects to Telegram Bot API requ
 Add this project as a dependency in your Package.swift file.
 
 ```swift
-.package(url: "https://github.com/shaneqi/ZEGBot.git", from: Version(4, 2, 2))
+.package(url: "https://github.com/shaneqi/ZEGBot.git", from: Version(4, 2, 3))
 ```
 ## Quick Start
 
@@ -154,6 +154,8 @@ Not all the types are supported, checkout more details on [Telegram Bot API](htt
 - answerCallbackQuery
 - restrictChatMember
 - kickChatMember
+- editMessageText
+- editMessageCaption
 
 Not all the methods are supported, checkout more details on [Telegram Bot API](https://core.telegram.org/bots/api#available-methods).
 
