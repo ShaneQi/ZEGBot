@@ -14,7 +14,7 @@ import FoundationNetworking
 #endif
 import Dispatch
 
-public typealias UpdateHandler = (Update, ZEGBot) -> Void
+public typealias UpdatesHandler = ([Update], ZEGBot) -> Void
 
 public struct ZEGBot {
 
@@ -26,7 +26,7 @@ public struct ZEGBot {
 		self.urlPrefix = "https://api.telegram.org/bot"+token+"/"
 	}
 
-	public func run(withHandler handler: @escaping UpdateHandler) throws {
+	public func run(withHandler handler: @escaping UpdatesHandler) throws {
 		var offset = 0
 		let semaphore = DispatchSemaphore(value: 0)
 		var encounterError: Swift.Error?
@@ -49,9 +49,7 @@ public struct ZEGBot {
 							offset = updateId + 1
 						}
 					}
-					for update in updates {
-						handler(update, self)
-					}
+					handler(updates, self)
 				case .failure(let error):
 					encounterError = error
 				}
