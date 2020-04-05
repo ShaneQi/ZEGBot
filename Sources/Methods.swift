@@ -35,10 +35,10 @@ extension ZEGBot {
 
 	@discardableResult
 	public func forward(
-		message: Message, to receiver: Sendable,
+		message: ForwardableMessage, to receiver: Sendable,
 		disableNotification: Bool? = nil) throws -> Message {
 		let payload = SendingPayload(
-			content: .serverStoredContent(.message(chatId: message.chatId, messageId: message.messageId)),
+			content: .forwardableMessage(chatId: message.chatId, messageId: message.messageId),
 			chatId: receiver.chatId,
 			replyToMessageId: receiver.replyToMessageId,
 			disableNotification: disableNotification,
@@ -49,16 +49,28 @@ extension ZEGBot {
 
 	@discardableResult
 	public func send(
-		_ sticker: Sticker, to receiver: Sendable,
+		serverStoredContent: ServerStoredContent, to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(
-			content: .serverStoredContent(.sticker(fileId: sticker.fileId)),
+			content: .serverStoredContent(serverStoredContent),
 			chatId: receiver.chatId,
 			replyToMessageId: receiver.replyToMessageId,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
-		return try performRequest(ofMethod: "sendSticker", payload: payload)
+		return try performRequest(ofMethod: serverStoredContent.methodName, payload: payload)
+	}
+
+	@discardableResult
+	public func send(
+		_ sticker: Sticker, to receiver: Sendable,
+		disableNotification: Bool? = nil,
+		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
+		return try send(
+			serverStoredContent: .sticker(location: .telegramServer(fileId: sticker.fileId)),
+			to: receiver,
+			disableNotification: disableNotification,
+			replyMarkup: nil)
 	}
 
 	@discardableResult
@@ -66,13 +78,11 @@ extension ZEGBot {
 		_ photo: PhotoSize, caption: String? = nil, to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		let payload = SendingPayload(
-			content: .serverStoredContent(.photo(fileId: photo.fileId, caption: caption)),
-			chatId: receiver.chatId,
-			replyToMessageId: receiver.replyToMessageId,
+		return try send(
+			serverStoredContent: .photo(location: .telegramServer(fileId: photo.fileId), caption: caption),
+			to: receiver,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
-		return try performRequest(ofMethod: "sendPhoto", payload: payload)
 	}
 
 	@discardableResult
@@ -80,13 +90,11 @@ extension ZEGBot {
 		_ audio: Audio, caption: String? = nil, to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		let payload = SendingPayload(
-			content: .serverStoredContent(.audio(fileId: audio.fileId, caption: caption)),
-			chatId: receiver.chatId,
-			replyToMessageId: receiver.replyToMessageId,
+		return try send(
+			serverStoredContent: .audio(location: .telegramServer(fileId: audio.fileId), caption: caption),
+			to: receiver,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
-		return try performRequest(ofMethod: "sendAudio", payload: payload)
 	}
 
 	@discardableResult
@@ -94,13 +102,11 @@ extension ZEGBot {
 		_ document: Document, caption: String? = nil, to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		let payload = SendingPayload(
-			content: .serverStoredContent(.document(fileId: document.fileId, caption: caption)),
-			chatId: receiver.chatId,
-			replyToMessageId: receiver.replyToMessageId,
+		return try send(
+			serverStoredContent: .document(location: .telegramServer(fileId: document.fileId), caption: caption),
+			to: receiver,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
-		return try performRequest(ofMethod: "sendDocument", payload: payload)
 	}
 
 	@discardableResult
@@ -108,13 +114,11 @@ extension ZEGBot {
 		_ video: Video, caption: String? = nil, to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		let payload = SendingPayload(
-			content: .serverStoredContent(.video(fileId: video.fileId, caption: caption)),
-			chatId: receiver.chatId,
-			replyToMessageId: receiver.replyToMessageId,
+		return try send(
+			serverStoredContent: .video(location: .telegramServer(fileId: video.fileId), caption: caption),
+			to: receiver,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
-		return try performRequest(ofMethod: "sendVideo", payload: payload)
 	}
 
 	@discardableResult
@@ -122,13 +126,11 @@ extension ZEGBot {
 		_ voice: Voice, caption: String? = nil, to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		let payload = SendingPayload(
-			content: .serverStoredContent(.voice(fileId: voice.fileId, caption: caption)),
-			chatId: receiver.chatId,
-			replyToMessageId: receiver.replyToMessageId,
+		return try send(
+			serverStoredContent: .voice(location: .telegramServer(fileId: voice.fileId), caption: caption),
+			to: receiver,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
-		return try performRequest(ofMethod: "sendVoice", payload: payload)
 	}
 
 	@discardableResult

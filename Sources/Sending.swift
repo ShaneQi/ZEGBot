@@ -6,14 +6,49 @@
 //
 //
 
+import Foundation
+
 public enum ServerStoredContent {
-	case message(chatId: Int, messageId: Int)
-	case sticker(fileId: String)
-	case photo(fileId: String, caption: String?)
-	case audio(fileId: String, caption: String?)
-	case document(fileId: String, caption: String?)
-	case video(fileId: String, caption: String?)
-	case voice(fileId: String, caption: String?)
+
+	public enum Location {
+
+		case telegramServer(fileId: String)
+		case internet(url: URL)
+
+		var payload: String {
+			switch self {
+			case .telegramServer(fileId: let fileId):
+				return fileId
+			case .internet(url: let url):
+				return url.absoluteString
+			}
+		}
+
+	}
+
+	case sticker(location: Location)
+	case photo(location: Location, caption: String?)
+	case audio(location: Location, caption: String?)
+	case document(location: Location, caption: String?)
+	case video(location: Location, caption: String?)
+	case voice(location: Location, caption: String?)
+
+	var methodName: String {
+		switch self {
+		case .audio:
+			return "sendAudio"
+		case .document:
+			return "sendDocument"
+		case .photo:
+			return "sendPhoto"
+		case .sticker:
+			return "sendSticker"
+		case .video:
+			return "sendVideo"
+		case .voice:
+			return "sendVoice"
+		}
+	}
 }
 
 struct SendingPayload: Encodable {
@@ -26,6 +61,7 @@ struct SendingPayload: Encodable {
 
 	enum Content {
 		case serverStoredContent(ServerStoredContent)
+		case forwardableMessage(chatId: Int, messageId: Int)
 		case message(text: String, parseMode: ParseMode?, disableWebPagePreview: Bool?)
 		case location(latitude: Double, longitude: Double)
 		case venue(latitude: Double, longitude: Double, title: String, address: String, foursquareId: String?)
@@ -86,27 +122,27 @@ struct SendingPayload: Encodable {
 		switch content {
 		case .serverStoredContent(let serverStoredContent):
 			switch serverStoredContent {
-			case .message(chatId: let chatId, messageId: let messageId):
-				try container.encode(chatId, forKey: .fromChatId)
-				try container.encode(messageId, forKey: .messageId)
-			case .sticker(fileId: let fileId):
-				try container.encode(fileId, forKey: .sticker)
-			case .photo(fileId: let fileId, caption: let caption):
-				try container.encode(fileId, forKey: .photo)
+			case .sticker(location: let location):
+				try container.encode(location.payload, forKey: .sticker)
+			case .photo(location: let location, caption: let caption):
+				try container.encode(location.payload, forKey: .photo)
 				if let caption = caption { try container.encode(caption, forKey: .caption) }
-			case .audio(fileId: let fileId, caption: let caption):
-				try container.encode(fileId, forKey: .audio)
+			case .audio(location: let location, caption: let caption):
+				try container.encode(location.payload, forKey: .audio)
 				if let caption = caption { try container.encode(caption, forKey: .caption) }
-			case .document(fileId: let fileId, caption: let caption):
-				try container.encode(fileId, forKey: .document)
+			case .document(location: let location, caption: let caption):
+				try container.encode(location.payload, forKey: .document)
 				if let caption = caption { try container.encode(caption, forKey: .caption) }
-			case .video(fileId: let fileId, caption: let caption):
-				try container.encode(fileId, forKey: .video)
+			case .video(location: let location, caption: let caption):
+				try container.encode(location.payload, forKey: .video)
 				if let caption = caption { try container.encode(caption, forKey: .caption) }
-			case .voice(fileId: let fileId, caption: let caption):
-				try container.encode(fileId, forKey: .voice)
+			case .voice(location: let location, caption: let caption):
+				try container.encode(location.payload, forKey: .voice)
 				if let caption = caption { try container.encode(caption, forKey: .caption) }
 			}
+		case .forwardableMessage(chatId: let chatId, messageId: let messageId):
+			try container.encode(chatId, forKey: .fromChatId)
+			try container.encode(messageId, forKey: .messageId)
 		case .message(text: let text, parseMode: let parseMode, disableWebPagePreview: let disableWebPagePreview):
 			try container.encode(text, forKey: .text)
 			if let parseMode = parseMode { try container.encode(parseMode, forKey: .parseMode) }
@@ -151,7 +187,16 @@ extension Chat: Sendable {
 
 extension Message: Sendable {
 
-	public var chatId: Int { return self.chat.id }
+	public var chatId: Int { return chat.id }
 	public var replyToMessageId: Int? { return messageId }
 
 }
+
+public protocol ForwardableMessage {
+
+	var chatId: Int { get }
+	var messageId: Int { get }
+
+}
+
+extension Message: ForwardableMessage {}
