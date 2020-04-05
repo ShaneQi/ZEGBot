@@ -30,7 +30,7 @@ extension ZEGBot {
 			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
 			disableNotification: disableNotification,
 			replyMarkup: replyMarkup)
-		return try performRequest(ofMethod: "sendMessage", payload: payload)
+		return try performRequest(ofMethod: payload.methodName, payload: payload)
 	}
 
 	@discardableResult
@@ -43,7 +43,7 @@ extension ZEGBot {
 			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
-		return try performRequest(ofMethod: "forwardMessage", payload: payload)
+		return try performRequest(ofMethod: payload.methodName, payload: payload)
 
 	}
 
@@ -58,7 +58,7 @@ extension ZEGBot {
 			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
-		return try performRequest(ofMethod: serverStoredContent.methodName, payload: payload)
+		return try performRequest(ofMethod: payload.methodName, payload: payload)
 	}
 
 	@discardableResult
@@ -134,50 +134,50 @@ extension ZEGBot {
 	}
 
 	@discardableResult
-	public func sendLocation(
-		latitude: Double, longitude: Double, to receiver: Sendable,
+	public func send(
+		_ location: Location,
+		to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(
-			content: .location(latitude: latitude, longitude: longitude),
+			content: .location(latitude: location.latitude, longitude: location.longitude),
 			chatId: receiver.chatId,
 			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
-		return try performRequest(ofMethod: "sendLocation", payload: payload)
+		return try performRequest(ofMethod: payload.methodName, payload: payload)
 	}
 
 	@discardableResult
-	public func sendVenue(
-		latitude: Double, longitude: Double,
-		title: String, address: String, foursquareId: String? = nil,
+	public func send(
+		_ venue: Venue,
 		to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(
 			content: .venue(
-				latitude: latitude, longitude: longitude,
-				title: title, address: address, foursquareId: foursquareId),
+				latitude: venue.location.latitude, longitude: venue.location.longitude,
+				title: venue.title, address: venue.address, foursquareId: venue.foursquareId),
 			chatId: receiver.chatId,
 			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
-		return try performRequest(ofMethod: "sendVenue", payload: payload)
+		return try performRequest(ofMethod: payload.methodName, payload: payload)
 	}
 
 	@discardableResult
-	public func sendContact(
-		phoneNumber: String, firstName: String, lastName: String? = nil,
+	public func send(
+		_ contact: Contact,
 		to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(
-			content: .contact(phoneNumber: phoneNumber, firstName: firstName, lastName: lastName),
+			content: .contact(phoneNumber: contact.phoneNumber, firstName: contact.firstName, lastName: contact.lastName),
 			chatId: receiver.chatId,
 			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
-		return try performRequest(ofMethod: "sendContact", payload: payload)
+		return try performRequest(ofMethod: payload.methodName, payload: payload)
 	}
 
 	public func send(chatAction: ChatAction, to receiver: Sendable) throws {
@@ -185,7 +185,7 @@ extension ZEGBot {
 			content: .chatAction(chatAction: chatAction),
 			chatId: receiver.chatId, replyToMessageId: nil, disableNotification: nil,
 			replyMarkup: nil)
-		let _: Bool = try performRequest(ofMethod: "sendChatAction", payload: payload)
+		let _: Bool = try performRequest(ofMethod: payload.methodName, payload: payload)
 	}
 
 	public func deleteMessage(inChat chatId: Int, messageId: Int) throws {
