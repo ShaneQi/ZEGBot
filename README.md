@@ -28,7 +28,6 @@ import ZEGBot
 let bot = ZEGBot(token: "TYPE YOUR TOKEN HERE")
 
 do {
-  // Or sending stuff without listening to updates.
   try bot.send(message: "Hello world!", to: AnyChat(chatId: CHAT_ID))
 } catch let error {
   NSLog("Bot exit due to: \(error)") 
