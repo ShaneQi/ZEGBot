@@ -174,6 +174,11 @@ struct SendingPayload: Encodable {
 public protocol Sendable {
 
 	var chatId: Int { get }
+
+}
+
+public protocol Replyable: Sendable {
+
 	var replyToMessageId: Int? { get }
 
 }
@@ -181,11 +186,10 @@ public protocol Sendable {
 extension Chat: Sendable {
 
 	public var chatId: Int { return id }
-	public var replyToMessageId: Int? { return nil }
 
 }
 
-extension Message: Sendable {
+extension Message: Sendable, Replyable {
 
 	public var chatId: Int { return chat.id }
 	public var replyToMessageId: Int? { return messageId }
