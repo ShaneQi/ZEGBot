@@ -6,7 +6,7 @@
 //
 //
 
-public enum ServerStoredContent {
+enum ServerStoredContent {
 	case message(chatId: Int, messageId: Int)
 	case sticker(fileId: String)
 	case photo(fileId: String, caption: String?)
@@ -151,7 +151,16 @@ extension Chat: Sendable {
 
 extension Message: Sendable {
 
-	public var chatId: Int { return self.chat.id }
+	public var chatId: Int { return chat.id }
 	public var replyToMessageId: Int? { return messageId }
 
 }
+
+public protocol ForwardableMessage {
+
+	var chatId: Int { get }
+	var messageId: Int { get }
+
+}
+
+extension Message: ForwardableMessage {}
