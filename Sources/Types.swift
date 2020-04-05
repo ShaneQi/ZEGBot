@@ -337,12 +337,30 @@ public struct Contact: Codable {
 		case userId = "user_id"
 	}
 
+	public init(
+		phoneNumber: String,
+		firstName: String,
+		lastName: String?,
+		userId: Int?) {
+		self.phoneNumber = phoneNumber
+		self.firstName = firstName
+		self.lastName = lastName
+		self.userId = userId
+	}
+
 }
 
 public struct Location: Codable {
 
-	public let longitude: Double
 	public let latitude: Double
+	public let longitude: Double
+
+	public init(
+		latitude: Double,
+		longitude: Double) {
+		self.latitude = latitude
+		self.longitude = longitude
+	}
 
 }
 
@@ -358,6 +376,17 @@ public struct Venue: Codable {
 	private enum CodingKeys: String, CodingKey {
 		case location, title, address
 		case foursquareId = "foursquare_id"
+	}
+
+	public init(
+		location: Location,
+		title: String,
+		address: String,
+		foursquareId: String?) {
+		self.location = location
+		self.title = title
+		self.address = address
+		self.foursquareId = foursquareId
 	}
 
 }
