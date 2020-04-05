@@ -11,7 +11,7 @@ This library wraps the processing of converting objects to Telegram Bot API requ
 Add this project as a dependency in your Package.swift file.
 
 ```swift
-.package(url: "https://github.com/shaneqi/ZEGBot.git", from: Version(4, 2, 4))
+.package(url: "https://github.com/shaneqi/ZEGBot.git", from: Version(4, 2, 5))
 ```
 ## Quick Start
 
@@ -19,16 +19,34 @@ Checkout the example here: [./Example](https://github.com/ShaneQi/ZEGBot/tree/ma
 
 Or you can just put the following code into `main.swift` of your project.
 
+- Sending messages directly:
+
 ```swift
 import ZEGBot
 
-//  Don't forget to fill in your bot token.
+// Don't forget to fill in your bot token.
 let bot = ZEGBot(token: "TYPE YOUR TOKEN HERE")
 
 do {
-  try bot.run { update, bot in       
-    //  Handle updates here...
-  })
+  // Or sending stuff without listening to updates.
+  try bot.send(message: "Hello world!", to: AnyChat(chatId: CHAT_ID))
+} catch let error {
+  NSLog("Bot exit due to: \(error)") 
+}
+```
+
+- or responding to incoming messages/updates:
+
+```swift
+import ZEGBot
+
+// Don't forget to fill in your bot token.
+let bot = ZEGBot(token: "YOUR_BOT_TOKEN")
+
+do {
+  try bot.run { updates, bot in       
+    // Handle updates here...
+  }
 } catch let error {
   NSLog("Bot exit due to: \(error)") 
 }
@@ -66,16 +84,29 @@ do {
   }
   ...
   ```
+  or
+  ```swift
+  ...
+  do {
+    try bot.send(message: "bar", to: AnyChat(chatId: CHAT_ID))
+  } catch let error {
+    NSLog("Failed to send message due to: \(error)")
+  }
+  ...
+  ```
 
 - Send a **silent** message with a **none-preview markdown link** to a chat:
   ```swift
   ...
-  if let message = update?.message {
-    do {
-      try bot.send(message: "[Google](https://google.com)", to: message.chat, parseMode: .markdown, disableWebPagePreview: true, disableNotification: true)
-    } catch let error {
-      NSLog("Failed to send message due to: \(error)")
-    }
+  do {
+    try bot.send(
+      message: "[Google](https://google.com)", 
+      to: AnyChat(chatId: CHAT_ID), 
+      parseMode: .markdown, 
+      disableWebPagePreview: true, 
+      disableNotification: true)
+  } catch let error {
+    NSLog("Failed to send message due to: \(error)")
   }
   ...
   ```
@@ -95,19 +126,6 @@ do {
   }
   ...
   ```
-
-- Send a text message to a channel:
-  ```swift
-  ...
-  if let channelPost = update?.channelPost {
-    do {
-      try bot.send(message: "bar", to: channelPost.chat)
-    } catch let error {
-      NSLog("Failed to send message due to: \(error)")
-    }
-  }
-  ...
-
 ## Support Types
 
 - Update
@@ -159,6 +177,10 @@ Not all the types are supported, checkout more details on [Telegram Bot API](htt
 
 Not all the methods are supported, checkout more details on [Telegram Bot API](https://core.telegram.org/bots/api#available-methods).
 
+## Feature Requests are VERY WELCOME
+
+The goal of this project is NOT keeping updated to the latest Telegram bot API, but to serve the community.  
+So even though you don't see the API features you need in this project, please [CONTACT ME](https://t.me/shaneqi), and I WILL do my best to add the features you requested.
+
 ## License
 This project is licensed under [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0).
-
