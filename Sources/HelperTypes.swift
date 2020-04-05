@@ -11,13 +11,17 @@
 /// you can use this struct to build a `Sendable` object.
 ///
 /// e.g. bot.send(message: "hello", to: AnyChat(chatId: MY_CHANNEL_ID))
-public struct AnyChat: Sendable {
+///
+/// discussion: if `replyToMessageId` isn't nil, the receiver will be the message of the chat
+/// (new message will be sent in a replying manner).
+public struct AnyChat: Sendable, Replyable {
 
 	public let chatId: Int
-	public let replyToMessageId: Int? = nil
+	public let replyToMessageId: Int?
 
-	public init(chatId: Int) {
+	public init(chatId: Int, replyToMessageId: Int? = nil) {
 		self.chatId = chatId
+		self.replyToMessageId = replyToMessageId
 	}
 
 }

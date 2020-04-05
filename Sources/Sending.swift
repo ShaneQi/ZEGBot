@@ -33,7 +33,7 @@ public enum ServerStoredContent {
 	case video(location: Location, caption: String?)
 	case voice(location: Location, caption: String?)
 
-	var methodName: String {
+	fileprivate var methodName: String {
 		switch self {
 		case .audio:
 			return "sendAudio"
@@ -67,6 +67,25 @@ struct SendingPayload: Encodable {
 		case venue(latitude: Double, longitude: Double, title: String, address: String, foursquareId: String?)
 		case contact(phoneNumber: String, firstName: String, lastName: String?)
 		case chatAction(chatAction: ChatAction)
+	}
+
+	var methodName: String {
+		switch content {
+		case .serverStoredContent(let serverStoredContent):
+			return serverStoredContent.methodName
+		case .forwardableMessage:
+			return "forwardMessage"
+		case .message:
+			return "sendMessage"
+		case .location:
+			return "sendLocation"
+		case .venue:
+			return "sendVenue"
+		case .contact:
+			return "sendContact"
+		case .chatAction:
+			return "sendChatAction"
+		}
 	}
 
 	private enum CodingKeys: String, CodingKey {
@@ -174,6 +193,11 @@ struct SendingPayload: Encodable {
 public protocol Sendable {
 
 	var chatId: Int { get }
+
+}
+
+public protocol Replyable: Sendable {
+
 	var replyToMessageId: Int? { get }
 
 }
@@ -181,11 +205,10 @@ public protocol Sendable {
 extension Chat: Sendable {
 
 	public var chatId: Int { return id }
-	public var replyToMessageId: Int? { return nil }
 
 }
 
-extension Message: Sendable {
+extension Message: Sendable, Replyable {
 
 	public var chatId: Int { return chat.id }
 	public var replyToMessageId: Int? { return messageId }
