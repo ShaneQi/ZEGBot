@@ -27,7 +27,7 @@ extension ZEGBot {
 		let payload = SendingPayload(
 			content: .message(text: text, parseMode: parseMode, disableWebPagePreview: disableWebPagePreview),
 			chatId: receiver.chatId,
-			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
+			replyToMessageId: (receiver as? Replyable)?.messageId,
 			disableNotification: disableNotification,
 			replyMarkup: replyMarkup)
 		return try performRequest(ofMethod: payload.methodName, payload: payload)
@@ -35,12 +35,12 @@ extension ZEGBot {
 
 	@discardableResult
 	public func forward(
-		message: ForwardableMessage, to receiver: Sendable,
+		message: Forwardable, to receiver: Sendable,
 		disableNotification: Bool? = nil) throws -> Message {
 		let payload = SendingPayload(
 			content: .forwardableMessage(chatId: message.chatId, messageId: message.messageId),
 			chatId: receiver.chatId,
-			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
+			replyToMessageId: (receiver as? Replyable)?.messageId,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
 		return try performRequest(ofMethod: payload.methodName, payload: payload)
@@ -142,7 +142,7 @@ extension ZEGBot {
 		let payload = SendingPayload(
 			content: .location(latitude: location.latitude, longitude: location.longitude),
 			chatId: receiver.chatId,
-			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
+			replyToMessageId: (receiver as? Replyable)?.messageId,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
 		return try performRequest(ofMethod: payload.methodName, payload: payload)
@@ -159,7 +159,7 @@ extension ZEGBot {
 				latitude: venue.location.latitude, longitude: venue.location.longitude,
 				title: venue.title, address: venue.address, foursquareId: venue.foursquareId),
 			chatId: receiver.chatId,
-			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
+			replyToMessageId: (receiver as? Replyable)?.messageId,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
 		return try performRequest(ofMethod: payload.methodName, payload: payload)
@@ -174,7 +174,7 @@ extension ZEGBot {
 		let payload = SendingPayload(
 			content: .contact(phoneNumber: contact.phoneNumber, firstName: contact.firstName, lastName: contact.lastName),
 			chatId: receiver.chatId,
-			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
+			replyToMessageId: (receiver as? Replyable)?.messageId,
 			disableNotification: disableNotification,
 			replyMarkup: nil)
 		return try performRequest(ofMethod: payload.methodName, payload: payload)

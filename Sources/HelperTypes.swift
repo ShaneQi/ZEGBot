@@ -12,24 +12,22 @@
 ///
 /// e.g. bot.send(message: "hello", to: AnyChat(chatId: MY_CHANNEL_ID))
 ///
-/// discussion: if `replyToMessageId` isn't nil, the receiver will be the message of the chat
-/// (new message will be sent in a replying manner).
-public struct AnyChat: Sendable, Replyable {
+public struct AnyChat: Sendable {
 
 	public let chatId: Int
-	public let replyToMessageId: Int?
 
-	public init(chatId: Int, replyToMessageId: Int? = nil) {
+	public init(chatId: Int) {
 		self.chatId = chatId
-		self.replyToMessageId = replyToMessageId
 	}
 
 }
 
-/// Building a `ForwardableMessage` object to forward.
+/// Building a `ForwardableMessage` and `Replyable` object to forward or send message to.
 ///
 /// e.g. bot.forward(message: AnyMessage(chatId: MY_CHAT_ID, messageId: MY_MESSAGE_ID, to: AnyChat(chatId: MY_CHANNEL_ID))
-public struct AnyMessage: ForwardableMessage {
+/// e.g. bot.send(message: "hello", to: AnyMessage(chatId: MY_CHANNEL_ID, messageId: MESSAGE_ID))
+///
+public struct AnyMessage: Forwardable, Replyable {
 
 	public let chatId: Int
 	public let messageId: Int

@@ -198,7 +198,7 @@ public protocol Sendable {
 
 public protocol Replyable: Sendable {
 
-	var replyToMessageId: Int? { get }
+	var messageId: Int { get }
 
 }
 
@@ -211,15 +211,14 @@ extension Chat: Sendable {
 extension Message: Sendable, Replyable {
 
 	public var chatId: Int { return chat.id }
-	public var replyToMessageId: Int? { return messageId }
 
 }
 
-public protocol ForwardableMessage {
+public protocol Forwardable {
 
 	var chatId: Int { get }
 	var messageId: Int { get }
 
 }
 
-extension Message: ForwardableMessage {}
+extension Message: Forwardable {}
