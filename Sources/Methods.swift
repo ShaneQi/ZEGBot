@@ -17,25 +17,39 @@ import Dispatch
 ///  All methods are performed synchronized.
 extension ZEGBot {
 
-	@discardableResult
-	public func send(
-		message text: String, to receiver: Sendable,
-		parseMode: ParseMode? = nil,
-		disableWebPagePreview: Bool? = nil,
+	private func send(
+		content: SendingPayload.Content,
+		to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		let payload = SendingPayload(
-			content: .message(text: text, parseMode: parseMode, disableWebPagePreview: disableWebPagePreview),
+			content: content,
 			chatId: receiver.chatId,
 			replyToMessageId: (receiver as? Replyable)?.messageId,
 			disableNotification: disableNotification,
-			replyMarkup: replyMarkup)
+			replyMarkup: nil)
 		return try performRequest(ofMethod: payload.methodName, payload: payload)
 	}
 
 	@discardableResult
+	public func send(
+		message text: String,
+		parseMode: ParseMode? = nil,
+		disableWebPagePreview: Bool? = nil,
+		to receiver: Sendable,
+		disableNotification: Bool? = nil,
+		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
+		return try send(
+			content: .message(text: text, parseMode: parseMode, disableWebPagePreview: disableWebPagePreview),
+			to: receiver,
+			disableNotification: disableNotification,
+			replyMarkup: replyMarkup)
+	}
+
+	@discardableResult
 	public func forward(
-		message: Forwardable, to receiver: Sendable,
+		message: Forwardable,
+		to receiver: Sendable,
 		disableNotification: Bool? = nil) throws -> Message {
 		let payload = SendingPayload(
 			content: .forwardableMessage(chatId: message.chatId, messageId: message.messageId),
@@ -44,94 +58,85 @@ extension ZEGBot {
 			disableNotification: disableNotification,
 			replyMarkup: nil)
 		return try performRequest(ofMethod: payload.methodName, payload: payload)
-
 	}
 
 	@discardableResult
-	public func send(
-		serverStoredContent: ServerStoredContent, to receiver: Sendable,
-		disableNotification: Bool? = nil,
-		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		let payload = SendingPayload(
-			content: .serverStoredContent(serverStoredContent),
-			chatId: receiver.chatId,
-			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-		return try performRequest(ofMethod: payload.methodName, payload: payload)
-	}
-
-	@discardableResult
-	public func send(
-		_ sticker: Sticker, to receiver: Sendable,
+	func send(
+		sticker: StickerConvertible,
+		to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		return try send(
-			serverStoredContent: .sticker(location: .telegramServer(fileId: sticker.fileId)),
+			content: .sticker(location: sticker.location()),
 			to: receiver,
 			disableNotification: disableNotification,
-			replyMarkup: nil)
+			replyMarkup: replyMarkup)
 	}
 
 	@discardableResult
-	public func send(
-		_ photo: PhotoSize, caption: String? = nil, to receiver: Sendable,
+	func send(
+		photo: PhotoConvertible,
+		caption: String?,
+		parseMode: ParseMode?,
+		to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
 		return try send(
-			serverStoredContent: .photo(location: .telegramServer(fileId: photo.fileId), caption: caption),
+			content: .photo(location: photo.location(), caption: caption, parseMode: parseMode),
 			to: receiver,
 			disableNotification: disableNotification,
-			replyMarkup: nil)
+			replyMarkup: replyMarkup)
 	}
 
-	@discardableResult
-	public func send(
-		_ audio: Audio, caption: String? = nil, to receiver: Sendable,
-		disableNotification: Bool? = nil,
-		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		return try send(
-			serverStoredContent: .audio(location: .telegramServer(fileId: audio.fileId), caption: caption),
-			to: receiver,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-	}
+//	@discardableResult
+//	public func send(
+//		_ audio: Audio, caption: String? = nil, to receiver: Sendable,
+//		disableNotification: Bool? = nil,
+//		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
+//		return try send(
+//			serverStoredContent: .audio(location: .telegramServer(fileId: audio.fileId), caption: caption),
+//			to: receiver,
+//			disableNotification: disableNotification,
+//			replyMarkup: nil)
+//	}
+//
+//	@discardableResult
+//	public func send(
+//		_ document: Document, caption: String? = nil, to receiver: Sendable,
+//		disableNotification: Bool? = nil,
+//		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
+//		return try send(
+//			serverStoredContent: .document(location: .telegramServer(fileId: document.fileId), caption: caption),
+//			to: receiver,
+//			disableNotification: disableNotification,
+//			replyMarkup: nil)
+//	}
+//
+//	@discardableResult
+//	public func send(
+//		_ video: Video, caption: String? = nil, to receiver: Sendable,
+//		disableNotification: Bool? = nil,
+//		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
+//		return try send(
+//			serverStoredContent: .video(location: .telegramServer(fileId: video.fileId), caption: caption),
+//			to: receiver,
+//			disableNotification: disableNotification,
+//			replyMarkup: nil)
+//	}
 
-	@discardableResult
-	public func send(
-		_ document: Document, caption: String? = nil, to receiver: Sendable,
-		disableNotification: Bool? = nil,
-		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		return try send(
-			serverStoredContent: .document(location: .telegramServer(fileId: document.fileId), caption: caption),
-			to: receiver,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-	}
-
-	@discardableResult
-	public func send(
-		_ video: Video, caption: String? = nil, to receiver: Sendable,
-		disableNotification: Bool? = nil,
-		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		return try send(
-			serverStoredContent: .video(location: .telegramServer(fileId: video.fileId), caption: caption),
-			to: receiver,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-	}
-
-	@discardableResult
-	public func send(
-		_ voice: Voice, caption: String? = nil, to receiver: Sendable,
-		disableNotification: Bool? = nil,
-		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		return try send(
-			serverStoredContent: .voice(location: .telegramServer(fileId: voice.fileId), caption: caption),
-			to: receiver,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-	}
+//	@discardableResult
+//	public func send(
+//		_ voice: Voice, caption: String? = nil, to receiver: Sendable,
+//		disableNotification: Bool? = nil,
+//		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
+//		let payload = SendingPayload(
+//			content: .voice(location: .telegramServer(fileId: voice.fileId), caption: caption),
+//				chatId: receiver.chatId,
+//				replyToMessageId: (receiver as? Replyable)?.messageId,
+//				disableNotification: disableNotification,
+//				replyMarkup: nil)
+//			return try performRequest(ofMethod: payload.methodName, payload: payload)
+//	}
 
 	@discardableResult
 	public func send(

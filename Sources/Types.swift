@@ -206,7 +206,13 @@ public struct MessageEntity: Codable {
 
 }
 
-public struct Audio: Codable {
+protocol TelegramHostedResource {
+
+	var fileId: String { get }
+
+}
+
+public struct Audio: Codable, TelegramHostedResource {
 
 	public let fileId: String
 	public let duration: Int
@@ -226,7 +232,7 @@ public struct Audio: Codable {
 
 }
 
-public struct Document: Codable {
+public struct Document: Codable, TelegramHostedResource {
 
 	public let fileId: String
 
@@ -246,7 +252,7 @@ public struct Document: Codable {
 
 }
 
-public struct PhotoSize: Codable {
+public struct PhotoSize: Codable, TelegramHostedResource {
 
 	public let fileId: String
 	public let width: Int
@@ -263,7 +269,7 @@ public struct PhotoSize: Codable {
 
 }
 
-public struct Sticker: Codable {
+public struct Sticker: Codable, TelegramHostedResource {
 
 	public let fileId: String
 	public let width: Int
@@ -408,6 +414,7 @@ public struct File: Codable {
 }
 
 public enum ParseMode: String, Codable {
+	case markdownV2
 	case markdown
 	case html
 }
