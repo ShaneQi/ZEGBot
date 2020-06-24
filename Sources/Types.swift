@@ -197,7 +197,7 @@ public struct MessageEntity: Codable {
 
 	public enum StructType: String, Codable {
 		case mention, hashtag, url, email, cashtag
-        case bold, italic, underline, strikethrough, code, pre
+		case bold, italic, underline, strikethrough, code, pre
 		case botCommand = "bot_command"
 		case textLink = "text_link"
 		case textMention = "text_mention"
