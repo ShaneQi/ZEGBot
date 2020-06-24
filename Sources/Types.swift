@@ -196,11 +196,11 @@ public struct MessageEntity: Codable {
 	public let user: User?
 
 	public enum StructType: String, Codable {
-		case mention, hashtag, url, email, bold, italic, code, pre
+		case mention, hashtag, url, email, cashtag
+        case bold, italic, underline, strikethrough, code, pre
 		case botCommand = "bot_command"
 		case textLink = "text_link"
 		case textMention = "text_mention"
-		case cashtag
 		case phoneNumber = "phone_number"
 	}
 
