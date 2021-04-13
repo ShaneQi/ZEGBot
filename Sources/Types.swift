@@ -24,12 +24,7 @@ public enum Update: Decodable {
 		} else if container.contains(.callbackQuery) {
 			self = .callbackQuery(updateId: updateId, query: try container.decode(CallbackQuery.self, forKey: .callbackQuery))
 		} else {
-			throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: """
-				Failed to find value under keys: \
-				"\(CodingKeys.message.rawValue)", \
-				"\(CodingKeys.editedMessage.rawValue)" or \
-				"\(CodingKeys.channelPost.rawValue)".
-				"""))
+			self = .unsupported
 		}
 	}
 
@@ -45,6 +40,8 @@ public enum Update: Decodable {
 	case editedMessage(updateId: Int, message: Message)
 	case channelPost(updateId: Int, message: Message)
 	case callbackQuery(updateId: Int, query: CallbackQuery)
+	// To be implemented.
+	case unsupported
 
 	public var message: Message? {
 		if case .message(_, let message) = self {
