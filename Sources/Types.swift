@@ -24,7 +24,7 @@ public enum Update: Decodable {
 		} else if container.contains(.callbackQuery) {
 			self = .callbackQuery(updateId: updateId, query: try container.decode(CallbackQuery.self, forKey: .callbackQuery))
 		} else {
-			self = .unsupported
+			self = .unsupported(updateId: updateId)
 		}
 	}
 
@@ -41,7 +41,7 @@ public enum Update: Decodable {
 	case channelPost(updateId: Int, message: Message)
 	case callbackQuery(updateId: Int, query: CallbackQuery)
 	// To be implemented.
-	case unsupported
+	case unsupported(updateId: Int)
 
 	public var message: Message? {
 		if case .message(_, let message) = self {
