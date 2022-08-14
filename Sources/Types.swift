@@ -190,12 +190,24 @@ public struct MessageEntity: Codable {
 	public let user: User?
 
 	public enum StructType: String, Codable {
+        public init(from decoder: Decoder) throws {
+		    let container = try decoder.singleValueContainer()
+            let value = try container.decode(String.self)
+            if let instance = StructType(rawValue: value) {
+                self = instance
+            } else {
+                self = .unknown
+            }
+        }
+
 		case mention, hashtag, url, email, cashtag
 		case bold, italic, underline, strikethrough, code, pre
 		case botCommand = "bot_command"
 		case textLink = "text_link"
 		case textMention = "text_mention"
 		case phoneNumber = "phone_number"
+        case customEmoji = "custom_emoji"
+        case unknown
 	}
 
 }
