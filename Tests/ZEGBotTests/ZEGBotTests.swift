@@ -32,8 +32,7 @@ class ZEGBotTests: XCTestCase {
 				"type": "private"
 			},
 			"date": 1506745637,
-			"text": "@ShaneQi\\n#hashtag\\nhttps://google.com\\nqizengtai@gmail.com\
-			\\nbold\\nitalic\\ncode\\nlet hello = \\"world\\"\\n\\ngoogle",
+			"text": "@ShaneQi\\n#hashtag\\nhttps://google.com\\nqizengtai@gmail.com\\nbold\\nitalic\\ncode\\nlet hello = \\"world\\"\\n\\ngoogle",
 			"entities": [{
 				"offset": 0,
 				"length": 8,

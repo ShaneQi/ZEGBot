@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.7
 
 import PackageDescription
 
@@ -18,7 +18,7 @@ let package = Package(
 			name: "ZEGBot",
 			dependencies: [],
 			path: "./Sources"),
-		.target(
+		.executableTarget(
 			name: "ZEGBotExample",
 			dependencies: ["ZEGBot"],
 			path: "./Example"),

@@ -11,7 +11,7 @@ This library wraps the processing of converting objects to Telegram Bot API requ
 Add this project as a dependency in your Package.swift file.
 
 ```swift
-.package(url: "https://github.com/shaneqi/ZEGBot.git", from: Version(4, 2, 6))
+.package(url: "https://github.com/shaneqi/ZEGBot.git", from: Version(4, 2, 7))
 ```
 ## Quick Start
 
@@ -30,7 +30,7 @@ let bot = ZEGBot(token: "TYPE YOUR TOKEN HERE")
 do {
   try bot.send(message: "Hello world!", to: AnyChat(chatId: CHAT_ID))
 } catch let error {
-  NSLog("Bot exit due to: \(error)") 
+  NSLog("Bot exit due to: \(error)")
 }
 ```
 
@@ -43,11 +43,11 @@ import ZEGBot
 let bot = ZEGBot(token: "YOUR_BOT_TOKEN")
 
 do {
-  try bot.run { updates, bot in       
+  try bot.run { updates, bot in
     // Handle updates here...
   }
 } catch let error {
-  NSLog("Bot exit due to: \(error)") 
+  NSLog("Bot exit due to: \(error)")
 }
 ```
 
@@ -99,10 +99,10 @@ do {
   ...
   do {
     try bot.send(
-      message: "[Google](https://google.com)", 
-      to: AnyChat(chatId: CHAT_ID), 
-      parseMode: .markdown, 
-      disableWebPagePreview: true, 
+      message: "[Google](https://google.com)",
+      to: AnyChat(chatId: CHAT_ID),
+      parseMode: .markdown,
+      disableWebPagePreview: true,
       disableNotification: true)
   } catch let error {
     NSLog("Failed to send message due to: \(error)")
@@ -178,7 +178,7 @@ Not all the methods are supported, checkout more details on [Telegram Bot API](h
 
 ## Feature Requests are VERY WELCOME
 
-The goal of this project is NOT keeping updated to the latest Telegram bot API, but to serve the community.  
+The goal of this project is NOT keeping updated to the latest Telegram bot API, but to serve the community.
 So even though you don't see the API features you need in this project, please [CONTACT ME](https://t.me/shaneqi), and I WILL do my best to add the features you requested.
 
 ## License
