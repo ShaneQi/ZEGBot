@@ -59,4 +59,5 @@ public enum Result<T>: Decodable where T: Decodable {
 
 public enum Error: Swift.Error {
 	case telegram(String?)
+	case input(String)
 }

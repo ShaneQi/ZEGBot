@@ -24,114 +24,118 @@ extension ZEGBot {
 		disableWebPagePreview: Bool? = nil,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		let payload = SendingPayload(
-			content: .message(text: text, parseMode: parseMode, disableWebPagePreview: disableWebPagePreview),
-			chatId: receiver.chatId,
-			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
-			disableNotification: disableNotification,
-			replyMarkup: replyMarkup)
-		return try performRequest(ofMethod: payload.methodName, payload: payload)
-	}
+			let payload = SendingPayload(
+				content: .message(text: text, parseMode: parseMode, disableWebPagePreview: disableWebPagePreview),
+				chatId: receiver.chatId,
+				replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
+				disableNotification: disableNotification,
+				replyMarkup: replyMarkup)
+			return try performRequest(ofMethod: payload.methodName, payload: payload)
+		}
 
 	@discardableResult
 	public func forward(
 		message: ForwardableMessage, to receiver: Sendable,
 		disableNotification: Bool? = nil) throws -> Message {
-		let payload = SendingPayload(
-			content: .forwardableMessage(chatId: message.chatId, messageId: message.messageId),
-			chatId: receiver.chatId,
-			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-		return try performRequest(ofMethod: payload.methodName, payload: payload)
+			let payload = SendingPayload(
+				content: .forwardableMessage(chatId: message.chatId, messageId: message.messageId),
+				chatId: receiver.chatId,
+				replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
+				disableNotification: disableNotification,
+				replyMarkup: nil)
+			return try performRequest(ofMethod: payload.methodName, payload: payload)
 
-	}
-
-	@discardableResult
-	public func send(
-		serverStoredContent: ServerStoredContent, to receiver: Sendable,
-		disableNotification: Bool? = nil,
-		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		let payload = SendingPayload(
-			content: .serverStoredContent(serverStoredContent),
-			chatId: receiver.chatId,
-			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-		return try performRequest(ofMethod: payload.methodName, payload: payload)
-	}
+		}
 
 	@discardableResult
 	public func send(
-		_ sticker: Sticker, to receiver: Sendable,
+		resource: Resource, to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		return try send(
-			serverStoredContent: .sticker(location: .telegramServer(fileId: sticker.fileId)),
-			to: receiver,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-	}
+			let payload = SendingPayload(
+				content: .resource(resource),
+				chatId: receiver.chatId,
+				replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
+				disableNotification: disableNotification,
+				replyMarkup: replyMarkup)
+			if case .local = resource.location {
+				return try performMultipartRequest(ofMethod: payload.methodName, payload: payload)
+			} else {
+				return try performRequest(ofMethod: payload.methodName, payload: payload)
+			}
+		}
 
 	@discardableResult
 	public func send(
-		_ photo: PhotoSize, caption: String? = nil, to receiver: Sendable,
+		stickerAt location: Resource.Location, to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		return try send(
-			serverStoredContent: .photo(location: .telegramServer(fileId: photo.fileId), caption: caption),
-			to: receiver,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-	}
+			return try send(
+				resource: .init(location: location, type: .sticker, caption: nil),
+				to: receiver,
+				disableNotification: disableNotification,
+				replyMarkup: replyMarkup)
+		}
 
 	@discardableResult
 	public func send(
-		_ audio: Audio, caption: String? = nil, to receiver: Sendable,
+		photoAt location: Resource.Location, caption: String? = nil, to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		return try send(
-			serverStoredContent: .audio(location: .telegramServer(fileId: audio.fileId), caption: caption),
-			to: receiver,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-	}
+			return try send(
+				resource: .init(location: location, type: .photo, caption: caption),
+				to: receiver,
+				disableNotification: disableNotification,
+				replyMarkup: replyMarkup)
+		}
 
 	@discardableResult
 	public func send(
-		_ document: Document, caption: String? = nil, to receiver: Sendable,
+		audioAt location: Resource.Location, caption: String? = nil, to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		return try send(
-			serverStoredContent: .document(location: .telegramServer(fileId: document.fileId), caption: caption),
-			to: receiver,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-	}
+			return try send(
+				resource: .init(location: location, type: .audio, caption: caption),
+				to: receiver,
+				disableNotification: disableNotification,
+				replyMarkup: replyMarkup)
+		}
 
 	@discardableResult
 	public func send(
-		_ video: Video, caption: String? = nil, to receiver: Sendable,
+		documentAt location: Resource.Location, caption: String? = nil, to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		return try send(
-			serverStoredContent: .video(location: .telegramServer(fileId: video.fileId), caption: caption),
-			to: receiver,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-	}
+			return try send(
+				resource: .init(location: location, type: .document, caption: caption),
+				to: receiver,
+				disableNotification: disableNotification,
+				replyMarkup: replyMarkup)
+		}
 
 	@discardableResult
 	public func send(
-		_ voice: Voice, caption: String? = nil, to receiver: Sendable,
+		videoAt location: Resource.Location, caption: String? = nil, to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		return try send(
-			serverStoredContent: .voice(location: .telegramServer(fileId: voice.fileId), caption: caption),
-			to: receiver,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-	}
+			return try send(
+				resource: .init(location: location, type: .video, caption: caption),
+				to: receiver,
+				disableNotification: disableNotification,
+				replyMarkup: replyMarkup)
+		}
+
+	@discardableResult
+	public func send(
+		voiceAt location: Resource.Location, caption: String? = nil, to receiver: Sendable,
+		disableNotification: Bool? = nil,
+		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
+			return try send(
+				resource: .init(location: location, type: .voice, caption: caption),
+				to: receiver,
+				disableNotification: disableNotification,
+				replyMarkup: replyMarkup)
+		}
 
 	@discardableResult
 	public func send(
@@ -139,14 +143,14 @@ extension ZEGBot {
 		to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		let payload = SendingPayload(
-			content: .location(latitude: location.latitude, longitude: location.longitude),
-			chatId: receiver.chatId,
-			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-		return try performRequest(ofMethod: payload.methodName, payload: payload)
-	}
+			let payload = SendingPayload(
+				content: .location(latitude: location.latitude, longitude: location.longitude),
+				chatId: receiver.chatId,
+				replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
+				disableNotification: disableNotification,
+				replyMarkup: replyMarkup)
+			return try performRequest(ofMethod: payload.methodName, payload: payload)
+		}
 
 	@discardableResult
 	public func send(
@@ -154,16 +158,16 @@ extension ZEGBot {
 		to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		let payload = SendingPayload(
-			content: .venue(
-				latitude: venue.location.latitude, longitude: venue.location.longitude,
-				title: venue.title, address: venue.address, foursquareId: venue.foursquareId),
-			chatId: receiver.chatId,
-			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-		return try performRequest(ofMethod: payload.methodName, payload: payload)
-	}
+			let payload = SendingPayload(
+				content: .venue(
+					latitude: venue.location.latitude, longitude: venue.location.longitude,
+					title: venue.title, address: venue.address, foursquareId: venue.foursquareId),
+				chatId: receiver.chatId,
+				replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
+				disableNotification: disableNotification,
+				replyMarkup: replyMarkup)
+			return try performRequest(ofMethod: payload.methodName, payload: payload)
+		}
 
 	@discardableResult
 	public func send(
@@ -171,14 +175,14 @@ extension ZEGBot {
 		to receiver: Sendable,
 		disableNotification: Bool? = nil,
 		replyMarkup: InlineKeyboardMarkup? = nil) throws -> Message {
-		let payload = SendingPayload(
-			content: .contact(phoneNumber: contact.phoneNumber, firstName: contact.firstName, lastName: contact.lastName),
-			chatId: receiver.chatId,
-			replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
-			disableNotification: disableNotification,
-			replyMarkup: nil)
-		return try performRequest(ofMethod: payload.methodName, payload: payload)
-	}
+			let payload = SendingPayload(
+				content: .contact(phoneNumber: contact.phoneNumber, firstName: contact.firstName, lastName: contact.lastName),
+				chatId: receiver.chatId,
+				replyToMessageId: (receiver as? Replyable)?.replyToMessageId,
+				disableNotification: disableNotification,
+				replyMarkup: replyMarkup)
+			return try performRequest(ofMethod: payload.methodName, payload: payload)
+		}
 
 	public func send(chatAction: ChatAction, to receiver: Sendable) throws {
 		let payload = SendingPayload(
@@ -207,15 +211,15 @@ extension ZEGBot {
 		showAlert: Bool? = nil,
 		url: String? = nil,
 		cacheTime: Int? = nil) throws {
-		let _: Bool = try performRequest(
-			ofMethod: "answerCallbackQuery",
-			payload: AnswerCallbackQueryPayload(
-				callbackQueryId: callbackQueryId,
-				text: text,
-				showAlert: showAlert,
-				url: url,
-				cacheTime: cacheTime))
-	}
+			let _: Bool = try performRequest(
+				ofMethod: "answerCallbackQuery",
+				payload: AnswerCallbackQueryPayload(
+					callbackQueryId: callbackQueryId,
+					text: text,
+					showAlert: showAlert,
+					url: url,
+					cacheTime: cacheTime))
+		}
 
 	public func restrictChatMember(
 		chatId: Int,
@@ -225,29 +229,29 @@ extension ZEGBot {
 		canSendMediaMessages: Bool? = nil,
 		canSendOtherMessages: Bool? = nil,
 		canAddWebPagePreviews: Bool? = nil) throws {
-		let _: Bool = try performRequest(
-			ofMethod: "restrictChatMember",
-			payload: RestrictChatMemberPayload(
-				chatId: chatId,
-				userId: userId,
-				untilDate: untilDate?.unixTimeInt ?? nil,
-				canSendMessages: canSendMessages,
-				canSendMediaMessages: canSendMediaMessages,
-				canSendOtherMessages: canSendOtherMessages,
-				canAddWebPagePreviews: canAddWebPagePreviews))
-	}
+			let _: Bool = try performRequest(
+				ofMethod: "restrictChatMember",
+				payload: RestrictChatMemberPayload(
+					chatId: chatId,
+					userId: userId,
+					untilDate: untilDate?.unixTimeInt ?? nil,
+					canSendMessages: canSendMessages,
+					canSendMediaMessages: canSendMediaMessages,
+					canSendOtherMessages: canSendOtherMessages,
+					canAddWebPagePreviews: canAddWebPagePreviews))
+		}
 
 	public func kickChatMember(
 		chatId: Int,
 		userId: Int,
 		untilDate: Date? = nil) throws {
-		let _: Bool = try performRequest(
-			ofMethod: "kickChatMember",
-			payload: KickChatMemberPayload(
-				chatId: chatId,
-				userId: userId,
-				untilDate: untilDate?.unixTimeInt ?? nil))
-	}
+			let _: Bool = try performRequest(
+				ofMethod: "kickChatMember",
+				payload: KickChatMemberPayload(
+					chatId: chatId,
+					userId: userId,
+					untilDate: untilDate?.unixTimeInt ?? nil))
+		}
 
 	@discardableResult
 	public func editMessage(
@@ -256,11 +260,11 @@ extension ZEGBot {
 		newText: String,
 		parseMode: ParseMode? = nil,
 		disableWebPagePreview: Bool? = nil) throws -> Message {
-		let payload = UpdatingPayload(
-			messageId: messageId, chatId: chatId,
-			newContent: .text(newText: newText, parseMode: parseMode, disableWebPagePreview: disableWebPagePreview))
-		return try performRequest(ofMethod: "editMessageText", payload: payload)
-	}
+			let payload = UpdatingPayload(
+				messageId: messageId, chatId: chatId,
+				newContent: .text(newText: newText, parseMode: parseMode, disableWebPagePreview: disableWebPagePreview))
+			return try performRequest(ofMethod: "editMessageText", payload: payload)
+		}
 
 	@discardableResult
 	public func editMessage(
@@ -268,97 +272,10 @@ extension ZEGBot {
 		chatId: Int,
 		newCaption: String,
 		parseMode: ParseMode? = nil) throws -> Message {
-		let payload = UpdatingPayload(
-			messageId: messageId, chatId: chatId,
-			newContent: .caption(newCaption: newCaption, parseMode: parseMode))
-		return try performRequest(ofMethod: "editMessageCaption", payload: payload)
-	}
-
-}
-
-extension ZEGBot {
-
-	private func performRequest<Input, Output>(ofMethod method: String, payload: Input) throws -> Output
-		where Input: Encodable, Output: Decodable {
-			// Preparing the request.
-			let bodyData = try JSONEncoder().encode(payload)
-			let semaphore = DispatchSemaphore(value: 0)
-			var request = URLRequest(url: URL(string: urlPrefix + method)!)
-			request.httpMethod = "POST"
-			request.httpBody = bodyData
-			request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-
-			// Perform the request.
-			var result: Result<Output>?
-			let task = URLSession(configuration: .default).dataTask(with: request) { data, _, error in
-				if let data = data {
-					result = Result<Output>.decode(from: data)
-				} else {
-					result = .failure(error!)
-				}
-				semaphore.signal()
-			}
-			task.resume()
-			semaphore.wait()
-			switch result! {
-			case .success(let output):
-				return output
-			case .failure(let error):
-				throw error
-			}
-	}
-
-}
-
-private struct AnswerCallbackQueryPayload: Encodable {
-
-	let callbackQueryId: String
-	let text: String?
-	let showAlert: Bool?
-	let url: String?
-	let cacheTime: Int?
-
-	private enum CodingKeys: String, CodingKey {
-		case text, url
-		case callbackQueryId = "callback_query_id"
-		case showAlert = "show_alert"
-		case cacheTime = "cache_time"
-	}
-
-}
-
-private struct RestrictChatMemberPayload: Encodable {
-
-	let chatId: Int
-	let userId: Int
-	let untilDate: Int?
-	let canSendMessages: Bool?
-	let canSendMediaMessages: Bool?
-	let canSendOtherMessages: Bool?
-	let canAddWebPagePreviews: Bool?
-
-	private enum CodingKeys: String, CodingKey {
-		case chatId = "chat_id"
-		case userId = "user_id"
-		case untilDate = "until_date"
-		case canSendMessages = "can_send_messages"
-		case canSendMediaMessages = "can_send_media_messages"
-		case canSendOtherMessages = "can_send_other_messages"
-		case canAddWebPagePreviews = "can_add_web_page_previews"
-	}
-
-}
-
-private struct KickChatMemberPayload: Encodable {
-
-	let chatId: Int
-	let userId: Int
-	let untilDate: Int?
-
-	private enum CodingKeys: String, CodingKey {
-		case chatId = "chat_id"
-		case userId = "user_id"
-		case untilDate = "until_date"
-	}
+			let payload = UpdatingPayload(
+				messageId: messageId, chatId: chatId,
+				newContent: .caption(newCaption: newCaption, parseMode: parseMode))
+			return try performRequest(ofMethod: "editMessageCaption", payload: payload)
+		}
 
 }
