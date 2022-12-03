@@ -24,12 +24,7 @@ public enum Update: Decodable {
 		} else if container.contains(.callbackQuery) {
 			self = .callbackQuery(updateId: updateId, query: try container.decode(CallbackQuery.self, forKey: .callbackQuery))
 		} else {
-			throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: """
-				Failed to find value under keys: \
-				"\(CodingKeys.message.rawValue)", \
-				"\(CodingKeys.editedMessage.rawValue)" or \
-				"\(CodingKeys.channelPost.rawValue)".
-				"""))
+			self = .unimplemented(updateId: updateId)
 		}
 	}
 
@@ -45,6 +40,7 @@ public enum Update: Decodable {
 	case editedMessage(updateId: Int, message: Message)
 	case channelPost(updateId: Int, message: Message)
 	case callbackQuery(updateId: Int, query: CallbackQuery)
+	case unimplemented(updateId: Int)
 
 	public var message: Message? {
 		if case .message(_, let message) = self {
@@ -342,11 +338,11 @@ public struct Contact: Codable {
 		firstName: String,
 		lastName: String?,
 		userId: Int?) {
-		self.phoneNumber = phoneNumber
-		self.firstName = firstName
-		self.lastName = lastName
-		self.userId = userId
-	}
+			self.phoneNumber = phoneNumber
+			self.firstName = firstName
+			self.lastName = lastName
+			self.userId = userId
+		}
 
 }
 
@@ -358,9 +354,9 @@ public struct Location: Codable {
 	public init(
 		latitude: Double,
 		longitude: Double) {
-		self.latitude = latitude
-		self.longitude = longitude
-	}
+			self.latitude = latitude
+			self.longitude = longitude
+		}
 
 }
 
@@ -383,11 +379,11 @@ public struct Venue: Codable {
 		title: String,
 		address: String,
 		foursquareId: String?) {
-		self.location = location
-		self.title = title
-		self.address = address
-		self.foursquareId = foursquareId
-	}
+			self.location = location
+			self.title = title
+			self.address = address
+			self.foursquareId = foursquareId
+		}
 
 }
 
@@ -451,12 +447,12 @@ public struct InlineKeyboardButton: Codable {
 		callbackData: String? = nil,
 		switchInlineQuery: String? = nil,
 		switchInlineQueryCurrentChat: String? = nil) {
-		self.text = text
-		self.url = url
-		self.callbackData = callbackData
-		self.switchInlineQuery = switchInlineQuery
-		self.switchInlineQueryCurrentChat = switchInlineQueryCurrentChat
-	}
+			self.text = text
+			self.url = url
+			self.callbackData = callbackData
+			self.switchInlineQuery = switchInlineQuery
+			self.switchInlineQueryCurrentChat = switchInlineQueryCurrentChat
+		}
 
 }
 

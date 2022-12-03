@@ -8,33 +8,45 @@
 
 import Foundation
 
-public enum ServerStoredContent {
+public struct Resource {
 
-	public enum Location {
+	public enum Location: Encodable {
 
 		case telegramServer(fileId: String)
 		case internet(url: URL)
+		case local(path: String)
 
-		var payload: String {
+		public func encode(to encoder: Encoder) throws {
+			var container = encoder.singleValueContainer()
 			switch self {
 			case .telegramServer(fileId: let fileId):
-				return fileId
+				try container.encode(fileId)
 			case .internet(url: let url):
-				return url.absoluteString
+				try container.encode(url.absoluteString)
+			case .local:
+				throw EncodingError.invalidValue(self, EncodingError.Context(
+					codingPath: container.codingPath,
+					debugDescription: "Local content can't be encoded, it should be sent via multipart."))
 			}
 		}
 
 	}
 
-	case sticker(location: Location)
-	case photo(location: Location, caption: String?)
-	case audio(location: Location, caption: String?)
-	case document(location: Location, caption: String?)
-	case video(location: Location, caption: String?)
-	case voice(location: Location, caption: String?)
+	public enum `Type` {
+		case sticker
+		case photo
+		case audio
+		case document
+		case video
+		case voice
+	}
+
+	public let location: Location
+	public let type: `Type`
+	public let caption: String?
 
 	fileprivate var methodName: String {
-		switch self {
+		switch self.type {
 		case .audio:
 			return "sendAudio"
 		case .document:
@@ -51,7 +63,7 @@ public enum ServerStoredContent {
 	}
 }
 
-struct SendingPayload: Encodable {
+struct SendingPayload {
 
 	let content: Content
 	let chatId: Int
@@ -60,7 +72,7 @@ struct SendingPayload: Encodable {
 	let replyMarkup: InlineKeyboardMarkup?
 
 	enum Content {
-		case serverStoredContent(ServerStoredContent)
+		case resource(Resource)
 		case forwardableMessage(chatId: Int, messageId: Int)
 		case message(text: String, parseMode: ParseMode?, disableWebPagePreview: Bool?)
 		case location(latitude: Double, longitude: Double)
@@ -71,8 +83,8 @@ struct SendingPayload: Encodable {
 
 	var methodName: String {
 		switch content {
-		case .serverStoredContent(let serverStoredContent):
-			return serverStoredContent.methodName
+		case .resource(let resource):
+			return resource.methodName
 		case .forwardableMessage:
 			return "forwardMessage"
 		case .message:
@@ -87,6 +99,9 @@ struct SendingPayload: Encodable {
 			return "sendChatAction"
 		}
 	}
+}
+
+extension SendingPayload: Encodable {
 
 	private enum CodingKeys: String, CodingKey {
 
@@ -139,25 +154,24 @@ struct SendingPayload: Encodable {
 		}
 
 		switch content {
-		case .serverStoredContent(let serverStoredContent):
-			switch serverStoredContent {
-			case .sticker(location: let location):
-				try container.encode(location.payload, forKey: .sticker)
-			case .photo(location: let location, caption: let caption):
-				try container.encode(location.payload, forKey: .photo)
-				if let caption = caption { try container.encode(caption, forKey: .caption) }
-			case .audio(location: let location, caption: let caption):
-				try container.encode(location.payload, forKey: .audio)
-				if let caption = caption { try container.encode(caption, forKey: .caption) }
-			case .document(location: let location, caption: let caption):
-				try container.encode(location.payload, forKey: .document)
-				if let caption = caption { try container.encode(caption, forKey: .caption) }
-			case .video(location: let location, caption: let caption):
-				try container.encode(location.payload, forKey: .video)
-				if let caption = caption { try container.encode(caption, forKey: .caption) }
-			case .voice(location: let location, caption: let caption):
-				try container.encode(location.payload, forKey: .voice)
-				if let caption = caption { try container.encode(caption, forKey: .caption) }
+		case .resource(let resource):
+			switch resource.type {
+			case .sticker:
+				try container.encode(resource.location, forKey: .sticker)
+			case .photo:
+				try container.encode(resource.location, forKey: .photo)
+			case .audio:
+				try container.encode(resource.location, forKey: .audio)
+			case .document:
+				try container.encode(resource.location, forKey: .document)
+			case .video:
+				try container.encode(resource.location, forKey: .video)
+			case .voice:
+				try container.encode(resource.location, forKey: .voice)
+			}
+			if case .sticker = resource.type {
+			} else if let caption = resource.caption {
+				try container.encode(caption, forKey: .caption)
 			}
 		case .forwardableMessage(chatId: let chatId, messageId: let messageId):
 			try container.encode(chatId, forKey: .fromChatId)
@@ -186,6 +200,72 @@ struct SendingPayload: Encodable {
 		case .chatAction(chatAction: let chatAction):
 			try container.encode(chatAction, forKey: .action)
 		}
+	}
+
+}
+
+extension SendingPayload: MultipartEncodable {
+
+	func encode(withBoundary boundary: String) throws -> Data {
+		guard case .resource(let resource) = self.content else {
+			fatalError("Only resource payload could be encoded to multipart.")
+		}
+		guard case .local(let path) = resource.location else {
+			fatalError("Only resource at a local path could be encoded to multipart.")
+		}
+		guard let url = URL(string: path) else {
+			throw Error.input("Not a valid path: \(path)")
+		}
+		let fileName = url.lastPathComponent
+		var data = Data()
+		let fileData = try NSData(contentsOfFile: path) as Data
+		switch resource.type {
+		case .sticker:
+			append(key: "sticker", value: fileData, to: &data, boundary: boundary, fileName: fileName)
+		case .photo:
+			append(key: "photo", value: fileData, to: &data, boundary: boundary, fileName: fileName)
+		case .audio:
+			append(key: "audio", value: fileData, to: &data, boundary: boundary, fileName: fileName)
+		case .document:
+			append(key: "document", value: fileData, to: &data, boundary: boundary, fileName: fileName)
+		case .video:
+			append(key: "video", value: fileData, to: &data, boundary: boundary, fileName: fileName)
+		case .voice:
+			append(key: "voice", value: fileData, to: &data, boundary: boundary, fileName: fileName)
+		}
+
+		append(key: "chat_id", value: "\(chatId)".data(using: .utf8)!, to: &data, boundary: boundary)
+
+		if let replyToMessageId = replyToMessageId {
+			append(key: "reply_to_message_id", value: "\(replyToMessageId)".data(using: .utf8)!, to: &data, boundary: boundary)
+		}
+		if let disableNotification = disableNotification {
+			append(key: "disable_notification", value: "\(disableNotification)".data(using: .utf8)!, to: &data, boundary: boundary)
+		}
+		if let replyMarkup = replyMarkup {
+			append(key: "reply_markup", value: try JSONEncoder().encode(replyMarkup), to: &data, boundary: boundary)
+		}
+
+		if case .sticker = resource.type {
+		} else if let caption = resource.caption {
+			append(key: "caption", value: caption.data(using: .utf8)!, to: &data, boundary: boundary)
+		}
+
+		data.append("--\(boundary)--".data(using: .utf8)!)
+		return data
+	}
+
+	private func append(key: String, value: Data, to data: inout Data, boundary: String, fileName: String? = nil) {
+		data.append("--\(boundary)\r\n".data(using: .utf8)!)
+		data.append("Content-Disposition: form-data; name=\"\(key)\"".data(using: .utf8)!)
+		if let fileName = fileName {
+			data.append("; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+		}
+		data.append("\r\n".data(using: .utf8)!)
+		data.append("\r\n".data(using: .utf8)!)
+		data.append(value)
+		data.append("\r\n".data(using: .utf8)!)
+
 	}
 
 }
