@@ -11,7 +11,7 @@ This library wraps the processing of converting objects to Telegram Bot API requ
 Add this project as a dependency in your Package.swift file.
 
 ```swift
-.package(url: "https://github.com/shaneqi/ZEGBot.git", from: Version(4, 2, 7))
+.package(url: "https://github.com/shaneqi/ZEGBot.git", from: Version(4, 2, 8))
 ```
 ## Quick Start
 
